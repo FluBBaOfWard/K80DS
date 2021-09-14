@@ -1,0 +1,29 @@
+IronHorseDS revision history
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+V0.3.3 - 2021-05-17 (FluBBa)
+	Added basic sound emulation.
+	Added Scooter Shooter.
+
+V0.3.1 - 2021-03-27 (FluBBa)
+	Added all games.
+
+V0.3.0 - 2021-03-23 (FluBBa)
+	Added load/save state.
+
+V0.2.2 - 2020-06-08 (FluBBa)
+	Added support for flipped sprites.
+
+V0.2.1 - 2018-07-28 (FluBBa)
+	Fixed unscaled mode a bit.
+	Code clean up.
+
+V0.2.0 - 2018-04-20 (FluBBa)
+	Load roms from disc.
+
+V0.1.0 - 2016-08-27 (FluBBa)
+   Initial release, plays Iron Horse.
+
+V0.0.0 - 2016-08-17 (FluBBa)
+	Started coding.

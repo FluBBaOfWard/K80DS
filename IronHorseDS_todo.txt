@@ -1,0 +1,22 @@
+IronHorseDS To do
+-----------------
+
+
+
+Misc:
+	Pad left and right to switch Tabs in GUI?
+
+Graphic:
+	Fix tile decoding for Far West.
+
+CPU:
+	Timing?
+
+GUI:
+	Show Coin counter.
+
+Sound:
+	Fix YM2203 emulation.
+
+Games:
+
