@@ -2,6 +2,9 @@ IronHorseDS revision history
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 
+V0.3.4 - 2021-12-04 (FluBBa)
+	Slightly better sound.
+
 V0.3.3 - 2021-05-17 (FluBBa)
 	Added basic sound emulation.
 	Added Scooter Shooter.

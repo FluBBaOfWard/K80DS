@@ -1,4 +1,4 @@
-# IronHorseDS V0.3.3
+# IronHorseDS V0.3.4
 
 This is a Iron Horse (& Scooter Shooter) - Arcade emulator for the NDS.
 It has no tile priority support (and no rotation).
@@ -7,7 +7,7 @@ You should still be able to enjoy the game though. =)
 
 ## How to use:
 
-First DLDI patch the emulator for your flashcard.
+Depending on your flashcart you might have to DLDI patch the emulator.
 Create a folder named "acds" in either the root of your flash card or in the
 data folder. Now put ironhors.zip into a folder where you have arcade roms.
 
