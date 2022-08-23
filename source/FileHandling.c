@@ -11,7 +11,7 @@
 #include "Shared/EmuMenu.h"
 #include "Shared/EmuSettings.h"
 #include "Shared/FileHelper.h"
-#include "Shared/unzip/unzipnds.h"
+#include "Shared/Unzip/unzipnds.h"
 #include "Shared/EmubaseAC.h"
 #include "Main.h"
 #include "Gui.h"
@@ -50,7 +50,7 @@ int loadSettings() {
 	}
 
 	g_scaling    = cfg.scaling & 1;
-	g_flicker    = cfg.flicker & 1;
+	gFlicker    = cfg.flicker & 1;
 	g_gammaValue = cfg.gammaValue;
 	emuSettings  = cfg.emuSettings & ~EMUSPEED_MASK; // Clear speed setting.
 	sleepTime    = cfg.sleepTime;
@@ -69,7 +69,7 @@ void saveSettings() {
 
 	strcpy(cfg.magic,"cfg");
 	cfg.scaling     = g_scaling & 1;
-	cfg.flicker     = g_flicker & 1;
+	cfg.flicker     = gFlicker & 1;
 	cfg.gammaValue  = g_gammaValue;
 	cfg.emuSettings = emuSettings & ~EMUSPEED_MASK; // Clear speed setting.
 	cfg.sleepTime   = sleepTime;

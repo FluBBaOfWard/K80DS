@@ -7,10 +7,10 @@ extern "C" {
 
 #include "K005849/K005849.h"
 
-extern u8 g_flicker;
-extern u8 g_twitch;
+extern u8 gFlicker;
+extern u8 gTwitch;
 extern u8 g_scaling;
-extern u8 g_gfxMask;
+extern u8 gGfxMask;
 
 extern K005849 k005885_0;
 extern u16 EMUPALBUFF[0x200];

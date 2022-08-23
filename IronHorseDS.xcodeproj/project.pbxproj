@@ -219,7 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				9C7BB94925FCD73C00EA9C9C /* graphics */,
-				A4D0E10C208930D100401463 /* unzip */,
+				A4D0E10C208930D100401463 /* Unzip */,
 				9CBEE0F626F0F1B50095347A /* README.md */,
 				9C8F33EE248ACA2E00996E5A /* nds_asm.h */,
 				9CBEE0F726F0F1B50095347A /* EmuSettings.h */,
@@ -269,7 +269,7 @@
 			path = source;
 			sourceTree = "<group>";
 		};
-		A4D0E10C208930D100401463 /* unzip */ = {
+		A4D0E10C208930D100401463 /* Unzip */ = {
 			isa = PBXGroup;
 			children = (
 				A4D0E10E208930D100401463 /* puff.h */,
@@ -277,7 +277,7 @@
 				A4D0E10F208930D100401463 /* unzipnds.h */,
 				A4D0E10D208930D100401463 /* unzipnds.c */,
 			);
-			path = unzip;
+			path = Unzip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,7 +338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVKITARM = $DEVKITPRO/devkitarm;
-				DEVKITPRO = /opt/devkitpro_old;
+				DEVKITPRO = /opt/devkitpro;
 				PRODUCT_NAME = IronHorseDS;
 			};
 			name = Debug;

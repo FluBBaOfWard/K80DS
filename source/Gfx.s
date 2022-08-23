@@ -13,10 +13,10 @@
 	.global endFrame
 	.global gfxState
 	.global g_gammaValue
-	.global g_flicker
-	.global g_twitch
+	.global gFlicker
+	.global gTwitch
 	.global g_scaling
-	.global g_gfxMask
+	.global gGfxMask
 	.global paletteBank
 	.global vblIrqHandler
 	.global yStart
@@ -232,9 +232,9 @@ vblIrqHandler:
 	add r8,r8,#0x10
 	mov r7,r8,lsl#16
 
-	ldr r0,g_flicker
+	ldr r0,gFlicker
 	eors r0,r0,r0,lsl#31
-	str r0,g_flicker
+	str r0,gFlicker
 	addpl r6,r6,r6,lsl#16
 
 	ldr r5,=SCROLLBUFF
@@ -291,7 +291,7 @@ scrolLoop2:
 	mov r0,#0x0017
 	tst r2,#0x04				;@ Is left/right overlay on?
 	biceq r0,#0x0004
-	ldrb r1,g_gfxMask
+	ldrb r1,gGfxMask
 	bic r0,r0,r1
 	strh r0,[r6,#REG_WININ]
 	tst r2,#0x80				;@ 240/256 screen width.
@@ -304,12 +304,12 @@ scrolLoop2:
 
 
 ;@----------------------------------------------------------------------------
-g_flicker:		.byte 1
+gFlicker:		.byte 1
 				.space 2
-g_twitch:		.byte 0
+gTwitch:		.byte 0
 
 g_scaling:		.byte SCALED
-g_gfxMask:		.byte 0
+gGfxMask:		.byte 0
 yStart:			.byte 0
 				.byte 0
 ;@----------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# IronHorseDS V0.3.4
+# IronHorseDS V0.3.5
 
 This is a Iron Horse (& Scooter Shooter) - Arcade emulator for the NDS.
 It has no tile priority support (and no rotation).

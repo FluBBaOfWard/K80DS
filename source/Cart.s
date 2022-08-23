@@ -27,7 +27,7 @@
 	.align 2
 
 rawRom:
-
+/*
 // Iron Horse
 // Main cpu
 	.incbin "ironhors/13c_h03.bin"
@@ -45,7 +45,7 @@ rawRom:
 	.incbin "ironhors/05f_h10.bin"
 	.incbin "ironhors/10f_h12.bin"
 	.incbin "ironhors/10f_h11.bin"
-
+*/
 /*
 	.incbin "ironhors/ironhors.008"
 	.incbin "ironhors/ironhors.009"
@@ -155,8 +155,8 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	str r1,emuFlags
 	mov r11,r0
 
-	ldr r7,=rawRom
-//	ldr r7,=ROM_Space
+//	ldr r7,=rawRom
+	ldr r7,=ROM_Space
 								;@ r7=rombase til end of loadcart so DON'T FUCK IT UP
 	cmp r0,#3
 	str r7,romStart				;@ Set rom base
