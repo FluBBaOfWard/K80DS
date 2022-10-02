@@ -1,7 +1,7 @@
 #ifdef __arm__
 
 #include "Shared/nds_asm.h"
-#include "Equates.h"
+#include "Shared/EmuSettings.h"
 #include "ARM6809/ARM6809.i"
 #include "K005849/K005849.i"
 
@@ -12,10 +12,9 @@
 	.global refreshGfx
 	.global endFrame
 	.global gfxState
-	.global g_gammaValue
 	.global gFlicker
 	.global gTwitch
-	.global g_scaling
+	.global gScaling
 	.global gGfxMask
 	.global paletteBank
 	.global vblIrqHandler
@@ -87,7 +86,7 @@ gfxReset:					;@ Called with CPU reset
 	mov r0,#1
 	strb r0,[koptr,#isIronHorse]
 
-	ldr r0,=g_gammaValue
+	ldr r0,=gGammaValue
 	ldrb r0,[r0]
 	bl paletteInit				;@ Do palette mapping
 	bl paletteTxAll				;@ Transfer it
@@ -223,7 +222,7 @@ vblIrqHandler:
 	stmfd sp!,{r4-r8,lr}
 	bl calculateFPS
 
-	ldrb r0,g_scaling
+	ldrb r0,gScaling
 	cmp r0,#UNSCALED
 	moveq r6,#0
 	ldrne r6,=0x80000000 + ((GAME_HEIGHT-SCREEN_HEIGHT)*0x10000) / (SCREEN_HEIGHT-1)		;@ NDS 0x2B10 (was 0x2AAB)
@@ -308,7 +307,7 @@ gFlicker:		.byte 1
 				.space 2
 gTwitch:		.byte 0
 
-g_scaling:		.byte SCALED
+gScaling:		.byte SCALED
 gGfxMask:		.byte 0
 yStart:			.byte 0
 				.byte 0

@@ -98,7 +98,7 @@ static const ArcadeRom dairesyaRoms[12] = {
 };
 
 static const ArcadeRom farwestRoms[15] = {
-	// ROM_REGION( 0x12000, "maincpu", 0 ) /* 64k for code + 8k for extra ROM */
+	// ROM_REGION( 0x12000, "maincpu", 0 ) // 64k for code + 8k for extra ROM
 	{"ironhors.008", 0x4000, 0xb1c8246c},
 	{"ironhors.009", 0x8000, 0xea34ecfc},
 	{"ironhors.007", 0x2000, 0x471182b7},
@@ -124,25 +124,25 @@ static const ArcadeRom scotrshtRoms[12] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 )
 	{"gx545_g03_12c.bin", 0x8000, 0xb808e0d3},
 	{"gx545_g02_10c.bin", 0x4000, 0xb22c0586},
-	// ROM_REGION( 0x10000, "audiocpu", 0 )    /* 64k for sound code */
+	// ROM_REGION( 0x10000, "audiocpu", 0 )    // 64k for sound code
 	{"gx545_g01_8c.bin",  0x4000, 0x46a7cc65},
 	// ROM_REGION( 0x08000, "gfx1", 0 )
-	{"gx545_g06_6f.bin",  0x8000, 0x14ad7601}, /* sprites */
+	{"gx545_g06_6f.bin",  0x8000, 0x14ad7601}, // Sprites
 	{"gx545_h04_4f.bin",  0x8000, 0xc06c11a3},
-	{"gx545_g05_5f.bin",  0x8000, 0x856c349c}, /* characters */
+	{"gx545_g05_5f.bin",  0x8000, 0x856c349c}, // Characters
 	{FILL0XFF,            0x8000, 0x00000000},
 	// ROM_REGION( 0x0500, "proms", 0 )
-	{"gx545_6301_1f.bin", 0x0100, 0xf584586f}, /* red */
-	{"gx545_6301_2f.bin", 0x0100, 0xad464db1}, /* green */
-	{"gx545_6301_3f.bin", 0x0100, 0xbd475d23}, /* blue */
-	{"gx545_6301_7f.bin", 0x0100, 0x2b0cd233}, /* char lookup */
-	{"gx545_6301_8f.bin", 0x0100, 0xc1c7cf58}, /* sprites lookup */
+	{"gx545_6301_1f.bin", 0x0100, 0xf584586f}, // Red
+	{"gx545_6301_2f.bin", 0x0100, 0xad464db1}, // Green
+	{"gx545_6301_3f.bin", 0x0100, 0xbd475d23}, // Blue
+	{"gx545_6301_7f.bin", 0x0100, 0x2b0cd233}, // Char lookup
+	{"gx545_6301_8f.bin", 0x0100, 0xc1c7cf58}, // Sprites lookup
 };
 
-const ArcadeGame games[GAME_COUNT] = {
-	{"ironhors", "Iron Horse (version K)", 12, ironhorsRoms},
-	{"ironhorsh", "Iron Horse (version H)", 12, ironhorshRoms},
-	{"dairesya", "Dai Ressya Goutou (Japan, version K)", 12, dairesyaRoms},
-	{"farwest", "Far West", 15, farwestRoms},
-	{"scotrsht",  "ScooterShooter", 12, scotrshtRoms},
+const ArcadeGame ironhorsGames[GAME_COUNT] = {
+	AC_GAME("ironhors", "Iron Horse (version K)", ironhorsRoms)
+	AC_GAME("ironhorsh", "Iron Horse (version H)", ironhorshRoms)
+	AC_GAME("dairesya", "Dai Ressya Goutou (Japan, version K)", dairesyaRoms)
+	AC_GAME("farwest", "Far West", farwestRoms)
+	AC_GAME("scotrsht", "Scooter Shooter", scotrshtRoms)
 };

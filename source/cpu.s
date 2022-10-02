@@ -7,8 +7,8 @@
 
 #define CYCLE_PSL (196)
 
-	.global cpuReset
 	.global run
+	.global cpuReset
 	.global frameTotal
 	.global waitMaskIn
 	.global waitMaskOut
@@ -55,8 +55,7 @@ konamiFrameLoop:
 ;@----------------------------------------------------------------------------
 	ldr z80optbl,=Z80OpTable
 	ldr r0,z80CyclesPerScanline
-	b Z80RestoreAndRunXCycles
-ihZ80End:
+	bl Z80RestoreAndRunXCycles
 	add r0,z80optbl,#z80Regs
 	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
 	bl ym2203_0_Run
@@ -94,7 +93,7 @@ ihM6809End:
 ;@----------------------------------------------------------------------------
 m6809CyclesPerScanline:	.long 0
 z80CyclesPerScanline:	.long 0
-frameTotal:			.long 0		;@ Let ui.c see frame count for savestates
+frameTotal:			.long 0		;@ Let Gui.c see frame count for savestates
 waitCountIn:		.byte 0
 waitMaskIn:			.byte 0
 waitCountOut:		.byte 0
@@ -140,11 +139,8 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 	adr r4,cpuMapData+16
 	bl mapZ80Memory
 
-	adr r0,ihZ80End
-	str r0,[z80optbl,#z80NextTimeout]
-	str r0,[z80optbl,#z80NextTimeout_]
-
-	mov r0,#0
+	mov r0,z80optbl
+	mov r1,#0
 	bl Z80Reset
 
 	ldmfd sp!,{lr}
