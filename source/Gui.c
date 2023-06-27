@@ -11,10 +11,11 @@
 #include "io.h"
 #include "cpu.h"
 #include "ARM6809/Version.h"
+#include "ARMZ80/Version.h"
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.3.5 2022-10-02"
+#define EMUVERSION "V0.3.5 2023-06-27"
 
 static void uiDebug(void);
 
@@ -123,8 +124,9 @@ void uiAbout() {
 	drawMenuText("B:      Attack", 9, 0);
 	drawMenuText("A:      Power", 10, 0);
 
-	drawMenuText("IronHorseDS  " EMUVERSION, 20, 0);
-	drawMenuText("ARM6809      " ARM6809VERSION, 21, 0);
+	drawMenuText("IronHorseDS  " EMUVERSION, 19, 0);
+	drawMenuText("ARM6809      " ARM6809VERSION, 20, 0);
+	drawMenuText("ARMZ80       " ARMZ80VERSION, 21, 0);
 	drawMenuText("ARMK005849   " K005849VERSION, 22, 0);
 	drawMenuText("ARMYM2203    " ARMYM2203VERSION, 23, 0);
 }

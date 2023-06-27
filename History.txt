@@ -2,8 +2,10 @@ IronHorseDS revision history
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 
-V0.3.5 - 2022-10-02 (FluBBa)
-	Cleaned up source.
+V0.3.5 - 2023-06-27 (FluBBa)
+	Fixed sprites when screen is flipped.
+	Added new debug menu.
+	Better menu traversing.
 
 V0.3.4 - 2021-12-04 (FluBBa)
 	Slightly better sound.

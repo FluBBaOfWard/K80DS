@@ -1,6 +1,5 @@
 #ifdef __arm__
 
-#include "ARM6809/ARM6809.i"
 #include "K005849/K005849.i"
 
 	.global ioReset
@@ -20,6 +19,8 @@
 	.global gDipSwitch3
 	.global coinCounter0
 	.global coinCounter1
+
+	addy		.req r12		;@ Used by CPU cores
 
 	.syntax unified
 	.arm
@@ -201,44 +202,6 @@ ScooterShooterIO_W:		;@ I/O write 0x2000-0x3FFF
 	cmp addy,#0x3300
 	beq watchDogW
 	b k005849_0W
-
-;@----------------------------------------------------------------------------
-FinalizerIO_R:		;@ I/O read
-;@----------------------------------------------------------------------------
-	bics r2,addy,#0x0800
-	beq Input5_R
-	cmp r2,#0x0008
-	beq Input4_R
-	bic r2,r2,#3
-	cmp r2,#0x0010
-	and r2,addy,#3
-	ldreq pc,[pc,r2,lsl#2]
-;@---------------------------
-	b k005885_0R
-;@io_read_tbl
-	.long Input2_R				;@ 0x0810
-	.long Input0_R				;@ 0x0811
-	.long Input1_R				;@ 0x0812
-	.long Input3_R				;@ 0x0813
-
-;@----------------------------------------------------------------------------
-FinalizerIO_W:		;@ I/O write
-;@----------------------------------------------------------------------------
-	bic r2,addy,#0x0800
-	cmp r2,#0x0018
-	beq watchDogW
-	cmp r2,#0x0019
-	beq coinW
-	cmp r2,#0x001A
-	beq ym2203_0_W
-	cmp r2,#0x001B
-	beq ym2203_0_W
-	cmp r2,#0x001C
-	beq watchDogW				;@ Sound CPU IRQ
-	cmp r2,#0x001D
-	beq watchDogW				;@ Sound CPU latch byte
-	b k005885_0W
-
 
 ;@----------------------------------------------------------------------------
 setSoundCpuIrq:

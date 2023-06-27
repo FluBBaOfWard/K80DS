@@ -5,7 +5,7 @@
 #include "ARMZ80/ARMZ80.i"
 #include "K005849/K005849.i"
 
-#define CYCLE_PSL (196)
+#define CYCLE_PSL (H_PIXEL_COUNT/2)
 
 	.global run
 	.global stepFrame
@@ -19,7 +19,11 @@
 	.syntax unified
 	.arm
 
-	.section .text
+#if GBA
+	.section .ewram, "ax", %progbits	;@ For the GBA
+#else
+	.section .text						;@ For anything else
+#endif
 	.align 2
 ;@----------------------------------------------------------------------------
 run:						;@ Return after X frame(s)
@@ -54,10 +58,10 @@ runStart:
 ;@----------------------------------------------------------------------------
 konamiFrameLoop:
 ;@----------------------------------------------------------------------------
-	ldr z80optbl,=Z80OpTable
+	ldr z80ptr,=Z80OpTable
 	ldr r0,z80CyclesPerScanline
 	bl Z80RestoreAndRunXCycles
-	add r0,z80optbl,#z80Regs
+	add r0,z80ptr,#z80Regs
 	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
 	bl ym2203_0_Run
 ;@--------------------------------------
@@ -108,10 +112,10 @@ stepFrame:					;@ Return after 1 frame
 ;@----------------------------------------------------------------------------
 konamiStepLoop:
 ;@----------------------------------------------------------------------------
-	ldr z80optbl,=Z80OpTable
+	ldr z80ptr,=Z80OpTable
 	ldr r0,z80CyclesPerScanline
 	bl Z80RestoreAndRunXCycles
-	add r0,z80optbl,#z80Regs
+	add r0,z80ptr,#z80Regs
 	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
 	bl ym2203_0_Run
 ;@--------------------------------------
@@ -124,7 +128,7 @@ konamiStepLoop:
 	ldr koptr,=k005885_0
 	bl doScanline
 	cmp r0,#0
-	bne konamiFrameLoop
+	bne konamiStepLoop
 ;@----------------------------------------------------------------------------
 
 	ldr r1,frameTotal
@@ -136,16 +140,16 @@ konamiStepLoop:
 ;@----------------------------------------------------------------------------
 cpu1SetIRQ:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{z80optbl,lr}
-	ldr z80optbl,=Z80OpTable
+	stmfd sp!,{z80ptr,lr}
+	ldr z80ptr,=Z80OpTable
 	bl Z80SetIRQPin
-	ldmfd sp!,{z80optbl,pc}
+	ldmfd sp!,{z80ptr,pc}
 ;@----------------------------------------------------------------------------
 cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
-;@---Speed - 3.072MHz / 60Hz / 256 lines	;Iron Horse M6809.
+;@---Speed - 3.072MHz / 61Hz / 262 lines	;Iron Horse M6809.
 	ldr r1,=CYCLE_PSL
 	str r1,m6809CyclesPerScanline
 ;@--------------------------------------
@@ -160,16 +164,16 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 	bl m6809Reset
 
 
-;@---Speed - 3.072MHz / 60Hz / 256 lines	;Iron Horse Z80.
+;@---Speed - 3.072MHz / 61Hz / 262 lines	;Iron Horse/Scooter Shooter Z80.
 	ldr r0,=CYCLE_PSL
 	str r0,z80CyclesPerScanline
 ;@--------------------------------------
-	ldr z80optbl,=Z80OpTable
+	ldr z80ptr,=Z80OpTable
 
 	adr r4,cpuMapData+16
 	bl mapZ80Memory
 
-	mov r0,z80optbl
+	mov r0,z80ptr
 	mov r1,#0
 	bl Z80Reset
 

@@ -2,7 +2,6 @@
 
 #include "Shared/nds_asm.h"
 #include "Shared/EmuSettings.h"
-#include "ARM6809/ARM6809.i"
 #include "K005849/K005849.i"
 
 	.global gfxInit
@@ -31,6 +30,7 @@
 	.global k005885_0W
 	.global emuRAM
 
+	addy		.req r12		;@ Used by CPU cores
 
 	.syntax unified
 	.arm
@@ -55,14 +55,10 @@ gfxInit:					;@ Called from machineInit
 scaleParms:					;@  NH     FH     NV     FV
 	.long OAM_BUFFER1,0x0000,0x0100,0xff01,0x0120,0xfee1
 ;@----------------------------------------------------------------------------
-gfxReset:					;@ Called with CPU reset
+gfxReset:					;@ Called with CPU reset, r0 = chip type
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-	cmp r0,#4
-	moveq r0,#0
-	movne r0,#1
 	strb r0,gfxChipType
-	bleq gfxInit
 
 	ldr r0,=gfxState
 	mov r1,#6					;@ 6*4
@@ -82,6 +78,7 @@ gfxReset:					;@ Called with CPU reset
 	ldr r3,=emuRAM
 	bl k005885Reset0
 	ldrb r0,gfxChipType
+	bl k005849SetType
 	bl bgInit
 	mov r0,#1
 	strb r0,[koptr,#isIronHorse]
@@ -93,10 +90,10 @@ gfxReset:					;@ Called with CPU reset
 
 	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
-bgInit:					;@ BG tiles, r0=gameNr
+bgInit:					;@ BG tiles, r0=chip type
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-	cmp r0,#0
+	cmp r0,#CHIP_K005849
 	ldr r0,=BG_GFX+0x8000
 	str r0,[koptr,#bgrGfxDest]
 	ldr r0,=Gfx1Bg				;@ r0 = DST tileset
@@ -173,7 +170,7 @@ paletteTxAll:				;@ Called from ui.c
 	stmfd sp!,{r3-r5,lr}
 
 	ldrb r0,gfxChipType
-	cmp r0,#0
+	cmp r0,#CHIP_K005849
 	ldr r3,=MAPPED_RGB
 	ldrb r1,paletteBank
 	addeq r3,r3,r1,lsl#5
@@ -206,16 +203,6 @@ noMap2:
 	bx lr
 
 ;@----------------------------------------------------------------------------
-//paletteTxAll:				;@ Called from ui.c
-//	.type paletteTxAll STT_FUNC
-;@----------------------------------------------------------------------------
-	stmfd sp!,{r3-r5,lr}
-
-	add r3,r3,r1,lsl#5
-	mov r5,#0x100
-	b palStartTx
-
-;@----------------------------------------------------------------------------
 vblIrqHandler:
 	.type vblIrqHandler STT_FUNC
 ;@----------------------------------------------------------------------------
@@ -230,6 +217,7 @@ vblIrqHandler:
 	movne r8,#0
 	add r8,r8,#0x10
 	mov r7,r8,lsl#16
+	orr r7,r7,#(GAME_WIDTH-SCREEN_WIDTH)/2
 
 	ldr r0,gFlicker
 	eors r0,r0,r0,lsl#31
@@ -253,7 +241,6 @@ scrolLoop2:
 	bne scrolLoop2
 
 
-
 	mov r6,#REG_BASE
 	strh r6,[r6,#REG_DMA0CNT_H]	;@ DMA0 stop
 
@@ -271,7 +258,7 @@ scrolLoop2:
 	mov r3,#OAM					;@ DMA3 dst
 	mov r4,#0x84000000			;@ noIRQ 32bit incsrc incdst
 	ldrb r0,gfxChipType
-	cmp r0,#0
+	cmp r0,#CHIP_K005849
 	orreq r4,r4,#48*2			;@ 48 sprites * 2 longwords
 	orrne r4,r4,#64*2			;@ 64 sprites * 2 longwords
 	stmia r1,{r2-r4}			;@ DMA3 go
@@ -324,20 +311,10 @@ endFrame:					;@ Called just before screen end (~line 240)	(r0-r2 safe to use)
 	ldr r0,=scrollTemp
 	bl copyScrollValues
 
-	ldrb r0,gfxChipType
-	cmp r0,#0
 	mov r0,#BG_GFX
-	bne update5885
-	bl convertTileMap5849
+	bl convertTileMap
 	ldr r0,tmpOamBuffer			;@ Destination
-	bl convertSprites5849
-	b updateEnd
-update5885:
-	mov r0,#BG_GFX
-	bl convertTileMap5885
-	ldr r0,tmpOamBuffer			;@ Destination
-	bl convertSprites5885
-updateEnd:
+	bl convertSprites
 ;@--------------------------
 
 	ldr r0,dmaOamBuffer
@@ -356,13 +333,12 @@ updateEnd:
 	bx lr
 
 ;@----------------------------------------------------------------------------
-DMA0BUFPTR:			.long 0
 
 tmpOamBuffer:		.long OAM_BUFFER1
 dmaOamBuffer:		.long OAM_BUFFER2
 
 oamBufferReady:		.long 0
-emuPaletteReady:	.long 0
+
 ;@----------------------------------------------------------------------------
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
@@ -429,14 +405,12 @@ gfxState:
 adjustBlend:
 	.long 0
 windowTop:
-	.long 0
-wTop:
-	.long 0,0,0		;@ windowTop  (this label too)   L/R scrolling in unscaled mode
+	.long 0,0,0,0		;@ L/R scrolling in unscaled mode
 
 paletteBank:
 	.long 0
 gfxChipType:
-	.byte 1			;@ 5849 or 5885
+	.byte CHIP_K005885			;@ K005849 or K005885
 	.space 3
 
 	.section .bss

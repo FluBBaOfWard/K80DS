@@ -10,6 +10,7 @@
 		35E683AD1C66453300FCFE8A /* cpu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpu.h; sourceTree = "<group>"; };
 		35E683AF1C664A6D00FCFE8A /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io.h; sourceTree = "<group>"; };
 		746D78E114ED9A8400CC738F /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; fileEncoding = 4; path = Makefile; sourceTree = "<group>"; };
+		9C23CA9C29E5EF2E007DD39E /* ArcadeRoms.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ArcadeRoms.c; sourceTree = "<group>"; };
 		9C294956260F55FC00EDA7C9 /* ArcadeRoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcadeRoms.h; sourceTree = "<group>"; };
 		9C294957260F55FC00EDA7C9 /* EmubaseAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmubaseAC.h; sourceTree = "<group>"; };
 		9C3D5ADD25E3F2ED00E8CD56 /* ARMZ80.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMZ80.h; sourceTree = "<group>"; };
@@ -67,7 +68,7 @@
 		A40F3DC61D8078130025AAD3 /* YM2203.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = YM2203.s; sourceTree = "<group>"; };
 		A42D026A205FEC6E00515C72 /* ironhorsVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ironhorsVideo.cpp; sourceTree = "<group>"; };
 		A42D026B205FEC6E00515C72 /* ironhors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ironhors.cpp; sourceTree = "<group>"; };
-		A46DA0551D89E6C000E1A712 /* K005849.i */ = {isa = PBXFileReference; explicitFileType = sourcecode.asm; fileEncoding = 4; path = K005849.i; sourceTree = "<group>"; };
+		A46DA0551D89E6C000E1A712 /* K005849.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c.preprocessed; path = K005849.i; sourceTree = "<group>"; };
 		A473057E1D575449004F6525 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A473057F1D575449004F6525 /* K005849.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = K005849.h; sourceTree = "<group>"; };
 		A47305801D575449004F6525 /* K005849.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = K005849.s; sourceTree = "<group>"; };
@@ -231,6 +232,7 @@
 				A4D0E11D2089E28D00401463 /* AsmExtra.h */,
 				A4D0E11C2089E28D00401463 /* AsmExtra.s */,
 				9C294956260F55FC00EDA7C9 /* ArcadeRoms.h */,
+				9C23CA9C29E5EF2E007DD39E /* ArcadeRoms.c */,
 				9C294957260F55FC00EDA7C9 /* EmubaseAC.h */,
 			);
 			path = Shared;

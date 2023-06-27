@@ -14,7 +14,6 @@
 #include "io.h"
 #include "Sound.h"
 
-//#define sample_rate  32768
 #define sample_rate 55930
 #define buffer_size (512+10)
 

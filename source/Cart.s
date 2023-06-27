@@ -206,7 +206,9 @@ tbLoop4:
 	subs r9,r9,#1
 	bne tbLoop4
 
-	mov r0,r11
+	cmp r11,#4
+	moveq r0,#CHIP_K005849
+	movne r0,#CHIP_K005885
 	bl gfxReset
 	bl ioReset
 	bl soundReset
@@ -292,9 +294,9 @@ z80Mapper:		;@ Rom paging.. r0=which pages to change, r1=page nr.
 	cmp r1,#0x88
 	movmi r5,#12
 
-	add r6,z80optbl,#z80ReadTbl
-	add r7,z80optbl,#z80WriteTbl
-	add r8,z80optbl,#z80MemTbl
+	add r6,z80ptr,#z80ReadTbl
+	add r7,z80ptr,#z80WriteTbl
+	add r8,z80ptr,#z80MemTbl
 	b z80MemAps
 z80MemApl:
 	add r6,r6,#4
