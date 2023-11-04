@@ -9,12 +9,14 @@
 
 	.global run
 	.global stepFrame
+	.global cpuInit
 	.global cpuReset
 	.global frameTotal
 	.global waitMaskIn
 	.global waitMaskOut
 	.global cpu1SetIRQ
 
+	.global m6809CPU0
 
 	.syntax unified
 	.arm
@@ -65,10 +67,10 @@ konamiFrameLoop:
 	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
 	bl ym2203_0_Run
 ;@--------------------------------------
-	ldr m6809optbl,=m6809OpTable
+	ldr m6809ptr,=m6809CPU0
 	ldr r0,m6809CyclesPerScanline
 	bl m6809RestoreAndRunXCycles
-	add r0,m6809optbl,#m6809Regs
+	add r0,m6809ptr,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 ;@--------------------------------------
 	ldr koptr,=k005885_0
@@ -119,10 +121,10 @@ konamiStepLoop:
 	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
 	bl ym2203_0_Run
 ;@--------------------------------------
-	ldr m6809optbl,=m6809OpTable
+	ldr m6809ptr,=m6809CPU0
 	ldr r0,m6809CyclesPerScanline
 	bl m6809RestoreAndRunXCycles
-	add r0,m6809optbl,#m6809Regs
+	add r0,m6809ptr,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 ;@--------------------------------------
 	ldr koptr,=k005885_0
@@ -145,6 +147,11 @@ cpu1SetIRQ:
 	bl Z80SetIRQPin
 	ldmfd sp!,{z80ptr,pc}
 ;@----------------------------------------------------------------------------
+cpuInit:			;@ Called by machineInit
+;@----------------------------------------------------------------------------
+	ldr r0,=m6809CPU0
+	b m6809Init
+;@----------------------------------------------------------------------------
 cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
@@ -153,14 +160,14 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 	ldr r1,=CYCLE_PSL
 	str r1,m6809CyclesPerScanline
 ;@--------------------------------------
-	ldr m6809optbl,=m6809OpTable
+	ldr m6809ptr,=m6809CPU0
 
 	adr r4,cpuMapData
 	cmp r0,#4							;@ Scooter Shooter?
 	addeq r4,r4,#8
 	bl map6809Memory
 
-	mov r0,m6809optbl
+	mov r0,m6809ptr
 	bl m6809Reset
 
 
@@ -214,6 +221,16 @@ z80DataLoop:
 	movs r5,r5,lsr#1
 	bne z80DataLoop
 	ldmfd sp!,{r5,pc}
+;@----------------------------------------------------------------------------
+#ifdef NDS
+	.section .dtcm, "ax", %progbits		;@ For the NDS
+#elif GBA
+	.section .iwram, "ax", %progbits	;@ For the GBA
+#endif
+	.align 2
+;@----------------------------------------------------------------------------
+m6809CPU0:
+	.space m6809Size
 ;@----------------------------------------------------------------------------
 	.end
 #endif // #ifdef __arm__
