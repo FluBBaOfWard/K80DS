@@ -36,8 +36,8 @@ soundInit:
 soundReset:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-	mov r0,#0
-	ldr ymptr,=ym2203_0
+	mov r1,#0
+	ldr r0,=ym2203_0
 	bl ym2203Reset			;@ sound
 	ldmfd sp!,{lr}
 	bx lr
@@ -63,13 +63,12 @@ VblSound2:					;@ r0=length, r1=pointer, r2=format?
 	bne silenceMix
 
 ;@	mov r11,r11
-	stmfd sp!,{r0,r1,r4,lr}
+	stmfd sp!,{r0,r4,lr}
 
 	ldr r1,pcmPtr1
-	ldr ymptr,=ym2203_0
+	ldr r2,=ym2203_0
 	bl ym2203Mixer
 	ldmfd sp,{r0}
-	mov r0,r0,lsl#2
 	ldr r1,pcmPtr0
 	ldr r2,=ym2203_0
 	bl ay38910Mixer
@@ -79,14 +78,6 @@ VblSound2:					;@ r0=length, r1=pointer, r2=format?
 	ldr r4,pcmPtr1
 mixLoop:
 	ldrsh r2,[r3],#2
-	ldrsh r12,[r3],#2
-	add r2,r2,r12
-	ldrsh r12,[r3],#2
-	add r2,r2,r12
-	ldrsh r12,[r3],#2
-	add r2,r2,r12
-	mov r2,r2,asr#2
-
 	ldrsh r12,[r4],#2
 	add r2,r2,r12
 	mov r2,r2,asr#1
@@ -95,7 +86,7 @@ mixLoop:
 	strhpl r2,[r1],#2
 	bhi mixLoop
 
-	ldmfd sp!,{r0,r1,r4,lr}
+	ldmfd sp!,{r0,r4,lr}
 	bx lr
 
 silenceMix:
@@ -128,14 +119,14 @@ soundLatchW:			;@ M6809 0x0800
 ym2203_0_Run:
 ;@----------------------------------------------------------------------------
 	mov r0,#196
-	ldr ymptr,=ym2203_0
+	ldr r1,=ym2203_0
 	b ym2203Run
 ;@----------------------------------------------------------------------------
 ym2203_0_R:				;@ Z80 IO 0x00-0x01
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,lr}
 	tst r12,#1
-	ldr ymptr,=ym2203_0
+	ldr r0,=ym2203_0
 	adr lr,ymReadRet
 	beq ym2203StatusR
 	bne ym2203DataR
@@ -147,7 +138,7 @@ ym2203_0_W:				;@ Z80 IO 0x00-0x01
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,lr}
 	tst r12,#1
-	ldr ymptr,=ym2203_0
+	ldr r1,=ym2203_0
 	adr lr,ymWriteRet
 	beq ym2203IndexW
 	bne ym2203DataW
@@ -157,7 +148,7 @@ ymWriteRet:
 
 ;@----------------------------------------------------------------------------
 pcmPtr0:	.long wavBuffer
-pcmPtr1:	.long wavBuffer+0x1000
+pcmPtr1:	.long wavBuffer+0xA00
 
 muteSound:
 muteSoundGUI:

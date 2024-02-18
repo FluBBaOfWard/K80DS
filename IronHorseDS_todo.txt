@@ -1,7 +1,7 @@
 IronHorseDS To do
 -----------------
 
-
+Add more games to this emulator
 
 Misc:
 	Pad left and right to switch Tabs in GUI?
