@@ -63,7 +63,7 @@ VblSound2:					;@ r0=length, r1=pointer, r2=format?
 	bne silenceMix
 
 ;@	mov r11,r11
-	stmfd sp!,{r0,r4,lr}
+	stmfd sp!,{r0,r1,r4,lr}
 
 	ldr r1,pcmPtr1
 	ldr r2,=ym2203_0
@@ -86,7 +86,7 @@ mixLoop:
 	strhpl r2,[r1],#2
 	bhi mixLoop
 
-	ldmfd sp!,{r0,r4,lr}
+	ldmfd sp!,{r0,r1,r4,lr}
 	bx lr
 
 silenceMix:
