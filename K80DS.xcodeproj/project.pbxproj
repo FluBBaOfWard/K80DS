@@ -60,6 +60,8 @@
 		9CBEE0F526F0F19C0095347A /* AY38910ToDo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AY38910ToDo.txt; sourceTree = "<group>"; };
 		9CBEE0F626F0F1B50095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F726F0F1B50095347A /* EmuSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmuSettings.h; sourceTree = "<group>"; };
+		9CE2E0712B85194C00B19B2B /* GreenBeret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreenBeret.h; sourceTree = "<group>"; };
+		9CE2E0722B85194C00B19B2B /* GreenBeret.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GreenBeret.c; sourceTree = "<group>"; };
 		A40F3DBD1D8078130025AAD3 /* AY38910.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AY38910.s; sourceTree = "<group>"; };
 		A40F3DC01D8078130025AAD3 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DC21D8078130025AAD3 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -89,7 +91,7 @@
 		A4D0E112208930D100401463 /* FileHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = FileHelper.c; sourceTree = "<group>"; };
 		A4D0E11C2089E28D00401463 /* AsmExtra.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AsmExtra.s; sourceTree = "<group>"; };
 		A4D0E11D2089E28D00401463 /* AsmExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsmExtra.h; sourceTree = "<group>"; };
-		A4DA29B117651A3800810B12 /* IronHorseDS_todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = IronHorseDS_todo.txt; sourceTree = "<group>"; };
+		A4DA29B117651A3800810B12 /* K80DS_todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = K80DS_todo.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -103,7 +105,7 @@
 		742141B214E7EA40003EBFD3 = {
 			isa = PBXGroup;
 			children = (
-				A4DA29B117651A3800810B12 /* IronHorseDS_todo.txt */,
+				A4DA29B117651A3800810B12 /* K80DS_todo.txt */,
 				A4AA02141B04077F0043E4D4 /* History.txt */,
 				9CBEE0EF26F0F1180095347A /* README.md */,
 				A42D0269205FEC6E00515C72 /* Docs */,
@@ -252,6 +254,8 @@
 				9C50820D25D45A9B00A8E1BA /* Gui.c */,
 				9C50820B25D45A9B00A8E1BA /* FileHandling.h */,
 				9C50820A25D45A9B00A8E1BA /* FileHandling.c */,
+				9CE2E0712B85194C00B19B2B /* GreenBeret.h */,
+				9CE2E0722B85194C00B19B2B /* GreenBeret.c */,
 				9C7BB95D25FFF08400EA9C9C /* IronHorse.h */,
 				9C7BB95C25FFF08400EA9C9C /* IronHorse.c */,
 				9C50820525D45A9A00A8E1BA /* Cart.h */,
@@ -283,16 +287,16 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		A45BB8C91618FB840009569D /* IronHorseDS */ = {
+		A45BB8C91618FB840009569D /* K80DS */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = A45BB8CC1618FB840009569D /* Build configuration list for PBXLegacyTarget "IronHorseDS" */;
+			buildConfigurationList = A45BB8CC1618FB840009569D /* Build configuration list for PBXLegacyTarget "K80DS" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
 			dependencies = (
 			);
-			name = IronHorseDS;
+			name = K80DS;
 			passBuildSettingsInEnvironment = 1;
 			productName = NitroGrafx;
 		};
@@ -304,7 +308,7 @@
 			attributes = {
 				LastUpgradeCheck = 0410;
 			};
-			buildConfigurationList = 742141B714E7EA40003EBFD3 /* Build configuration list for PBXProject "IronHorseDS" */;
+			buildConfigurationList = 742141B714E7EA40003EBFD3 /* Build configuration list for PBXProject "K80DS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -316,7 +320,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A45BB8C91618FB840009569D /* IronHorseDS */,
+				A45BB8C91618FB840009569D /* K80DS */,
 			);
 		};
 /* End PBXProject section */
@@ -339,7 +343,7 @@
 			buildSettings = {
 				DEVKITARM = $DEVKITPRO/devkitarm;
 				DEVKITPRO = /opt/devkitpro;
-				PRODUCT_NAME = IronHorseDS;
+				PRODUCT_NAME = K80DS;
 			};
 			name = Debug;
 		};
@@ -348,14 +352,14 @@
 			buildSettings = {
 				DEVKITARM = $DEVKITPRO/devkitarm;
 				DEVKITPRO = /opt/devkitpro;
-				PRODUCT_NAME = IronHorseDS;
+				PRODUCT_NAME = K80DS;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		742141B714E7EA40003EBFD3 /* Build configuration list for PBXProject "IronHorseDS" */ = {
+		742141B714E7EA40003EBFD3 /* Build configuration list for PBXProject "K80DS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				742141B514E7EA40003EBFD3 /* Debug */,
@@ -364,7 +368,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A45BB8CC1618FB840009569D /* Build configuration list for PBXLegacyTarget "IronHorseDS" */ = {
+		A45BB8CC1618FB840009569D /* Build configuration list for PBXLegacyTarget "K80DS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A45BB8CA1618FB840009569D /* Debug */,

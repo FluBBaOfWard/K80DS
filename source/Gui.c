@@ -15,7 +15,7 @@
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.3.5 2024-02-18"
+#define EMUVERSION "V0.3.8 2024-02-20"
 
 static void uiDebug(void);
 
@@ -124,7 +124,7 @@ void uiAbout() {
 	drawMenuText("B:      Attack", 9, 0);
 	drawMenuText("A:      Power", 10, 0);
 
-	drawMenuText("IronHorseDS  " EMUVERSION, 19, 0);
+	drawMenuText("K80DS        " EMUVERSION, 19, 0);
 	drawMenuText("ARM6809      " ARM6809VERSION, 20, 0);
 	drawMenuText("ARMZ80       " ARMZ80VERSION, 21, 0);
 	drawMenuText("ARMK005849   " K005849VERSION, 22, 0);

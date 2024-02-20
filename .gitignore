@@ -2,6 +2,6 @@ build
 *.zip
 include/ironhors
 include/scotrsht
-IronHorseDS.xcodeproj/project.xcworkspace/xcuserdata
+K80DS.xcodeproj/project.xcworkspace/xcuserdata
 *.elf
 *.nds

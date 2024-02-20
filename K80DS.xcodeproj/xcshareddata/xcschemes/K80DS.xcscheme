@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A45BB8C91618FB840009569D"
-               BuildableName = "IronHorseDS"
-               BlueprintName = "IronHorseDS"
-               ReferencedContainer = "container:IronHorseDS.xcodeproj">
+               BuildableName = "K80DS"
+               BlueprintName = "K80DS"
+               ReferencedContainer = "container:K80DS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,9 +49,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A45BB8C91618FB840009569D"
-            BuildableName = "IronHorseDS"
-            BlueprintName = "IronHorseDS"
-            ReferencedContainer = "container:IronHorseDS.xcodeproj">
+            BuildableName = "K80DS"
+            BlueprintName = "K80DS"
+            ReferencedContainer = "container:K80DS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>

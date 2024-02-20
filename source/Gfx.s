@@ -19,6 +19,7 @@
 	.global vblIrqHandler
 	.global yStart
 
+	.global k005849_0
 	.global k005885_0
 	.global k005849Ram_0R
 	.global k005885Ram_0R

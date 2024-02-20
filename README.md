@@ -1,6 +1,7 @@
-# IronHorseDS V0.3.5
+# K80DS V0.3.8
 
-This is a Iron Horse (& Scooter Shooter) - Arcade emulator for the NDS.
+This is a Konami 80's Arcade emulator for the NDS.
+Iron Horse (& Scooter Shooter)
 It has no tile priority support.
 You should still be able to enjoy the game though. =)
 

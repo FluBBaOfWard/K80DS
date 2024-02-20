@@ -12,6 +12,7 @@ extern u8 gTwitch;
 extern u8 gScaling;
 extern u8 gGfxMask;
 
+extern K005849 k005849_0;
 extern K005849 k005885_0;
 extern u16 EMUPALBUFF[0x200];
 extern u32 paletteBank;
