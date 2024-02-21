@@ -6,8 +6,13 @@ extern "C" {
 #endif
 
 #include "IronHorse.h"
+#include "GreenBeret.h"
 
 #define FILEEXTENSIONS ".zip"
+
+#define GAME_COUNT (9)
+
+extern const ArcadeGame allGames[GAME_COUNT];
 
 int loadSettings(void);
 void saveSettings(void);

@@ -31,7 +31,8 @@ SOURCES		:=	source	\
 				source/ARMZ80 \
 				source/K005849 \
 				source/YM2203 \
-				source/YM2203/AY38910
+				source/YM2203/AY38910 \
+				source/SN76496
 DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	graphics \

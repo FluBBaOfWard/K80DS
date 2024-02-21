@@ -59,7 +59,10 @@ scaleParms:					;@  NH     FH     NV     FV
 gfxReset:					;@ Called with CPU reset, r0 = chip type
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
+	ldrb r1,gfxChipType
 	strb r0,gfxChipType
+	cmp r0,r1
+	blne gfxInit
 
 	ldr r0,=gfxState
 	mov r1,#6					;@ 6*4
@@ -76,6 +79,9 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	ldr r0,=m6809SetNMIPin
 	ldr r1,=m6809SetIRQPin
 	ldr r2,=m6809SetFIRQPin
+//ldr r0,=Z80SetNMIPin		;@ Scanline counter
+//ldr r1,=Z80SetIRQPin		;@ VBlank (Mr. Goemon)
+//ldr r2,=Z80SetIRQPin		;@ 1/2 VBlank (Green Beret)
 	ldr r3,=emuRAM
 	bl k005885Reset0
 	ldrb r0,gfxChipType

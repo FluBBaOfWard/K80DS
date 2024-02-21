@@ -4,6 +4,8 @@
 #include "Shared/EmuMenu.i"
 
 	.global ioReset
+	.global GreenBeretIO_R
+	.global GreenBeretIO_W
 	.global IronHorseIO_R
 	.global IronHorseIO_W
 	.global ScooterShooterIO_R
@@ -150,7 +152,39 @@ Input5_R:
 	bx lr
 
 ;@----------------------------------------------------------------------------
-IronHorseIO_R:			;@ I/O read
+GreenBeretIO_R:				;@ I/O read  (0xE045-0xFFFF)
+;@----------------------------------------------------------------------------
+	cmp addy,#0xF200
+	beq Input4_R
+	cmp addy,#0xF400
+	beq Input5_R
+	bic r2,addy,#3
+	cmp r2,#0xF600
+	and r2,addy,#3
+	ldreq pc,[pc,r2,lsl#2]
+;@---------------------------
+	b k005849_0R
+;@io_read_tbl
+	.long Input3_R				;@ 0xF600
+	.long Input1_R				;@ 0xF601
+	.long Input0_R				;@ 0xF602
+	.long Input2_R				;@ 0xF603
+
+;@----------------------------------------------------------------------------
+GreenBeretIO_W:				;@I/O write  (0xE045-0xFFFF)
+;@----------------------------------------------------------------------------
+	cmp addy,#0xF200
+	bxeq lr
+	cmp addy,#0xF400
+	beq SN_0_W
+	cmp addy,#0xF000
+	beq gbCoinW
+	cmp addy,#0xF600
+	beq watchDogW
+	b k005849_0W
+
+;@----------------------------------------------------------------------------
+IronHorseIO_R:				;@ I/O read 0x0000-0x1FFF
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x0900
 	beq Input5_R
@@ -169,7 +203,7 @@ IronHorseIO_R:			;@ I/O read
 	.long Input2_R				;@ 0x0B03
 
 ;@----------------------------------------------------------------------------
-IronHorseIO_W:			;@ I/O write
+IronHorseIO_W:				;@ I/O write 0x0000-0x1FFF
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x0800
 	beq soundLatchW
@@ -182,7 +216,7 @@ IronHorseIO_W:			;@ I/O write
 	b k005885_0W
 
 ;@----------------------------------------------------------------------------
-ScooterShooterIO_R:		;@ I/O read 0x2000-0x3FFF
+ScooterShooterIO_R:			;@ I/O read 0x2000-0x3FFF
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x3100
 	beq Input4_R
@@ -201,7 +235,7 @@ ScooterShooterIO_R:		;@ I/O read 0x2000-0x3FFF
 	.long Input3_R				;@ 0x3303
 
 ;@----------------------------------------------------------------------------
-ScooterShooterIO_W:		;@ I/O write 0x2000-0x3FFF
+ScooterShooterIO_W:			;@ I/O write 0x2000-0x3FFF
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x3100
 	beq soundLatchW
@@ -246,6 +280,20 @@ coinW:
 //	tst r0,#0x08				;@ SA?
 	b paletteTxAll
 	bx lr
+;@----------------------------------------------------------------------------
+gbCoinW:
+;@----------------------------------------------------------------------------
+	tst r0,#1
+	ldrne r1,coinCounter0
+	addne r1,r1,#1
+	strne r1,coinCounter0
+	tst r0,#2
+	ldrne r1,coinCounter1
+	addne r1,r1,#1
+	strne r1,coinCounter1
+
+	b gberetMapRom
+
 ;@----------------------------------------------------------------------------
 Z80In:
 ;@----------------------------------------------------------------------------

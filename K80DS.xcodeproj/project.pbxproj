@@ -62,6 +62,13 @@
 		9CBEE0F726F0F1B50095347A /* EmuSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmuSettings.h; sourceTree = "<group>"; };
 		9CE2E0712B85194C00B19B2B /* GreenBeret.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GreenBeret.h; sourceTree = "<group>"; };
 		9CE2E0722B85194C00B19B2B /* GreenBeret.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GreenBeret.c; sourceTree = "<group>"; };
+		9CE2E0742B85EE4900B19B2B /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		9CE2E0752B85EE4900B19B2B /* SN76496.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = SN76496.s; sourceTree = "<group>"; };
+		9CE2E0762B85EE4900B19B2B /* SN76496.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SN76496.h; sourceTree = "<group>"; };
+		9CE2E0772B85EE4900B19B2B /* SN76496.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = SN76496.i; sourceTree = "<group>"; };
+		9CE2E0782B85EE4900B19B2B /* SN76496_todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SN76496_todo.txt; sourceTree = "<group>"; };
+		9CE2E0792B85EE4900B19B2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9CE2E07A2B85EE4900B19B2B /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DBD1D8078130025AAD3 /* AY38910.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AY38910.s; sourceTree = "<group>"; };
 		A40F3DC01D8078130025AAD3 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DC21D8078130025AAD3 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -147,6 +154,20 @@
 				9C7BB94B25FCD73C00EA9C9C /* EmuFont.png */,
 			);
 			path = graphics;
+			sourceTree = "<group>";
+		};
+		9CE2E0732B85EE4900B19B2B /* SN76496 */ = {
+			isa = PBXGroup;
+			children = (
+				9CE2E0782B85EE4900B19B2B /* SN76496_todo.txt */,
+				9CE2E0792B85EE4900B19B2B /* README.md */,
+				9CE2E07A2B85EE4900B19B2B /* History.txt */,
+				9CE2E0742B85EE4900B19B2B /* Version.h */,
+				9CE2E0762B85EE4900B19B2B /* SN76496.h */,
+				9CE2E0772B85EE4900B19B2B /* SN76496.i */,
+				9CE2E0752B85EE4900B19B2B /* SN76496.s */,
+			);
+			path = SN76496;
 			sourceTree = "<group>";
 		};
 		A40F3DBB1D8078130025AAD3 /* YM2203 */ = {
@@ -247,6 +268,7 @@
 				9C5081E425D314C900A8E1BA /* ARMZ80 */,
 				A473057D1D575449004F6525 /* K005849 */,
 				A40F3DBB1D8078130025AAD3 /* YM2203 */,
+				9CE2E0732B85EE4900B19B2B /* SN76496 */,
 				A47F092A20863AF5004E1DA6 /* Shared */,
 				9C50820725D45A9A00A8E1BA /* Main.h */,
 				9C50820C25D45A9B00A8E1BA /* Main.c */,

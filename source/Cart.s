@@ -16,6 +16,7 @@
 	.global vromBase0
 	.global vromBase1
 	.global promBase
+	.global gberetMapRom
 
 	.global ROM_Space
 
@@ -184,6 +185,7 @@ tbLoop1:
 	cmp r0,#0x06
 	bne tbLoop1
 
+//	mov r0,#0
 	ldr r2,=memZ80R0
 tbLoop2:
 	add r1,r7,r0,lsl#13
@@ -199,7 +201,7 @@ tbLoop3:
 	cmp r0,#0x100
 	bne tbLoop3
 
-	mov r9,#6
+	mov r9,#8
 tbLoop4:
 	ldmfd r8!,{r0-r3}
 	bl initMappingPage
@@ -207,8 +209,8 @@ tbLoop4:
 	bne tbLoop4
 
 	cmp r11,#4
-	moveq r0,#CHIP_K005849
 	movne r0,#CHIP_K005885
+	movpl r0,#CHIP_K005849
 	bl gfxReset
 	bl ioReset
 	bl soundReset
@@ -220,11 +222,13 @@ tbLoop4:
 
 ;@----------------------------------------------------------------------------
 pageMappings:
-	.long 0x08, emptySpace, empty_R, empty_W
+	.long 0x08, emptySpace, empty_R, empty_W						;@ Empty
 	.long 0xFA, emptySpace, soundLatchR, empty_W					;@ CPU2 Latch
 	.long 0xFB, soundCpuRam, memZ80R2, ramZ80W2						;@ CPU2 RAM
+	.long 0xF8, emuRAM, memZ80R6, k005849Ram_0W						;@ Graphic
 	.long 0xFC, emuRAM, mem6809R0, k005849Ram_0W					;@ Graphic
 	.long 0xFE, emuRAM, mem6809R1, k005885Ram_0W					;@ Graphic
+	.long 0xF9, emptySpace, GreenBeretIO_R, GreenBeretIO_W			;@ IO
 	.long 0xFD, emptySpace, ScooterShooterIO_R, ScooterShooterIO_W	;@ IO
 	.long 0xFF, emptySpace, IronHorseIO_R, IronHorseIO_W			;@ IO
 ;@----------------------------------------------------------------------------
@@ -319,6 +323,16 @@ z80Flush:		;@ Update cpu_pc & lastbank
 	ldmfd sp!,{r3-r8,lr}
 	bx lr
 
+;@----------------------------------------------------------------------------
+gberetMapRom:
+;@----------------------------------------------------------------------------
+	and r0,r0,#0xE0
+	ldr r1,=romStart
+	ldr r1,[r1]
+	sub r1,r1,#0x3800
+	add r1,r1,r0,lsl#6
+	str r1,[z80ptr,#z80MemTbl+28]
+	bx lr
 
 ;@----------------------------------------------------------------------------
 

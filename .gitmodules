@@ -13,3 +13,6 @@
 [submodule "source/ARM6809"]
 	path = source/ARM6809
 	url = https://github.com/FluBBaOfWard/ARM6809.git
+[submodule "source/SN76496"]
+	path = source/SN76496
+	url = https://github.com/FluBBaOfWard/SN76496.git

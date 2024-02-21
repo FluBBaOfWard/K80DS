@@ -41,7 +41,7 @@ int getStateSize() {
 }
 
 
-static const ArcadeRom ironhorsRoms[12] = {
+const ArcadeRom ironhorsRoms[12] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 )
 	{"560_k03.13c",  0x8000, 0x395351b4},
 	{"560_k02.12c",  0x4000, 0x1cff3d59},
@@ -60,7 +60,7 @@ static const ArcadeRom ironhorsRoms[12] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-static const ArcadeRom ironhorshRoms[12] = {
+const ArcadeRom ironhorshRoms[12] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 )
 	{"13c_h03.bin",  0x8000, 0x24539af1},
 	{"12c_h02.bin",  0x4000, 0xfab07f86},
@@ -79,7 +79,7 @@ static const ArcadeRom ironhorshRoms[12] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-static const ArcadeRom dairesyaRoms[12] = {
+const ArcadeRom dairesyaRoms[12] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 )
 	{"560-k03.13c",  0x8000, 0x2ac6103b},
 	{"560-k02.12c",  0x4000, 0x07bc13a9},
@@ -98,7 +98,7 @@ static const ArcadeRom dairesyaRoms[12] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-static const ArcadeRom farwestRoms[15] = {
+const ArcadeRom farwestRoms[15] = {
 	// ROM_REGION( 0x12000, "maincpu", 0 ) // 64k for code + 8k for extra ROM
 	{"ironhors.008", 0x4000, 0xb1c8246c},
 	{"ironhors.009", 0x8000, 0xea34ecfc},
@@ -121,7 +121,7 @@ static const ArcadeRom farwestRoms[15] = {
 	{"ironcol.005",  0x0100, 0x15077b9c},
 };
 
-static const ArcadeRom scotrshtRoms[12] = {
+const ArcadeRom scotrshtRoms[12] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 )
 	{"gx545_g03_12c.bin", 0x8000, 0xb808e0d3},
 	{"gx545_g02_10c.bin", 0x4000, 0xb22c0586},
@@ -140,7 +140,7 @@ static const ArcadeRom scotrshtRoms[12] = {
 	{"gx545_6301_8f.bin", 0x0100, 0xc1c7cf58}, // Sprites lookup
 };
 
-const ArcadeGame ironhorsGames[GAME_COUNT] = {
+const ArcadeGame ironhorsGames[IH_GAME_COUNT] = {
 	AC_GAME("ironhors", "Iron Horse (version K)", ironhorsRoms)
 	AC_GAME("ironhorsh", "Iron Horse (version H)", ironhorshRoms)
 	AC_GAME("dairesya", "Dai Ressya Goutou (Japan, version K)", dairesyaRoms)

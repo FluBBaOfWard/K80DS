@@ -12,6 +12,8 @@
 	.global mem6809R1
 	.global memZ80R0
 	.global memZ80R2
+	.global memZ80R6
+	.global memZ80R7
 	.global ramZ80W2
 
 

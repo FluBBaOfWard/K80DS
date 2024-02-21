@@ -31,7 +31,7 @@ int gbGetStateSize() {
 	return size;
 }
 
-static const ArcadeRom gberetRoms[11] = {
+const ArcadeRom gberetRoms[11] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 ) // 64k for code
 	{"577l03.10c", 0x4000, 0xae29e4ff},
 	{"577l02.8c",  0x4000, 0x240836a5},
@@ -48,7 +48,7 @@ static const ArcadeRom gberetRoms[11] = {
 	{"577h11.6f",  0x0100, 0x2a1a992b},
 };
 
-static const ArcadeRom rushatckRoms[11] = {
+const ArcadeRom rushatckRoms[11] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 ) // 64k for code
 	{"577h03.10c", 0x4000, 0x4d276b52},
 	{"577h02.8c",  0x4000, 0xb5802806},
@@ -65,7 +65,7 @@ static const ArcadeRom rushatckRoms[11] = {
 	{"577h11.6f",  0x0100, 0x2a1a992b},
 };
 
-static const ArcadeRom gberetbRoms[10] = {
+const ArcadeRom gberetbRoms[10] = {
 	// ROM_REGION( 0x10000, "maincpu", 0 ) // 64k for code
 	{"2-ic82.10g", 0x8000, 0x6d6fb494},
 	{"3-ic81.10f", 0x4000, 0xf1520a0a},
@@ -83,7 +83,7 @@ static const ArcadeRom gberetbRoms[10] = {
 	//{"ic35.5h.bin",0x0001, NO_DUMP ) // PAL16R6ACN
 };
 
-static const ArcadeRom mrgoemonRoms[8] = {
+const ArcadeRom mrgoemonRoms[8] = {
 	// ROM_REGION( 0x14000, "maincpu", 0 ) // 64k for code + banked ROM
 	{"621d01.10c", 0x8000, 0xb2219c56},
 	{"621d02.12c", 0x8000, 0xc3337a97},
@@ -97,7 +97,7 @@ static const ArcadeRom mrgoemonRoms[8] = {
 	{"621a08.7f",  0x0100, 0x2fb244dd},
 };
 
-const ArcadeGame gberetGames[GAME_COUNT] = {
+const ArcadeGame gberetGames[GB_GAME_COUNT] = {
 	AC_GAME("gberet", "Green Beret", gberetRoms)
 	AC_GAME("rushatck", "Rush'n Attack (US)", rushatckRoms)
 	AC_GAME("gberetb", "Green Beret (bootleg)", gberetbRoms)

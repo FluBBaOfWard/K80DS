@@ -57,27 +57,8 @@ runStart:
 
 	bl refreshEMUjoypads		;@ Z=1 if communication ok
 
-;@----------------------------------------------------------------------------
-konamiFrameLoop:
-;@----------------------------------------------------------------------------
-	ldr z80ptr,=Z80OpTable
-	ldr r0,z80CyclesPerScanline
-	bl Z80RestoreAndRunXCycles
-	add r0,z80ptr,#z80Regs
-	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
-	bl ym2203_0_Run
-;@--------------------------------------
-	ldr m6809ptr,=m6809CPU0
-	ldr r0,m6809CyclesPerScanline
-	bl m6809RestoreAndRunXCycles
-	add r0,m6809ptr,#m6809Regs
-	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
-;@--------------------------------------
-	ldr koptr,=k005885_0
-	bl doScanline
-	cmp r0,#0
-	bne konamiFrameLoop
-;@----------------------------------------------------------------------------
+	ldr r0,frameLoopPtr
+	blx r0
 
 	ldr r1,=fpsValue
 	ldr r0,[r1]
@@ -97,6 +78,8 @@ konamiFrameLoop:
 	b runStart
 
 ;@----------------------------------------------------------------------------
+frameLoopPtr:			.long ihRunFrame
+//frameLoopPtr:			.long gbRunFrame
 m6809CyclesPerScanline:	.long 0
 z80CyclesPerScanline:	.long 0
 frameTotal:			.long 0		;@ Let Gui.c see frame count for savestates
@@ -106,14 +89,10 @@ waitCountOut:		.byte 0
 waitMaskOut:		.byte 0
 
 ;@----------------------------------------------------------------------------
-stepFrame:					;@ Return after 1 frame
-	.type   stepFrame STT_FUNC
+ihRunFrame:					;@ IronHorse/ScooterShooter
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r4-r11,lr}
-
-;@----------------------------------------------------------------------------
-konamiStepLoop:
-;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+ihFrameLoop:
 	ldr z80ptr,=Z80OpTable
 	ldr r0,z80CyclesPerScanline
 	bl Z80RestoreAndRunXCycles
@@ -130,8 +109,37 @@ konamiStepLoop:
 	ldr koptr,=k005885_0
 	bl doScanline
 	cmp r0,#0
-	bne konamiStepLoop
+	bne ihFrameLoop
+	ldmfd sp!,{pc}
+
 ;@----------------------------------------------------------------------------
+gbRunFrame:					;@ GreenBeret/Goemon
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr z80ptr,=Z80OpTable
+	add r0,z80ptr,#z80Regs
+	ldmia r0,{z80f-z80pc,z80sp}	;@ Restore Z80 state
+;@----------------------------------------------------------------------------
+gbFrameLoop:
+	ldr r0,z80CyclesPerScanline
+	bl Z80RunXCycles
+	ldr koptr,=k005849_0
+	bl doScanline
+	cmp r0,#0
+	bne gbFrameLoop
+;@----------------------------------------------------------------------------
+	add r0,z80ptr,#z80Regs
+	stmia r0,{z80f-z80pc,z80sp}	;@ Save Z80 state
+	ldmfd sp!,{pc}
+
+;@----------------------------------------------------------------------------
+stepFrame:					;@ Return after 1 frame
+	.type   stepFrame STT_FUNC
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r11,lr}
+
+	ldr r0,frameLoopPtr
+	blx r0
 
 	ldr r1,frameTotal
 	add r1,r1,#1
@@ -162,7 +170,7 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@--------------------------------------
 	ldr m6809ptr,=m6809CPU0
 
-	adr r4,cpuMapData
+	adr r4,cpuMapData+8
 	cmp r0,#4							;@ Scooter Shooter?
 	addeq r4,r4,#8
 	bl map6809Memory
@@ -177,7 +185,8 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@--------------------------------------
 	ldr z80ptr,=Z80OpTable
 
-	adr r4,cpuMapData+16
+	adr r4,cpuMapData+24
+//	adr r4,cpuMapData
 	bl mapZ80Memory
 
 	mov r0,z80ptr
@@ -192,7 +201,7 @@ cpuMapData:
 ;@	.byte 0x0B,0x0A,0x09,0x08,0xFB,0xFB,0xF9,0xF8			;@ Double Dribble CPU1
 ;@	.byte 0x0F,0x0E,0x0D,0x0C,0xFB,0xFB,0xFB,0xFA			;@ Double Dribble CPU2
 ;@	.byte 0x05,0x04,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Finalizer
-;@	.byte 0xFF,0xFE,0x05,0x04,0x03,0x02,0x01,0x00			;@ Green Beret
+	.byte 0xF9,0xF8,0x05,0x04,0x03,0x02,0x01,0x00			;@ Green Beret
 	.byte 0x05,0x04,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Iron Horse M6809
 	.byte 0x05,0x04,0x01,0x00,0x03,0x02,0xFD,0xFC			;@ Scooter Shooter M6809
 	.byte 0x80,0x80,0x80,0xFA,0x80,0xFB,0x07,0x06			;@ Iron Horse/Scooter Shooter Z80

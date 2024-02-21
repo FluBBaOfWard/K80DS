@@ -1,6 +1,7 @@
 #ifdef __arm__
 
 #include "YM2203/YM2203.i"
+#include "SN76496/SN76496.i"
 
 	.global soundInit
 	.global soundReset
@@ -12,11 +13,10 @@
 	.global ym2203_0_Run
 	.global ym2203_0_R
 	.global ym2203_0_W
+	.global SN_0_W
 
+	.global SN76496_0
 	.extern pauseEmulation
-
-
-;@----------------------------------------------------------------------------
 
 	.syntax unified
 	.arm
@@ -38,7 +38,11 @@ soundReset:
 	stmfd sp!,{lr}
 	mov r1,#0
 	ldr r0,=ym2203_0
-	bl ym2203Reset			;@ sound
+	bl ym2203Reset				;@ sound
+
+	ldr r1,=SN76496_0
+	mov r0,#1
+	bl sn76496Reset				;@ Sound
 	ldmfd sp!,{lr}
 	bx lr
 
@@ -116,6 +120,14 @@ soundLatchW:			;@ M6809 0x0800
 	strb r0,soundLatch
 	bx lr
 ;@----------------------------------------------------------------------------
+SN_0_W:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r3,lr}
+	ldr r1,=SN76496_0
+	bl sn76496W
+	ldmfd sp!,{r3,lr}
+	bx lr
+;@----------------------------------------------------------------------------
 ym2203_0_Run:
 ;@----------------------------------------------------------------------------
 	mov r0,#196
@@ -165,6 +177,8 @@ soundLatch:
 	.align 2
 ym2203_0:
 	.space ymSize
+SN76496_0:
+	.space snSize
 wavBuffer:
 	.space 0x1400
 ;@----------------------------------------------------------------------------

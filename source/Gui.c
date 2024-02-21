@@ -15,7 +15,7 @@
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.3.8 2024-02-20"
+#define EMUVERSION "V0.3.8 2024-02-21"
 
 static void uiDebug(void);
 
@@ -30,7 +30,7 @@ const fptr fnList5[] = {scalingSet, flickSet, gammaSet};
 const fptr fnList6[] = {speedSet, autoStateSet, autoSettingsSet, autoPauseGameSet, powerSaveSet, screenSwapSet, sleepSet};
 const fptr fnList7[] = {debugTextSet, bgrLayerSet, sprLayerSet, stepFrame};
 const fptr fnList8[] = {difficultSet, coinASet, coinBSet, livesSet, bonusSet, cabinetSet, demoSet, flipSet, uprightSet, serviceSet};
-const fptr fnList9[] = {quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame};
+const fptr fnList9[GAME_COUNT] = {quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame, quickSelectGame};
 const fptr fnList10[] = {uiDummy};
 const fptr *const fnListX[] = {fnList0, fnList1, fnList2, fnList3, fnList4, fnList5, fnList6, fnList7, fnList8, fnList9, fnList10};
 const u8 menuXItems[] = {ARRSIZE(fnList0), ARRSIZE(fnList1), ARRSIZE(fnList2), ARRSIZE(fnList3), ARRSIZE(fnList4), ARRSIZE(fnList5), ARRSIZE(fnList6), ARRSIZE(fnList7), ARRSIZE(fnList8), ARRSIZE(fnList9), ARRSIZE(fnList10)};
@@ -187,8 +187,8 @@ void uiDipswitches() {
 void uiLoadGame() {
 	setupSubMenu("Load Game");
 	int i;
-	for (i=0; i<ARRSIZE(ironhorsGames); i++) {
-		drawSubItem(ironhorsGames[i].fullName, NULL);
+	for (i=0; i<ARRSIZE(allGames); i++) {
+		drawSubItem(allGames[i].fullName, NULL);
 	}
 }
 

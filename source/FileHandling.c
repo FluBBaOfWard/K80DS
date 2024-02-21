@@ -18,6 +18,18 @@ static const char *const settingName = "settings.cfg";
 ConfigData cfg;
 static int selectedGame = 0;
 
+const ArcadeGame allGames[GAME_COUNT] = {
+	AC_GAME("ironhors", "Iron Horse (version K)", ironhorsRoms)
+	AC_GAME("ironhorsh", "Iron Horse (version H)", ironhorshRoms)
+	AC_GAME("dairesya", "Dai Ressya Goutou (Japan, version K)", dairesyaRoms)
+	AC_GAME("farwest", "Far West", farwestRoms)
+	AC_GAME("scotrsht", "Scooter Shooter", scotrshtRoms)
+	AC_GAME("gberet", "Green Beret", gberetRoms)
+	AC_GAME("rushatck", "Rush'n Attack (US)", rushatckRoms)
+	AC_GAME("gberetb", "Green Beret (bootleg)", gberetbRoms)
+	AC_GAME("mrgoemon", "Mr. Goemon (Japan)", mrgoemonRoms)
+};
+
 //---------------------------------------------------------------------------------
 int loadSettings() {
 	FILE *file;
@@ -101,7 +113,7 @@ void saveState() {
 
 //---------------------------------------------------------------------------------
 static bool loadRoms(int gameNr, bool doLoad) {
-	return loadACRoms(ROM_Space, ironhorsGames, gameNr, ARRSIZE(ironhorsGames), doLoad);
+	return loadACRoms(ROM_Space, allGames, gameNr, ARRSIZE(allGames), doLoad);
 }
 
 bool loadGame(int gameNr) {
@@ -113,7 +125,7 @@ bool loadGame(int gameNr) {
 	drawText(" Loading roms", 10, 0);
 	loadRoms(gameNr, true);
 	selectedGame = gameNr;
-	strlcpy(currentFilename, ironhorsGames[selectedGame].gameName, sizeof(currentFilename));
+	strlcpy(currentFilename, allGames[selectedGame].gameName, sizeof(currentFilename));
 	setEmuSpeed(0);
 	loadCart(gameNr,0);
 	if (emuSettings & AUTOLOAD_STATE) {

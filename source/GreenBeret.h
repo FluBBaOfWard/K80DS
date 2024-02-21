@@ -7,9 +7,14 @@ extern "C" {
 
 #include "Shared/ArcadeRoms.h"
 
-#define GAME_COUNT (4)
+#define GB_GAME_COUNT (4)
 
-extern const ArcadeGame gberetGames[GAME_COUNT];
+extern const ArcadeRom gberetRoms[11];
+extern const ArcadeRom rushatckRoms[11];
+extern const ArcadeRom gberetbRoms[10];
+extern const ArcadeRom mrgoemonRoms[8];
+
+extern const ArcadeGame gberetGames[GB_GAME_COUNT];
 
 /// This runs all save state functions for each chip.
 int bgPackState(void *statePtr);
