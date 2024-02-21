@@ -6,6 +6,11 @@ extern "C" {
 #endif
 
 extern u8 ROM_Space[0x32500];
+extern u8 *mainCpu;
+extern u8 *soundCpu;
+extern u8 *vromBase0;
+extern u8 *vromBase1;
+extern u8 *promBase;
 
 void machineInit(void);
 void loadCart(int, int);

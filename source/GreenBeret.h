@@ -9,10 +9,10 @@ extern "C" {
 
 #define GB_GAME_COUNT (4)
 
-extern const ArcadeRom gberetRoms[11];
-extern const ArcadeRom rushatckRoms[11];
-extern const ArcadeRom gberetbRoms[10];
-extern const ArcadeRom mrgoemonRoms[8];
+extern const ArcadeRom gberetRoms[14];
+extern const ArcadeRom rushatckRoms[14];
+extern const ArcadeRom gberetbRoms[13];
+extern const ArcadeRom mrgoemonRoms[11];
 
 extern const ArcadeGame gberetGames[GB_GAME_COUNT];
 
