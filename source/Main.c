@@ -38,7 +38,7 @@ static const u8 guiPalette[] = {
 	0xED,0xED,0xED, 0xFF,0xFF,0xFF, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00,
 	0x00,0x00,0x00, 0x00,0x00,0x00, 0x70,0x70,0x20, 0x88,0x88,0x40, 0xA0,0xA0,0x60, 0xB8,0xB8,0x80, 0xD0,0xD0,0x90, 0xE8,0xE8,0xA0,
 	0xF7,0xF7,0xC0, 0xFF,0xFF,0xE0, 0x00,0x00,0x60, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00, 0x00,0x00,0x00
-	};
+};
 
 //---------------------------------------------------------------------------------
 void myVblank(void) {
@@ -85,8 +85,9 @@ int main(int argc, char **argv) {
 //---------------------------------------------------------------------------------
 void pausVBlank(int count) {
 //---------------------------------------------------------------------------------
-	while (--count)
+	while (--count) {
 		waitVBlank();
+	}
 }
 
 //---------------------------------------------------------------------------------
@@ -157,8 +158,10 @@ static void setupGraphics() {
 				 | DISPLAY_SPR_ACTIVE
 				 | DISPLAY_WIN0_ON
 				 );
-	REG_BG0CNT = BG_32x32 | BG_MAP_BASE(0) | BG_COLOR_16  | BG_TILE_BASE(2) | BG_PRIORITY(2);
-	REG_BG1CNT = BG_32x32 | BG_MAP_BASE(2) | BG_COLOR_256 | BG_TILE_BASE(1) | BG_PRIORITY(2);
+	GFX_BG0CNT = BG_64x32 | BG_MAP_BASE(0) | BG_COLOR_16  | BG_TILE_BASE(2) | BG_PRIORITY(2);
+	GFX_BG1CNT = BG_64x32 | BG_MAP_BASE(2) | BG_COLOR_256 | BG_TILE_BASE(1) | BG_PRIORITY(2);
+	REG_BG0CNT = GFX_BG0CNT;
+	REG_BG1CNT = GFX_BG1CNT;
 
 	// Set up the sub display
 	videoSetModeSub(MODE_0_2D

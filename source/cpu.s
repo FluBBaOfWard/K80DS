@@ -170,9 +170,9 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@--------------------------------------
 	ldr m6809ptr,=m6809CPU0
 
-	adr r4,cpuMapData+8
 	cmp r0,#4							;@ Scooter Shooter?
-	addeq r4,r4,#8
+	adr r0,cpuMapData+8
+	addeq r0,r0,#8
 	bl map6809Memory
 
 	mov r0,m6809ptr
@@ -185,8 +185,8 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@--------------------------------------
 	ldr z80ptr,=Z80OpTable
 
-	adr r4,cpuMapData+24
-//	adr r4,cpuMapData
+	adr r0,cpuMapData+24
+//	adr r0,cpuMapData
 	bl mapZ80Memory
 
 	mov r0,z80ptr
@@ -210,7 +210,8 @@ cpuMapData:
 ;@	.byte 0x03,0x02,0x01,0x00,0xF9,0xF9,0xFF,0xFE			;@ Jail Break
 ;@----------------------------------------------------------------------------
 map6809Memory:
-	stmfd sp!,{r5,lr}
+	stmfd sp!,{r4,r5,lr}
+	mov r4,r0
 	mov r5,#0x80
 m6809DataLoop:
 	mov r0,r5
@@ -218,10 +219,11 @@ m6809DataLoop:
 	bl m6809Mapper
 	movs r5,r5,lsr#1
 	bne m6809DataLoop
-	ldmfd sp!,{r5,pc}
+	ldmfd sp!,{r4,r5,pc}
 ;@----------------------------------------------------------------------------
 mapZ80Memory:
-	stmfd sp!,{r5,lr}
+	stmfd sp!,{r4,r5,lr}
+	mov r4,r0
 	mov r5,#0x80
 z80DataLoop:
 	mov r0,r5
@@ -229,7 +231,7 @@ z80DataLoop:
 	bl z80Mapper
 	movs r5,r5,lsr#1
 	bne z80DataLoop
-	ldmfd sp!,{r5,pc}
+	ldmfd sp!,{r4,r5,pc}
 ;@----------------------------------------------------------------------------
 #ifdef NDS
 	.section .dtcm, "ax", %progbits		;@ For the NDS

@@ -16,6 +16,9 @@ extern K005849 k005849_0;
 extern K005849 k005885_0;
 extern u16 EMUPALBUFF[0x200];
 extern u32 paletteBank;
+extern u32 GFX_DISPCNT;
+extern u16 GFX_BG0CNT;
+extern u16 GFX_BG1CNT;
 
 void gfxInit(void);
 void vblIrqHandler(void);

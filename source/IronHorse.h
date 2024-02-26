@@ -9,11 +9,11 @@ extern "C" {
 
 #define IH_GAME_COUNT (5)
 
-extern const ArcadeRom ironhorsRoms[15];
-extern const ArcadeRom ironhorshRoms[15];
-extern const ArcadeRom dairesyaRoms[15];
-extern const ArcadeRom farwestRoms[18];
-extern const ArcadeRom scotrshtRoms[15];
+extern const ArcadeRom ironhorsRoms[16];
+extern const ArcadeRom ironhorshRoms[16];
+extern const ArcadeRom dairesyaRoms[16];
+extern const ArcadeRom farwestRoms[19];
+extern const ArcadeRom scotrshtRoms[16];
 
 extern const ArcadeGame ironhorsGames[IH_GAME_COUNT];
 

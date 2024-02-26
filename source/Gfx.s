@@ -19,6 +19,11 @@
 	.global vblIrqHandler
 	.global yStart
 
+	.global GFX_DISPCNT
+	.global GFX_BG0CNT
+	.global GFX_BG1CNT
+	.global EMUPALBUFF
+
 	.global k005849_0
 	.global k005885_0
 	.global k005849Ram_0R
@@ -127,6 +132,7 @@ paletteInit:		;@ r0-r3 modified.
 	.type paletteInit STT_FUNC
 ;@ Called by ui.c:  void paletteInit(gammaVal);
 ;@----------------------------------------------------------------------------
+//	b paletteInitGreenBeret
 	stmfd sp!,{r4-r7,lr}
 	mov r1,r0					;@ Gamma value = 0 -> 4
 	ldr r7,=promBase			;@ Proms
@@ -152,7 +158,42 @@ noMap:							;@ Map rrrr, gggg, bbbb  ->  0bbbbbgggggrrrrr
 
 	ldmfd sp!,{r4-r7,lr}
 	bx lr
+;@----------------------------------------------------------------------------
+paletteInitGreenBeret:		;@ r0-r3 modified.
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r9,lr}
+	mov r1,r0					;@ Gamma value = 0 -> 4
+	ldr r8,=promBase			;@ Proms
+	ldr r8,[r8]
+	mov r7,#0xE0
+	ldr r6,=MAPPED_RGB
+	mov r4,#32					;@ Green Beret bgr, r1=R, r2=G, r3=B
+.loop:							;@ Map 00000000bbgggrrr  ->  0bbbbbgggggrrrrr
+	ldrb r9,[r8],#1
+	and r0,r9,#0xC0				;@ Blue ready
+	bl gPrefixGreenBeret
+	mov r5,r0
 
+	and r0,r7,r9,lsl#2			;@ Green ready
+	bl gPrefixGreenBeret
+	orr r5,r0,r5,lsl#5
+
+	and r0,r7,r9,lsl#5			;@ Red ready
+	bl gPrefixGreenBeret
+	orr r5,r0,r5,lsl#5
+
+	strh r5,[r6],#2
+	subs r4,r4,#1
+	bne .loop
+
+	ldmfd sp!,{r4-r9,lr}
+	bx lr
+
+;@----------------------------------------------------------------------------
+gPrefixGreenBeret:
+	orr r0,r0,r0,lsr#3
+	orr r0,r0,r0,lsr#6
+	b gammaConvert
 ;@----------------------------------------------------------------------------
 gPrefix:
 	and r0,r0,#0xF
@@ -174,21 +215,22 @@ gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value i
 paletteTxAll:				;@ Called from ui.c
 	.type paletteTxAll STT_FUNC
 ;@----------------------------------------------------------------------------
+//	b paletteTxAllGreenBeret
 	stmfd sp!,{r3-r5,lr}
 
 	ldrb r0,gfxChipType
 	cmp r0,#CHIP_K005849
 	ldr r3,=MAPPED_RGB
+	ldr r4,=EMUPALBUFF
 	ldrb r1,paletteBank
 	addeq r3,r3,r1,lsl#5
 	moveq r5,#0x100
 	addne r3,r3,r1,lsl#6
 	movne r5,#0x20
-palStartTx:
+
 	ldr r2,=promBase			;@ Proms
 	ldr r2,[r2]
-	add r2,r2,#0x300
-	ldr r4,=EMUPALBUFF
+	add r2,r2,#0x300			;@ LUT
 
 	add r3,r3,r5
 	bl noMap3
@@ -199,15 +241,48 @@ palStartTx:
 
 noMap3:
 	mov r1,#256
-noMap2:
+palTxLoop1:
 	ldrb r0,[r2],#1
 	and r0,r0,#0xF
 	mov r0,r0,lsl#1
 	ldrh r0,[r3,r0]
 	strh r0,[r4],#2
 	subs r1,r1,#1
-	bne noMap2
+	bne palTxLoop1
 	bx lr
+;@----------------------------------------------------------------------------
+paletteTxAllGreenBeret:				;@ Called from ui.c
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r5}
+
+	ldr r2,=promBase			;@ Proms
+	ldr r2,[r2]
+	add r2,r2,#32
+	ldr r3,=MAPPED_RGB
+	ldr r4,=EMUPALBUFF
+	add r5,r4,#512
+	mov r1,#256
+.loop2:
+	ldrb r0,[r2],#1
+	mov r0,r0,lsl#1
+	ldrh r0,[r3,r0]
+	strh r0,[r5],#2
+	subs r1,r1,#1
+	bne .loop2
+
+	add r3,r3,#32
+	mov r1,#256
+.loop3:
+	ldrb r0,[r2],#1
+	mov r0,r0,lsl#1
+	ldrh r0,[r3,r0]
+	strh r0,[r4],#2
+	subs r1,r1,#1
+	bne .loop3
+
+	ldmfd sp!,{r4-r5}
+	bx lr
+
 
 ;@----------------------------------------------------------------------------
 vblIrqHandler:
@@ -264,8 +339,8 @@ scrolLoop2:
 	ldr r2,dmaOamBuffer			;@ DMA3 src, OAM transfer:
 	mov r3,#OAM					;@ DMA3 dst
 	mov r4,#0x84000000			;@ noIRQ 32bit incsrc incdst
-	ldrb r0,gfxChipType
-	cmp r0,#CHIP_K005849
+	ldrb r7,gfxChipType
+	cmp r7,#CHIP_K005849
 	orreq r4,r4,#48*2			;@ 48 sprites * 2 longwords
 	orrne r4,r4,#64*2			;@ 64 sprites * 2 longwords
 	stmia r1,{r2-r4}			;@ DMA3 go
@@ -276,9 +351,11 @@ scrolLoop2:
 	orr r4,r4,#0x100			;@ 256 words (1024 bytes)
 	stmia r1,{r2-r4}			;@ DMA3 go
 
-	ldr r0,=0x000A
 	ldr koptr,=k005885_0
 	ldrb r2,[koptr,#sprBank]
+	cmp r7,#CHIP_K005849
+	ldrheq r0,GFX_BG0CNT
+	ldrne r0,=0x000A
 	strh r0,[r6,#REG_BG0CNT]
 
 	mov r0,#0x0017
@@ -345,6 +422,12 @@ tmpOamBuffer:		.long OAM_BUFFER1
 dmaOamBuffer:		.long OAM_BUFFER2
 
 oamBufferReady:		.long 0
+GFX_DISPCNT:
+	.long 0
+GFX_BG0CNT:
+	.short 0
+GFX_BG1CNT:
+	.short 0
 
 ;@----------------------------------------------------------------------------
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc

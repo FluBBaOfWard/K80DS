@@ -41,8 +41,8 @@ int getStateSize() {
 	return size;
 }
 
-const ArcadeRom ironhorsRoms[15] = {
-	// ROM_REGION( 0x10000, "maincpu", 0 )
+const ArcadeRom ironhorsRoms[16] = {
+	{ROM_REGION,   0x10000, (int)&mainCpu},
 	{"560_k03.13c",  0x8000, 0x395351b4},
 	{"560_k02.12c",  0x4000, 0x1cff3d59},
 	{ROM_REGION,   0x10000, (int)&soundCpu},   // 64k for sound code
@@ -60,8 +60,8 @@ const ArcadeRom ironhorsRoms[15] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-const ArcadeRom ironhorshRoms[15] = {
-	// ROM_REGION( 0x10000, "maincpu", 0 )
+const ArcadeRom ironhorshRoms[16] = {
+	{ROM_REGION,   0x10000, (int)&mainCpu},
 	{"13c_h03.bin",  0x8000, 0x24539af1},
 	{"12c_h02.bin",  0x4000, 0xfab07f86},
 	{ROM_REGION,   0x10000, (int)&soundCpu},   // 64k for sound code
@@ -79,8 +79,8 @@ const ArcadeRom ironhorshRoms[15] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-const ArcadeRom dairesyaRoms[15] = {
-	// ROM_REGION( 0x10000, "maincpu", 0 )
+const ArcadeRom dairesyaRoms[16] = {
+	{ROM_REGION,   0x10000, (int)&mainCpu},
 	{"560-k03.13c",  0x8000, 0x2ac6103b},
 	{"560-k02.12c",  0x4000, 0x07bc13a9},
 	{ROM_REGION,   0x10000, (int)&soundCpu},   // 64k for sound code
@@ -98,8 +98,8 @@ const ArcadeRom dairesyaRoms[15] = {
 	{"10f_h11.bin",  0x0100, 0xa63e37d8},
 };
 
-const ArcadeRom farwestRoms[18] = {
-	// ROM_REGION( 0x12000, "maincpu", 0 ) // 64k for code + 8k for extra ROM
+const ArcadeRom farwestRoms[19] = {
+	{ROM_REGION,   0x12000, (int)&mainCpu}, // 64k for code + 8k for extra ROM
 	{"ironhors.008", 0x4000, 0xb1c8246c},
 	{"ironhors.009", 0x8000, 0xea34ecfc},
 	{"ironhors.007", 0x2000, 0x471182b7},
@@ -121,8 +121,8 @@ const ArcadeRom farwestRoms[18] = {
 	{"ironcol.005",  0x0100, 0x15077b9c},
 };
 
-const ArcadeRom scotrshtRoms[15] = {
-	// ROM_REGION( 0x10000, "maincpu", 0 )
+const ArcadeRom scotrshtRoms[16] = {
+	{ROM_REGION,   0x10000, (int)&mainCpu},
 	{"gx545_g03_12c.bin", 0x8000, 0xb808e0d3},
 	{"gx545_g02_10c.bin", 0x4000, 0xb22c0586},
 	{ROM_REGION,   0x10000, (int)&soundCpu},   // 64k for sound code

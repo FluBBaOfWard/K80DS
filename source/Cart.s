@@ -5,12 +5,8 @@
 #include "ARMZ80/ARMZ80.i"
 #include "K005849/K005849.i"
 
-	.global machineInit
-	.global loadCart
-	.global m6809Mapper
-	.global z80Mapper
-	.global emuFlags
 	.global romNum
+	.global emuFlags
 	.global cartFlags
 	.global romStart
 	.global mainCpu
@@ -18,10 +14,13 @@
 	.global vromBase0
 	.global vromBase1
 	.global promBase
-	.global gberetMapRom
-
 	.global ROM_Space
 
+	.global machineInit
+	.global loadCart
+	.global m6809Mapper
+	.global z80Mapper
+	.global gberetMapRom
 
 	.syntax unified
 	.arm
@@ -344,11 +343,15 @@ romStart:
 mainCpu:
 	.long 0
 soundCpu:
-cpu2Start:
+cpu2Base:
+	.long 0
+cpu3Base:
 	.long 0
 vromBase0:
 	.long 0
 vromBase1:
+	.long 0
+vromBase2:
 	.long 0
 promBase:
 	.long 0
