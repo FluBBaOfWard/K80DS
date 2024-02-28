@@ -1,7 +1,10 @@
 #ifdef __arm__
 
+#include "../ARMZ80/ARMZ80.i"
+
 	.global paletteInitGreenBeret
 	.global paletteTxAllGreenBeret
+	.global gberetMapRom
 
 	.syntax unified
 	.arm
@@ -17,8 +20,8 @@ paletteInitGreenBeret:		;@ r0-r3 modified.
 	ldr r8,[r8]
 	mov r7,#0xE0
 	ldr r6,=MAPPED_RGB
-	mov r4,#32					;@ Green Beret bgr, r1=R, r2=G, r3=B
-.loop:							;@ Map 00000000bbgggrrr  ->  0bbbbbgggggrrrrr
+	mov r4,#32					;@ Green Beret bgr
+palInitLoop:					;@ Map bbgggrrr  ->  0bbbbbgggggrrrrr
 	ldrb r9,[r8],#1
 	and r0,r9,#0xC0				;@ Blue ready
 	bl gPrefix
@@ -34,7 +37,7 @@ paletteInitGreenBeret:		;@ r0-r3 modified.
 
 	strh r5,[r6],#2
 	subs r4,r4,#1
-	bne .loop
+	bne palInitLoop
 
 	ldmfd sp!,{r4-r9,lr}
 	bx lr
@@ -75,6 +78,16 @@ paletteTxAllGreenBeret:				;@ Called from ui.c
 	bne .loop3
 
 	ldmfd sp!,{r4-r5}
+	bx lr
+;@----------------------------------------------------------------------------
+gberetMapRom:
+;@----------------------------------------------------------------------------
+	and r0,r0,#0xE0
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	sub r1,r1,#0x3800
+	add r1,r1,r0,lsl#6
+	str r1,[z80ptr,#z80MemTbl+28]
 	bx lr
 
 ;@----------------------------------------------------------------------------

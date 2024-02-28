@@ -185,9 +185,9 @@ cpuReset:		;@ Called by loadCart/resetGame, r0= game nr
 ;@--------------------------------------
 	ldr z80ptr,=Z80OpTable
 
-	adr r0,cpuMapData+24
+//	adr r0,cpuMapData+24
 //	adr r0,cpuMapData
-	bl mapZ80Memory
+//	bl mapZ80Memory
 
 	mov r0,z80ptr
 	mov r1,#0
@@ -204,7 +204,7 @@ cpuMapData:
 	.byte 0xF9,0xF8,0x05,0x04,0x03,0x02,0x01,0x00			;@ Green Beret
 	.byte 0x05,0x04,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Iron Horse M6809
 	.byte 0x05,0x04,0x01,0x00,0x03,0x02,0xFD,0xFC			;@ Scooter Shooter M6809
-	.byte 0x80,0x80,0x80,0xFA,0x80,0xFB,0x07,0x06			;@ Iron Horse/Scooter Shooter Z80
+;@	.byte 0x80,0x80,0x80,0xFA,0x80,0xFB,0x07,0x06			;@ Iron Horse/Scooter Shooter Z80
 ;@	.byte 0x09,0x08,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Jackal CPU0
 ;@	.byte 0x0D,0x0C,0x0B,0x0A,0xF8,0xFD,0xFA,0xFB			;@ Jackal CPU1
 ;@	.byte 0x03,0x02,0x01,0x00,0xF9,0xF9,0xFF,0xFE			;@ Jail Break
@@ -219,18 +219,6 @@ m6809DataLoop:
 	bl m6809Mapper
 	movs r5,r5,lsr#1
 	bne m6809DataLoop
-	ldmfd sp!,{r4,r5,pc}
-;@----------------------------------------------------------------------------
-mapZ80Memory:
-	stmfd sp!,{r4,r5,lr}
-	mov r4,r0
-	mov r5,#0x80
-z80DataLoop:
-	mov r0,r5
-	ldrb r1,[r4],#1
-	bl z80Mapper
-	movs r5,r5,lsr#1
-	bne z80DataLoop
 	ldmfd sp!,{r4,r5,pc}
 ;@----------------------------------------------------------------------------
 #ifdef NDS

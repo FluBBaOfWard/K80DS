@@ -19,7 +19,7 @@ paletteInitIronHorse:		;@ r0-r3 modified.
 	ldr r7,[r7]
 	ldr r6,=MAPPED_RGB
 	mov r4,#256					;@ Iron Horse bgr, r1=R, r2=G, r3=B
-noMap:							;@ Map rrrr, gggg, bbbb  ->  0bbbbbgggggrrrrr
+palInitLoop:					;@ Map rrrr, gggg, bbbb  ->  0bbbbbgggggrrrrr
 	ldrb r0,[r7,#0x200]			;@ Blue
 	bl gPrefix
 	mov r5,r0
@@ -34,7 +34,7 @@ noMap:							;@ Map rrrr, gggg, bbbb  ->  0bbbbbgggggrrrrr
 
 	strh r5,[r6],#2
 	subs r4,r4,#1
-	bne noMap
+	bne palInitLoop
 
 	ldmfd sp!,{r4-r7,lr}
 	bx lr

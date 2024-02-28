@@ -19,8 +19,6 @@
 	.global machineInit
 	.global loadCart
 	.global m6809Mapper
-	.global z80Mapper
-	.global gberetMapRom
 
 	.syntax unified
 	.arm
@@ -163,7 +161,6 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	ldr r4,=MEMMAPTBL_
 	ldr r5,=RDMEMTBL_
 	ldr r6,=WRMEMTBL_
-	adr r8,pageMappings
 
 	mov r0,#0
 	ldr r2,=mem6809R0
@@ -175,15 +172,7 @@ tbLoop1:
 	cmp r0,#0x06
 	bne tbLoop1
 
-//	mov r0,#0
-	ldr r2,=memZ80R0
-tbLoop2:
-	add r1,r7,r0,lsl#13
-	bl initMappingPage
-	add r0,r0,#1
-	cmp r0,#0x08
-	bne tbLoop2
-
+	adr r8,pageMappings
 	ldmfd r8!,{r0-r3}
 tbLoop3:
 	bl initMappingPage
@@ -197,6 +186,11 @@ tbLoop4:
 	bl initMappingPage
 	subs r9,r9,#1
 	bne tbLoop4
+
+	ldr r0,=Z80OpTable
+	ldr r1,soundCpu
+	adr r2,ironHorseZ80Mapping
+	bl z80Mapper2
 
 	cmp r11,#4
 	movne r0,#CHIP_K005885
@@ -221,6 +215,26 @@ pageMappings:
 	.long 0xF9, emptySpace, GreenBeretIO_R, GreenBeretIO_W			;@ IO
 	.long 0xFD, emptySpace, ScooterShooterIO_R, ScooterShooterIO_W	;@ IO
 	.long 0xFF, emptySpace, IronHorseIO_R, IronHorseIO_W			;@ IO
+
+greenBeretMapping:						;@ Green Beret
+	.long 0x00, memZ80R0, rom_W
+	.long 0x01, memZ80R1, rom_W
+	.long 0x02, memZ80R2, rom_W
+	.long 0x03, memZ80R3, rom_W
+	.long 0x04, memZ80R4, rom_W
+	.long 0x05, memZ80R5, rom_W
+	.long emuRAM, memZ80R6, k005849Ram_0W						;@ Graphic
+	.long emptySpace, GreenBeretIO_R, GreenBeretIO_W			;@ IO
+ironHorseZ80Mapping:					;@ Iron Horse Z80
+	.long 0x00, memZ80R0, rom_W									;@ ROM
+	.long 0x01, memZ80R1, rom_W									;@ ROM
+	.long soundCpuRam, memZ80R2, ramZ80W2						;@ CPU2 RAM
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, soundLatchR, empty_W						;@ CPU2 Latch
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, empty_R, empty_W							;@ Empty
+
 ;@----------------------------------------------------------------------------
 initMappingPage:	;@ r0=page, r1=mem, r2=rdMem, r3=wrMem
 ;@----------------------------------------------------------------------------
@@ -228,10 +242,36 @@ initMappingPage:	;@ r0=page, r1=mem, r2=rdMem, r3=wrMem
 	str r2,[r5,r0,lsl#2]		;@ RdMem
 	str r3,[r6,r0,lsl#2]		;@ WrMem
 	bx lr
+;@----------------------------------------------------------------------------
 
 ;@----------------------------------------------------------------------------
-//	.section itcm
+z80Mapper2:		;@ Rom paging.. r0=cpuptr, r1=romBase, r2=mapping table.
 ;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r8,lr}
+
+	add r7,r0,#z80MemTbl
+	add r8,r0,#z80ReadTbl
+	add lr,r0,#z80WriteTbl
+
+	mov r6,#8
+z80M2Loop:
+	ldmia r2!,{r3-r5}
+	cmp r3,#0x100
+	addmi r3,r1,r3,lsl#13
+	rsb r0,r6,#8
+	sub r3,r3,r0,lsl#13
+
+	str r3,[r7],#4
+	str r4,[r8],#4
+	str r5,[lr],#4
+	subs r6,r6,#1
+	bne z80M2Loop
+;@------------------------------------------
+//z80Flush:		;@ Update cpu_pc & lastbank
+;@------------------------------------------
+//	reEncodePC
+	ldmfd sp!,{r4-r8,lr}
+	bx lr
 
 ;@----------------------------------------------------------------------------
 m6809Mapper:		;@ Rom paging.. r0=which pages to change, r1=page nr.
@@ -271,57 +311,6 @@ m6809Flush:		;@ update cpu_pc & lastbank
 ;@------------------------------------------
 	reEncodePC
 	ldmfd sp!,{r3-r8,lr}
-	bx lr
-
-;@----------------------------------------------------------------------------
-z80Mapper:		;@ Rom paging.. r0=which pages to change, r1=page nr.
-;@----------------------------------------------------------------------------
-	ands r0,r0,#0xFF			;@ Safety
-	bxeq lr
-	stmfd sp!,{r3-r8,lr}
-	ldr r5,=MEMMAPTBL_
-	ldr r2,[r5,r1,lsl#2]!
-	ldr r3,[r5,#-1024]			;@ RDMEMTBL_
-	ldr r4,[r5,#-2048]			;@ WRMEMTBL_
-
-	mov r5,#0
-	cmp r1,#0x88
-	movmi r5,#12
-
-	add r6,z80ptr,#z80ReadTbl
-	add r7,z80ptr,#z80WriteTbl
-	add r8,z80ptr,#z80MemTbl
-	b z80MemAps
-z80MemApl:
-	add r6,r6,#4
-	add r7,r7,#4
-	add r8,r8,#4
-z80MemAp2:
-	add r3,r3,r5
-	sub r2,r2,#0x2000
-z80MemAps:
-	movs r0,r0,lsr#1
-	bcc z80MemApl				;@ C=0
-	strcs r3,[r6],#4			;@ readmem_tbl
-	strcs r4,[r7],#4			;@ writemem_tb
-	strcs r2,[r8],#4			;@ memmap_tbl
-	bne z80MemAp2
-;@------------------------------------------
-z80Flush:		;@ Update cpu_pc & lastbank
-;@------------------------------------------
-//	reEncodePC
-	ldmfd sp!,{r3-r8,lr}
-	bx lr
-
-;@----------------------------------------------------------------------------
-gberetMapRom:
-;@----------------------------------------------------------------------------
-	and r0,r0,#0xE0
-	ldr r1,=romStart
-	ldr r1,[r1]
-	sub r1,r1,#0x3800
-	add r1,r1,r0,lsl#6
-	str r1,[z80ptr,#z80MemTbl+28]
 	bx lr
 
 ;@----------------------------------------------------------------------------
