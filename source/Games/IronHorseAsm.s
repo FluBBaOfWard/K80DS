@@ -2,6 +2,8 @@
 
 #include "../K005849/K005849.i"
 
+	.global doCpuMappingIronHorse
+	.global doCpuMappingScooterShooter
 	.global paletteInitIronHorse
 	.global paletteTxAllIronHorse
 
@@ -10,6 +12,66 @@
 
 	.section .text
 	.align 2
+;@----------------------------------------------------------------------------
+doCpuMappingIronHorse:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr r0,=m6809CPU0
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	adr r2,ironHorseMapping
+	bl m6809Mapper
+	b mapSoundCpu
+;@----------------------------------------------------------------------------
+doCpuMappingScooterShooter:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr r0,=m6809CPU0
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	adr r2,scooterShooterMapping
+	bl m6809Mapper
+;@----------------------------------------------------------------------------
+mapSoundCpu:
+;@----------------------------------------------------------------------------
+	ldr r0,=Z80OpTable
+	ldr r1,=soundCpu
+	ldr r1,[r1]
+	adr r2,ironHorseZ80Mapping
+	bl z80Mapper
+	ldmfd sp!,{lr}
+	bx lr
+;@----------------------------------------------------------------------------
+ironHorseMapping:						;@ Iron Horse
+	.long emptySpace, IronHorseIO_R, IronHorseIO_W				;@ IO
+	.long emuRAM, mem6809R1, k005885Ram_0W						;@ Graphic
+	.long 0, mem6809R2, rom_W									;@ ROM
+	.long 1, mem6809R3, rom_W									;@ ROM
+	.long 2, mem6809R4, rom_W									;@ ROM
+	.long 3, mem6809R5, rom_W									;@ ROM
+	.long 4, mem6809R6, rom_W									;@ ROM
+	.long 5, mem6809R7, rom_W									;@ ROM
+;@----------------------------------------------------------------------------
+scooterShooterMapping:					;@ Scooter Shooter
+	.long emuRAM, mem6809R0, k005849Ram_0W						;@ Graphic
+	.long emptySpace, ScooterShooterIO_R, ScooterShooterIO_W	;@ IO
+	.long 2, mem6809R2, rom_W									;@ ROM
+	.long 3, mem6809R3, rom_W									;@ ROM
+	.long 0, mem6809R4, rom_W									;@ ROM
+	.long 1, mem6809R5, rom_W									;@ ROM
+	.long 4, mem6809R6, rom_W									;@ ROM
+	.long 5, mem6809R7, rom_W									;@ ROM
+;@----------------------------------------------------------------------------
+ironHorseZ80Mapping:					;@ Iron Horse Z80
+	.long 0x00, memZ80R0, rom_W									;@ ROM
+	.long 0x01, memZ80R1, rom_W									;@ ROM
+	.long soundCpuRam, memZ80R2, ramZ80W2						;@ CPU2 RAM
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, soundLatchR, empty_W						;@ CPU2 Latch
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, empty_R, empty_W							;@ Empty
+	.long emptySpace, empty_R, empty_W							;@ Empty
+
 ;@----------------------------------------------------------------------------
 paletteInitIronHorse:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 #include "../ARMZ80/ARMZ80.i"
 
+	.global doCpuMappingGreenBeret
 	.global paletteInitGreenBeret
 	.global paletteTxAllGreenBeret
 	.global gberetMapRom
@@ -11,6 +12,27 @@
 
 	.section .text
 	.align 2
+
+
+;@----------------------------------------------------------------------------
+doCpuMappingGreenBeret:
+;@----------------------------------------------------------------------------
+	ldr r0,=Z80OpTable
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	adr r2,greenBeretMapping
+	b z80Mapper
+;@----------------------------------------------------------------------------
+greenBeretMapping:						;@ Green Beret
+	.long 0x00, memZ80R0, rom_W									;@ ROM
+	.long 0x01, memZ80R1, rom_W									;@ ROM
+	.long 0x02, memZ80R2, rom_W									;@ ROM
+	.long 0x03, memZ80R3, rom_W									;@ ROM
+	.long 0x04, memZ80R4, rom_W									;@ ROM
+	.long 0x05, memZ80R5, rom_W									;@ ROM
+	.long emuRAM, memZ80R6, k005849Ram_0W						;@ Graphic
+	.long emptySpace, GreenBeretIO_R, GreenBeretIO_W			;@ IO
+
 ;@----------------------------------------------------------------------------
 paletteInitGreenBeret:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
