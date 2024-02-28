@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-#include "IronHorse.h"
-#include "GreenBeret.h"
+#include "Games/IronHorse.h"
+#include "Games/GreenBeret.h"
 
 #define FILEEXTENSIONS ".zip"
 

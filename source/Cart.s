@@ -159,7 +159,6 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 
 //	ldr r7,=rawRom
 	ldr r7,=ROM_Space
-								;@ r7=rombase til end of loadcart so DON'T FUCK IT UP
 
 	ldr r4,=MEMMAPTBL_
 	ldr r5,=RDMEMTBL_

@@ -32,7 +32,8 @@ SOURCES		:=	source	\
 				source/K005849 \
 				source/YM2203 \
 				source/YM2203/AY38910 \
-				source/SN76496
+				source/SN76496 \
+				source/Games
 DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	graphics \

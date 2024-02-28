@@ -1,12 +1,12 @@
 #include <nds.h>
 
 #include "GreenBeret.h"
-#include "Gfx.h"
-#include "Cart.h"
+#include "../Gfx.h"
+#include "../Cart.h"
 //#include "Sound.h"
 //#include "SN76496/SN76496.h"
-#include "K005849/K005849.h"
-#include "ARMZ80/ARMZ80.h"
+#include "../K005849/K005849.h"
+#include "../ARMZ80/ARMZ80.h"
 
 
 int gbPackState(void *statePtr) {

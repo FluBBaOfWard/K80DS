@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "Shared/ArcadeRoms.h"
+#include "../Shared/ArcadeRoms.h"
 
 #define IH_GAME_COUNT (5)
 

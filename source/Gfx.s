@@ -10,6 +10,7 @@
 	.global paletteTxAll
 	.global refreshGfx
 	.global endFrame
+	.global gammaConvert
 	.global gfxState
 	.global gFlicker
 	.global gTwitch
@@ -18,6 +19,7 @@
 	.global paletteBank
 	.global vblIrqHandler
 	.global yStart
+	.global gfxChipType
 
 	.global GFX_DISPCNT
 	.global GFX_BG0CNT

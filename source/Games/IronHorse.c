@@ -1,12 +1,12 @@
 #include <nds.h>
 
 #include "IronHorse.h"
-#include "Cart.h"
-#include "Gfx.h"
-#include "cpu.h"
-#include "K005849/K005849.h"
-#include "ARMZ80/ARMZ80.h"
-#include "ARM6809/ARM6809.h"
+#include "../Cart.h"
+#include "../Gfx.h"
+#include "../cpu.h"
+#include "../K005849/K005849.h"
+#include "../ARMZ80/ARMZ80.h"
+#include "../ARM6809/ARM6809.h"
 
 
 int packState(void *statePtr) {

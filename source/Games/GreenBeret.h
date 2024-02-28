@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "Shared/ArcadeRoms.h"
+#include "../Shared/ArcadeRoms.h"
 
 #define GB_GAME_COUNT (4)
 

@@ -69,6 +69,8 @@
 		9CE2E0782B85EE4900B19B2B /* SN76496_todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SN76496_todo.txt; sourceTree = "<group>"; };
 		9CE2E0792B85EE4900B19B2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CE2E07A2B85EE4900B19B2B /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
+		9CE2E07C2B8F34A400B19B2B /* GreenBeretAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = GreenBeretAsm.s; sourceTree = "<group>"; };
+		9CE2E07D2B8F372C00B19B2B /* IronHorseAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = IronHorseAsm.s; sourceTree = "<group>"; };
 		A40F3DBD1D8078130025AAD3 /* AY38910.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AY38910.s; sourceTree = "<group>"; };
 		A40F3DC01D8078130025AAD3 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DC21D8078130025AAD3 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -102,13 +104,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		350E1C3418AFB50800074DD5 /* graphics */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = graphics;
-			sourceTree = "<group>";
-		};
 		742141B214E7EA40003EBFD3 = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +113,6 @@
 				A42D0269205FEC6E00515C72 /* Docs */,
 				746D78E014ED9A6D00CC738F /* makefile */,
 				A48CC0251618E65200465E20 /* source */,
-				350E1C3418AFB50800074DD5 /* graphics */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -168,6 +162,19 @@
 				9CE2E0752B85EE4900B19B2B /* SN76496.s */,
 			);
 			path = SN76496;
+			sourceTree = "<group>";
+		};
+		9CE2E07B2B8F17FA00B19B2B /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				9CE2E0712B85194C00B19B2B /* GreenBeret.h */,
+				9CE2E0722B85194C00B19B2B /* GreenBeret.c */,
+				9CE2E07C2B8F34A400B19B2B /* GreenBeretAsm.s */,
+				9C7BB95D25FFF08400EA9C9C /* IronHorse.h */,
+				9C7BB95C25FFF08400EA9C9C /* IronHorse.c */,
+				9CE2E07D2B8F372C00B19B2B /* IronHorseAsm.s */,
+			);
+			path = Games;
 			sourceTree = "<group>";
 		};
 		A40F3DBB1D8078130025AAD3 /* YM2203 */ = {
@@ -270,16 +277,13 @@
 				A40F3DBB1D8078130025AAD3 /* YM2203 */,
 				9CE2E0732B85EE4900B19B2B /* SN76496 */,
 				A47F092A20863AF5004E1DA6 /* Shared */,
+				9CE2E07B2B8F17FA00B19B2B /* Games */,
 				9C50820725D45A9A00A8E1BA /* Main.h */,
 				9C50820C25D45A9B00A8E1BA /* Main.c */,
 				9C50821025D45A9B00A8E1BA /* Gui.h */,
 				9C50820D25D45A9B00A8E1BA /* Gui.c */,
 				9C50820B25D45A9B00A8E1BA /* FileHandling.h */,
 				9C50820A25D45A9B00A8E1BA /* FileHandling.c */,
-				9CE2E0712B85194C00B19B2B /* GreenBeret.h */,
-				9CE2E0722B85194C00B19B2B /* GreenBeret.c */,
-				9C7BB95D25FFF08400EA9C9C /* IronHorse.h */,
-				9C7BB95C25FFF08400EA9C9C /* IronHorse.c */,
 				9C50820525D45A9A00A8E1BA /* Cart.h */,
 				9C50820F25D45A9B00A8E1BA /* Cart.s */,
 				35E683AD1C66453300FCFE8A /* cpu.h */,
