@@ -8,6 +8,7 @@
 	.global gfxReset
 	.global paletteInit
 	.global paletteTxAll
+	.global paletteTx0
 	.global refreshGfx
 	.global endFrame
 	.global gammaConvert
@@ -137,6 +138,7 @@ paletteInit:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
 //	b paletteInitGreenBeret
 	b paletteInitIronHorse
+//	b paletteInitScooterShooter
 ;@----------------------------------------------------------------------------
 gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value in r0=0x1F
 ;@----------------------------------------------------------------------------
@@ -154,9 +156,36 @@ gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value i
 paletteTxAll:				;@ Called from ui.c
 	.type paletteTxAll STT_FUNC
 ;@----------------------------------------------------------------------------
-//	b paletteTxAllGreenBeret
-	b paletteTxAllIronHorse
-
+	stmfd sp!,{r3,r12,lr}
+//	bl paletteTxAllGreenBeret
+	bl paletteTxAllIronHorse
+	ldmfd sp!,{r3,r12,lr}
+	bx lr
+;@----------------------------------------------------------------------------
+paletteTx0:					;@ r0=dst, r1=source, r2=Palette
+;@----------------------------------------------------------------------------
+	mov r3,#256
+palTx0Loop:
+	ldrb r12,[r1],#1
+	and r12,r12,#0xF
+	mov r12,r12,lsl#1
+	ldrh r12,[r2,r12]
+	strh r12,[r0],#2
+	subs r3,r3,#1
+	bne palTx0Loop
+	bx lr
+;@----------------------------------------------------------------------------
+paletteTxNoLUT:				;@ r0=dst, r1=unused, r2=Palette
+;@----------------------------------------------------------------------------
+	mov r3,#0x100
+palTxNoLutLoop:
+	rsb r12,r3,#0x100
+	mov r12,r12,lsl#1
+	ldrh r12,[r2,r12]
+	strh r12,[r0],#2
+	subs r3,r3,#1
+	bne palTxNoLutLoop
+	bx lr
 ;@----------------------------------------------------------------------------
 vblIrqHandler:
 	.type vblIrqHandler STT_FUNC

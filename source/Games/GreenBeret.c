@@ -44,9 +44,9 @@ const ArcadeRom gberetRoms[14] = {
 	{"577l04.3e",  0x4000, 0xccecda4c},
 	{"577l07.3f",  0x4000, 0x4da7bd1b},
 	{ROM_REGION,   0x0220, (int)&promBase},
-	{"577h09.2f",  0x0020, 0xc15e7c80},
-	{"577h10.5f",  0x0100, 0xe9de1e53},
-	{"577h11.6f",  0x0100, 0x2a1a992b},
+	{"577h09.2f",  0x0020, 0xc15e7c80}, // RGB Palette
+	{"577h10.5f",  0x0100, 0xe9de1e53}, // Sprite Pal LUT
+	{"577h11.6f",  0x0100, 0x2a1a992b}, // Character Pal LUT
 };
 
 const ArcadeRom rushatckRoms[14] = {
@@ -61,9 +61,9 @@ const ArcadeRom rushatckRoms[14] = {
 	{"577l04.3e",  0x4000, 0xccecda4c},
 	{"577h07.3f",  0x4000, 0x03f9815f},
 	{ROM_REGION,   0x0220, (int)&promBase},
-	{"577h09.2f",  0x0020, 0xc15e7c80},
-	{"577h10.5f",  0x0100, 0xe9de1e53},
-	{"577h11.6f",  0x0100, 0x2a1a992b},
+	{"577h09.2f",  0x0020, 0xc15e7c80}, // RGB Palette
+	{"577h10.5f",  0x0100, 0xe9de1e53}, // Sprite Pal LUT
+	{"577h11.6f",  0x0100, 0x2a1a992b}, // Character Pal LUT
 };
 
 const ArcadeRom gberetbRoms[13] = {
@@ -77,9 +77,9 @@ const ArcadeRom gberetbRoms[13] = {
 	{"4-ic11.2e",  0x4000, 0x3fb186c9},
 	{"1-ic92.12c", 0x4000, 0xb0189c87},
 	{ROM_REGION,   0x0220, (int)&promBase},
-	{"577h09",     0x0020, 0xc15e7c80},
-	{"577h10.5f",  0x0100, 0xe9de1e53},
-	{"577h11.6f",  0x0100, 0x2a1a992b},
+	{"577h09",     0x0020, 0xc15e7c80}, // RGB Palette
+	{"577h10.5f",  0x0100, 0xe9de1e53}, // Sprite Pal LUT
+	{"577h11.6f",  0x0100, 0x2a1a992b}, // Character Pal LUT
 	// ROM_REGION( 0x0001, "plds", 0 )
 	//{"ic35.5h.bin",0x0001, NO_DUMP ) // PAL16R6ACN
 };
@@ -93,9 +93,9 @@ const ArcadeRom mrgoemonRoms[11] = {
 	{"621d04.5d",  0x8000, 0x47df6301},
 	{"621a05.6d",  0x4000, 0xf0a6dfc5},
 	{ROM_REGION,   0x0220, (int)&promBase},
-	{"621a06.5f",  0x0020, 0x7c90de5f},
-	{"621a07.6f",  0x0100, 0x3980acdc},
-	{"621a08.7f",  0x0100, 0x2fb244dd},
+	{"621a06.5f",  0x0020, 0x7c90de5f}, // RGB Palette
+	{"621a07.6f",  0x0100, 0x3980acdc}, // Sprite Pal LUT
+	{"621a08.7f",  0x0100, 0x2fb244dd}, // Character Pal LUT
 };
 
 const ArcadeGame gberetGames[GB_GAME_COUNT] = {

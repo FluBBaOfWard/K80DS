@@ -7,6 +7,10 @@
 
 #define CYCLE_PSL (H_PIXEL_COUNT/2)
 
+	.global m6809CPU0
+	.global m6809CPU1
+	.global m6809CPU2
+
 	.global run
 	.global stepFrame
 	.global cpuInit
@@ -15,8 +19,6 @@
 	.global waitMaskIn
 	.global waitMaskOut
 	.global cpu1SetIRQ
-
-	.global m6809CPU0
 
 	.syntax unified
 	.arm
@@ -199,6 +201,10 @@ cpuReset:		;@ Called by loadCart/resetGame
 	.align 2
 ;@----------------------------------------------------------------------------
 m6809CPU0:
+	.space m6809Size
+m6809CPU1:
+	.space m6809Size
+m6809CPU2:
 	.space m6809Size
 ;@----------------------------------------------------------------------------
 	.end
