@@ -14,11 +14,14 @@ extern u8 gGfxMask;
 
 extern K005849 k005849_0;
 extern K005849 k005885_0;
+extern K005849 k005885_1;
+extern u8 k005885Palette[0x400];
 extern u16 EMUPALBUFF[0x200];
-extern u32 paletteBank;
 extern u32 GFX_DISPCNT;
 extern u16 GFX_BG0CNT;
 extern u16 GFX_BG1CNT;
+extern u16 GFX_BG2CNT;
+extern u32 paletteBank;
 
 void gfxInit(void);
 void vblIrqHandler(void);

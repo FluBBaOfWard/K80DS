@@ -166,8 +166,8 @@ cpuReset:		;@ Called by loadCart/resetGame
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
-;@---Speed - 3.072MHz / 61Hz / 262 lines	;Iron Horse M6809.
-	ldr r1,=CYCLE_PSL
+;@---Speed - 1.536MHz / 61Hz / 262 lines	;Iron Horse M6809.
+	ldr r1,=CYCLE_PSL/2
 	str r1,m6809CyclesPerScanline
 ;@--------------------------------------
 	ldr r0,=m6809CPU0

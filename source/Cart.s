@@ -16,10 +16,12 @@
 	.global promBase
 	.global ROM_Space
 	.global emptySpace
-	.global soundCpuRam
+	.global SOUND_RAM
 
 	.global machineInit
 	.global loadCart
+	.global do6809MainCpuMapping
+	.global doZ80MainCpuMapping
 	.global m6809Mapper
 	.global z80Mapper
 
@@ -69,6 +71,11 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	bx lr
 
 ;@----------------------------------------------------------------------------
+doZ80MainCpuMapping:
+;@----------------------------------------------------------------------------
+	ldr r0,=Z80OpTable
+	ldr r1,mainCpu
+;@----------------------------------------------------------------------------
 z80Mapper:		;@ Rom paging.. r0=cpuptr, r1=romBase, r2=mapping table.
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r4-r8,lr}
@@ -97,6 +104,11 @@ z80Flush:		;@ Update cpu_pc & lastbank
 	ldmfd sp!,{r4-r8,lr}
 	bx lr
 
+;@----------------------------------------------------------------------------
+do6809MainCpuMapping:
+;@----------------------------------------------------------------------------
+	ldr r0,=m6809CPU0
+	ldr r1,mainCpu
 ;@----------------------------------------------------------------------------
 m6809Mapper:		;@ Rom paging.. r0=cpuptr, r1=romBase, r2=mapping table.
 ;@----------------------------------------------------------------------------
@@ -158,14 +170,11 @@ promBase:
 	.long 0
 
 	.section .bss
-WRMEMTBL_:
-	.space 256*4
-RDMEMTBL_:
-	.space 256*4
-MEMMAPTBL_:
-	.space 256*4
-soundCpuRam:
-	.space 0x0400
+	.align 2
+SHARED_RAM:
+	.space 0x2000
+SOUND_RAM:
+	.space 0x0800
 ROM_Space:
 	.space 0x32500
 emptySpace:

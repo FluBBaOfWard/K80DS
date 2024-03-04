@@ -20,7 +20,7 @@ extern const ArcadeGame gberetGames[GB_GAME_COUNT];
 int bgPackState(void *statePtr);
 
 /// This runs all load state functions for each chip.
-void gbPnpackState(const void *statePtr);
+void gbUnpackState(const void *statePtr);
 
 /// Gets the total state size in bytes.
 int gbGetStateSize(void);

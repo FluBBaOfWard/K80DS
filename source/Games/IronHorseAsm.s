@@ -26,10 +26,7 @@ doCpuMappingScooterShooter:
 continueMapping:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-	ldr r0,=m6809CPU0
-	ldr r1,=mainCpu
-	ldr r1,[r1]
-	bl m6809Mapper
+	bl do6809MainCpuMapping
 
 	ldr r0,=Z80OpTable
 	ldr r1,=soundCpu
@@ -41,7 +38,7 @@ continueMapping:
 ;@----------------------------------------------------------------------------
 ironHorseMapping:						;@ Iron Horse
 	.long emptySpace, IronHorseIO_R, IronHorseIO_W				;@ IO
-	.long emuRAM, mem6809R1, k005885Ram_0W						;@ Graphic
+	.long GFX_RAM0, mem6809R1, k005885Ram_0W					;@ Graphic
 	.long 0, mem6809R2, rom_W									;@ ROM
 	.long 1, mem6809R3, rom_W									;@ ROM
 	.long 2, mem6809R4, rom_W									;@ ROM
@@ -50,7 +47,7 @@ ironHorseMapping:						;@ Iron Horse
 	.long 5, mem6809R7, rom_W									;@ ROM
 ;@----------------------------------------------------------------------------
 scooterShooterMapping:					;@ Scooter Shooter
-	.long emuRAM, mem6809R0, k005849Ram_0W						;@ Graphic
+	.long GFX_RAM0, mem6809R0, k005849Ram_0W					;@ Graphic
 	.long emptySpace, ScooterShooterIO_R, ScooterShooterIO_W	;@ IO
 	.long 2, mem6809R2, rom_W									;@ ROM
 	.long 3, mem6809R3, rom_W									;@ ROM
@@ -62,7 +59,7 @@ scooterShooterMapping:					;@ Scooter Shooter
 ironHorseZ80Mapping:					;@ Iron Horse Z80
 	.long 0x00, memZ80R0, rom_W									;@ ROM
 	.long 0x01, memZ80R1, rom_W									;@ ROM
-	.long soundCpuRam, memZ80R2, ramZ80W2						;@ CPU2 RAM
+	.long SOUND_RAM, memZ80R2, ramZ80W2						;@ CPU2 RAM
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, soundLatchR, empty_W						;@ CPU2 Latch
 	.long emptySpace, empty_R, empty_W							;@ Empty

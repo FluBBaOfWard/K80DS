@@ -4,6 +4,28 @@
 #include "Shared/EmuSettings.h"
 #include "K005849/K005849.i"
 
+	.global gfxState
+	.global gFlicker
+	.global gTwitch
+	.global gScaling
+	.global gGfxMask
+	.global yStart
+	.global gfxChipType
+	.global paletteBank
+	.global k005849_0
+	.global k005885_0
+	.global k005885_1
+	.global GFX_RAM0
+	.global GFX_RAM1
+	.global k005885Palette
+
+	.global GFX_DISPCNT
+	.global GFX_BG0CNT
+	.global GFX_BG1CNT
+	.global GFX_BG2CNT
+	.global MAPPED_RGB
+	.global EMUPALBUFF
+
 	.global gfxInit
 	.global gfxReset
 	.global paletteInit
@@ -12,24 +34,8 @@
 	.global refreshGfx
 	.global endFrame
 	.global gammaConvert
-	.global gfxState
-	.global gFlicker
-	.global gTwitch
-	.global gScaling
-	.global gGfxMask
-	.global paletteBank
 	.global vblIrqHandler
-	.global yStart
-	.global gfxChipType
 
-	.global GFX_DISPCNT
-	.global GFX_BG0CNT
-	.global GFX_BG1CNT
-	.global MAPPED_RGB
-	.global EMUPALBUFF
-
-	.global k005849_0
-	.global k005885_0
 	.global k005849Ram_0R
 	.global k005885Ram_0R
 	.global k005849_0R
@@ -38,7 +44,6 @@
 	.global k005885Ram_0W
 	.global k005849_0W
 	.global k005885_0W
-	.global emuRAM
 
 	addy		.req r12		;@ Used by CPU cores
 
@@ -91,7 +96,7 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 //ldr r0,=Z80SetNMIPin		;@ Scanline counter
 //ldr r1,=Z80SetIRQPin		;@ VBlank (Mr. Goemon)
 //ldr r2,=Z80SetIRQPin		;@ 1/2 VBlank (Green Beret)
-	ldr r3,=emuRAM
+	ldr r3,=GFX_RAM0
 	bl k005885Reset0
 	ldrb r0,gfxChipType
 	bl k005849SetType
@@ -110,7 +115,7 @@ bgInit:					;@ BG tiles, r0=chip type
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 	cmp r0,#CHIP_K005849
-	ldr r0,=BG_GFX+0x8000
+	ldr r0,=BG_GFX+0x8000		;@ r0 = NDS BG tileset
 	str r0,[koptr,#bgrGfxDest]
 	ldr r0,=Gfx1Bg				;@ r0 = DST tileset
 	str r0,[koptr,#spriteRomBase]
@@ -324,12 +329,11 @@ tmpOamBuffer:		.long OAM_BUFFER1
 dmaOamBuffer:		.long OAM_BUFFER2
 
 oamBufferReady:		.long 0
-GFX_DISPCNT:
-	.long 0
-GFX_BG0CNT:
-	.short 0
-GFX_BG1CNT:
-	.short 0
+GFX_DISPCNT:		.long 0
+GFX_BG0CNT:			.short 0
+GFX_BG1CNT:			.short 0
+GFX_BG2CNT:			.short 0
+GFX_BG3CNT:			.short 0
 
 ;@----------------------------------------------------------------------------
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
@@ -391,6 +395,8 @@ k005885_0W:					;@ I/O write  (0x0000-0x005F)
 k005849_0:
 k005885_0:
 	.space k005849Size
+k005885_1:
+	.space k005849Size
 ;@----------------------------------------------------------------------------
 
 gfxState:
@@ -406,6 +412,7 @@ gfxChipType:
 	.space 3
 
 	.section .bss
+	.align 2
 scrollTemp:
 	.space 0x100*4
 OAM_BUFFER1:
@@ -418,7 +425,13 @@ MAPPED_RGB:
 	.space 0x400				;@ 0x400
 EMUPALBUFF:
 	.space 0x400
-emuRAM:
+k005885Palette:
+	.space 0x400
+GFX_RAM0:
+	.space 0x2000
+	.space SPRBLOCKCOUNT*4
+	.space BGBLOCKCOUNT*4
+GFX_RAM1:
 	.space 0x2000
 	.space SPRBLOCKCOUNT*4
 	.space BGBLOCKCOUNT*4
@@ -426,6 +439,12 @@ emuRAM:
 	.align 9
 Gfx1Bg:
 	.space 0x20000
+Gfx1Obj:
+	.space 0x20000
+Gfx2Bg:
+	.space 0x40000
+Gfx2Obj:
+	.space 0x40000
 
 ;@----------------------------------------------------------------------------
 	.end

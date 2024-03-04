@@ -71,6 +71,8 @@
 		9CE2E07A2B85EE4900B19B2B /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		9CE2E07C2B8F34A400B19B2B /* GreenBeretAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = GreenBeretAsm.s; sourceTree = "<group>"; };
 		9CE2E07D2B8F372C00B19B2B /* IronHorseAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = IronHorseAsm.s; sourceTree = "<group>"; };
+		9CE2E0822B93D9CC00B19B2B /* gberet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gberet.cpp; sourceTree = "<group>"; };
+		9CE2E0832B93D9CC00B19B2B /* gberetVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gberetVideo.cpp; sourceTree = "<group>"; };
 		A40F3DBD1D8078130025AAD3 /* AY38910.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AY38910.s; sourceTree = "<group>"; };
 		A40F3DC01D8078130025AAD3 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DC21D8078130025AAD3 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -208,6 +210,8 @@
 		A42D0269205FEC6E00515C72 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				9CE2E0822B93D9CC00B19B2B /* gberet.cpp */,
+				9CE2E0832B93D9CC00B19B2B /* gberetVideo.cpp */,
 				A42D026B205FEC6E00515C72 /* ironhors.cpp */,
 				A42D026A205FEC6E00515C72 /* ironhorsVideo.cpp */,
 				9C99548C262B325500CE2B94 /* scotrsht.cpp */,

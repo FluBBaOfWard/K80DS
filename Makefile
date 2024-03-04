@@ -6,8 +6,8 @@ ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
-GAME_TITLE		:=	IronHorseDS
-GAME_SUBTITLE1	:=	Iron Horse Arcade Emulator
+GAME_TITLE		:=	K80DS
+GAME_SUBTITLE1	:=	Konami 80s Arcade Emulator
 GAME_SUBTITLE2	:=	www.ndsretro.com
 GAME_ICON		:=	$(CURDIR)/../Konami.bmp
 
