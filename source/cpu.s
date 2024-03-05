@@ -115,7 +115,7 @@ ihFrameLoop:
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
-gbRunFrame:					;@ GreenBeret/Goemon
+gbRunFrame:					;@ GreenBeret/Mr.Goemon
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 	ldr z80ptr,=Z80OpTable
@@ -159,8 +159,15 @@ cpu1SetIRQ:
 ;@----------------------------------------------------------------------------
 cpuInit:			;@ Called by machineInit
 ;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
 	ldr r0,=m6809CPU0
-	b m6809Init
+	bl m6809Init
+	ldr r0,=m6809CPU1
+	bl m6809Init
+	ldr r0,=m6809CPU2
+	bl m6809Init
+	ldmfd sp!,{lr}
+	bx lr
 ;@----------------------------------------------------------------------------
 cpuReset:		;@ Called by loadCart/resetGame
 ;@----------------------------------------------------------------------------
@@ -171,6 +178,12 @@ cpuReset:		;@ Called by loadCart/resetGame
 	str r1,m6809CyclesPerScanline
 ;@--------------------------------------
 	ldr r0,=m6809CPU0
+	bl m6809Reset
+;@--------------------------------------
+	ldr r0,=m6809CPU1
+	bl m6809Reset
+;@--------------------------------------
+	ldr r0,=m6809CPU2
 	bl m6809Reset
 
 
@@ -184,14 +197,6 @@ cpuReset:		;@ Called by loadCart/resetGame
 
 	ldmfd sp!,{lr}
 	bx lr
-;@----------------------------------------------------------------------------
-;@	.byte 0x07,0x06,0x05,0x04,0xFD,0xF8,0xFE,0xFF			;@ Double Dribble CPU0
-;@	.byte 0x0B,0x0A,0x09,0x08,0xFB,0xFB,0xF9,0xF8			;@ Double Dribble CPU1
-;@	.byte 0x0F,0x0E,0x0D,0x0C,0xFB,0xFB,0xFB,0xFA			;@ Double Dribble CPU2
-;@	.byte 0x05,0x04,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Finalizer
-;@	.byte 0x09,0x08,0x03,0x02,0x01,0x00,0xFE,0xFF			;@ Jackal CPU0
-;@	.byte 0x0D,0x0C,0x0B,0x0A,0xF8,0xFD,0xFA,0xFB			;@ Jackal CPU1
-;@	.byte 0x03,0x02,0x01,0x00,0xF9,0xF9,0xFF,0xFE			;@ Jail Break
 ;@----------------------------------------------------------------------------
 #ifdef NDS
 	.section .dtcm, "ax", %progbits		;@ For the NDS

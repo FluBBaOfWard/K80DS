@@ -16,6 +16,7 @@
 	.global SN_0_W
 
 	.global SN76496_0
+	.global ym2203_0
 	.extern pauseEmulation
 
 	.syntax unified

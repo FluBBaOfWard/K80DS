@@ -73,6 +73,9 @@
 		9CE2E07D2B8F372C00B19B2B /* IronHorseAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = IronHorseAsm.s; sourceTree = "<group>"; };
 		9CE2E0822B93D9CC00B19B2B /* gberet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gberet.cpp; sourceTree = "<group>"; };
 		9CE2E0832B93D9CC00B19B2B /* gberetVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gberetVideo.cpp; sourceTree = "<group>"; };
+		9CE2E0842B978C2B00B19B2B /* DoubleDribble.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DoubleDribble.c; sourceTree = "<group>"; };
+		9CE2E0852B978C2B00B19B2B /* DoubleDribble.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoubleDribble.h; sourceTree = "<group>"; };
+		9CE2E0862B978C2B00B19B2B /* DoubleDribbleAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = DoubleDribbleAsm.s; sourceTree = "<group>"; };
 		A40F3DBD1D8078130025AAD3 /* AY38910.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = AY38910.s; sourceTree = "<group>"; };
 		A40F3DC01D8078130025AAD3 /* History.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		A40F3DC21D8078130025AAD3 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
@@ -169,6 +172,9 @@
 		9CE2E07B2B8F17FA00B19B2B /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				9CE2E0852B978C2B00B19B2B /* DoubleDribble.h */,
+				9CE2E0842B978C2B00B19B2B /* DoubleDribble.c */,
+				9CE2E0862B978C2B00B19B2B /* DoubleDribbleAsm.s */,
 				9CE2E0712B85194C00B19B2B /* GreenBeret.h */,
 				9CE2E0722B85194C00B19B2B /* GreenBeret.c */,
 				9CE2E07C2B8F34A400B19B2B /* GreenBeretAsm.s */,

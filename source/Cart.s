@@ -14,9 +14,12 @@
 	.global vromBase0
 	.global vromBase1
 	.global promBase
+	.global vlmBase
+	.global bankReg
+	.global SHARED_RAM
+	.global SOUND_RAM
 	.global ROM_Space
 	.global emptySpace
-	.global SOUND_RAM
 
 	.global machineInit
 	.global loadCart
@@ -54,6 +57,7 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	str r1,emuFlags
 	mov r11,r0
 
+//	bl doCpuMappingDDribble
 //	bl doCpuMappingGreenBeret
 	bl doCpuMappingIronHorse
 //	bl doCpuMappingScooterShooter
@@ -167,6 +171,8 @@ vromBase1:
 vromBase2:
 	.long 0
 promBase:
+	.long 0
+vlmBase:
 	.long 0
 
 	.section .bss

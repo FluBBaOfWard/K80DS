@@ -14,6 +14,15 @@
 	.global Z80Out
 	.global convertInput
 	.global refreshEMUjoypads
+	.global Input0_R
+	.global Input1_R
+	.global Input2_R
+	.global Input3_R
+	.global Input4_R
+	.global Input5_R
+	.global Input5_R
+	.global ddCoinW
+	.global watchDogW
 
 	.global joyCfg
 	.global EMUinput
@@ -279,6 +288,20 @@ coinW:
 //	tst r0,#0x04				;@ END?
 //	tst r0,#0x08				;@ SA?
 	b paletteTxAll
+	bx lr
+;@----------------------------------------------------------------------------
+ddCoinW:
+;@----------------------------------------------------------------------------
+	tst r0,#0x01
+	ldrne r1,coinCounter0
+	addne r1,r1,#1
+	strne r1,coinCounter0
+	tst r0,#0x02
+	ldrne r1,coinCounter1
+	addne r1,r1,#1
+	strne r1,coinCounter1
+//	tst r0,#0x04			;@ END?
+//	tst r0,#0x08			;@ ROM A14?
 	bx lr
 ;@----------------------------------------------------------------------------
 gbCoinW:
