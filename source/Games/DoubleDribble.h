@@ -7,9 +7,12 @@ extern "C" {
 
 #include "../Shared/ArcadeRoms.h"
 
-#define GAME_COUNT (2)
+#define DD_GAME_COUNT (2)
 
-extern const ArcadeGame ddribbleGames[GAME_COUNT];
+extern const ArcadeRom ddribbleRoms[17];
+extern const ArcadeRom ddribblepRoms[23];
+
+extern const ArcadeGame ddribbleGames[DD_GAME_COUNT];
 
 /// This runs all save state functions for each chip.
 int ddPackState(void *statePtr);

@@ -28,6 +28,8 @@ const ArcadeGame allGames[GAME_COUNT] = {
 	AC_GAME("rushatck", "Rush'n Attack (US)", rushatckRoms)
 	AC_GAME("gberetb", "Green Beret (bootleg)", gberetbRoms)
 	AC_GAME("mrgoemon", "Mr. Goemon (Japan)", mrgoemonRoms)
+	AC_GAME("ddribble", "Double Dribble", ddribbleRoms)
+	AC_GAME("ddribblep", "Double Dribble (prototype?)", ddribblepRoms)
 };
 
 //---------------------------------------------------------------------------------

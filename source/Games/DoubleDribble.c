@@ -130,7 +130,7 @@ const ArcadeRom ddribblepRoms[23] = {
 	{"voice_10.d7",     0x10000, 0xb4c97494},
 };
 
-const ArcadeGame ddribbleGames[GAME_COUNT] = {
+const ArcadeGame ddribbleGames[DD_GAME_COUNT] = {
 	AC_GAME("ddribble", "Double Dribble", ddribbleRoms)
 	AC_GAME("ddribblep", "Double Dribble (prototype?)", ddribblepRoms)
 };

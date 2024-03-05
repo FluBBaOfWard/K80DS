@@ -40,8 +40,9 @@ mapBankReg:
 ;@----------------------------------------------------------------------------
 doCpuMappingDDribble:
 ;@----------------------------------------------------------------------------
+stmfd sp!,{lr}
 	adr r2,ddribbleMapping
-	b do6809MainCpuMapping
+	bl do6809MainCpuMapping
 ;@----------------------------------------------------------------------------
 doCpuMappingDDribbleCpu1:
 ;@----------------------------------------------------------------------------
@@ -49,7 +50,7 @@ doCpuMappingDDribbleCpu1:
 	ldr r0,=m6809CPU1
 	ldr r1,=mainCpu
 	ldr r1,[r1]
-	b m6809Mapper
+	bl m6809Mapper
 ;@----------------------------------------------------------------------------
 doCpuMappingDDribbleCpu2:
 ;@----------------------------------------------------------------------------
@@ -57,7 +58,9 @@ doCpuMappingDDribbleCpu2:
 	ldr r0,=m6809CPU2
 	ldr r1,=mainCpu
 	ldr r1,[r1]
-	b m6809Mapper
+	bl m6809Mapper
+	ldmfd sp!,{lr}
+	bx lr
 
 ;@----------------------------------------------------------------------------
 ddribbleMapping:						;@ Double Dribble CPU0
@@ -95,36 +98,36 @@ paletteInitDDribble:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r4-r9,lr}
 	mov r1,r0					;@ Gamma value = 0 -> 4
-	ldr r8,=promBase			;@ Proms
-	ldr r8,[r8]
-	mov r7,#0xE0
+	ldr r8,=k005885Palette
+	mov r7,#0xF8
 	ldr r6,=MAPPED_RGB
-	mov r4,#32					;@ Green Beret bgr
-palInitLoop:					;@ Map bbgggrrr  ->  0bbbbbgggggrrrrr
+	mov r4,#64					;@ Double Dribble rgb, r1=R, r2=G, r3=B
+noMap:							;@ Map 0rrrrrgggggbbbbb  ->  0bbbbbgggggrrrrr
 	ldrb r9,[r8],#1
-	and r0,r9,#0xC0				;@ Blue ready
+	ldrb r0,[r8],#1
+	orr r9,r0,r9,lsl#8
+	and r0,r7,r9,lsr#7			;@ Blue ready
 	bl gPrefix
 	mov r5,r0
 
-	and r0,r7,r9,lsl#2			;@ Green ready
+	and r0,r7,r9,lsr#2			;@ Green ready
 	bl gPrefix
 	orr r5,r0,r5,lsl#5
 
-	and r0,r7,r9,lsl#5			;@ Red ready
+	and r0,r7,r9,lsl#3			;@ Red ready
 	bl gPrefix
 	orr r5,r0,r5,lsl#5
 
 	strh r5,[r6],#2
 	subs r4,r4,#1
-	bne palInitLoop
+	bne noMap
 
 	ldmfd sp!,{r4-r9,lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------
 gPrefix:
-	orr r0,r0,r0,lsr#3
-	orr r0,r0,r0,lsr#6
+	orr r0,r0,r0,lsr#5
 	b gammaConvert
 ;@----------------------------------------------------------------------------
 paletteTxAllDDribble:

@@ -182,7 +182,7 @@ SHARED_RAM:
 SOUND_RAM:
 	.space 0x0800
 ROM_Space:
-	.space 0x32500
+	.space 0x10012C
 emptySpace:
 	.space 0x2000
 ;@----------------------------------------------------------------------------

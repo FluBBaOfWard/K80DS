@@ -143,6 +143,7 @@ paletteInit:		;@ r0-r3 modified.
 	.type paletteInit STT_FUNC
 ;@ Called by ui.c:  void paletteInit(gammaVal);
 ;@----------------------------------------------------------------------------
+//	b paletteInitDDribble
 //	b paletteInitGreenBeret
 	b paletteInitIronHorse
 //	b paletteInitScooterShooter
@@ -164,6 +165,7 @@ paletteTxAll:				;@ Called from ui.c
 	.type paletteTxAll STT_FUNC
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,r12,lr}
+//	bl paletteTxAllDDribble
 //	bl paletteTxAllGreenBeret
 	bl paletteTxAllIronHorse
 	ldmfd sp!,{r3,r12,lr}
