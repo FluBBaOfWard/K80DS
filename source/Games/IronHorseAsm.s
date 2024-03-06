@@ -4,6 +4,7 @@
 
 	.global doCpuMappingIronHorse
 	.global doCpuMappingScooterShooter
+	.global gfxResetIronHorse
 	.global paletteInitIronHorse
 	.global paletteInitScooterShooter
 	.global paletteTxAllIronHorse
@@ -59,13 +60,31 @@ scooterShooterMapping:					;@ Scooter Shooter
 ironHorseZ80Mapping:					;@ Iron Horse Z80
 	.long 0x00, memZ80R0, rom_W									;@ ROM
 	.long 0x01, memZ80R1, rom_W									;@ ROM
-	.long SOUND_RAM, memZ80R2, ramZ80W2						;@ CPU2 RAM
+	.long SOUND_RAM, memZ80R2, ramZ80W2							;@ CPU2 RAM
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, soundLatchR, empty_W						;@ CPU2 Latch
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, empty_R, empty_W							;@ Empty
 
+;@----------------------------------------------------------------------------
+gfxResetIronHorse:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+
+	ldr r0,=m6809SetNMIPin
+	ldr r1,=m6809SetIRQPin
+	ldr r2,=m6809SetFIRQPin
+	ldr r3,=GFX_RAM0
+	bl k005885Reset0
+	ldr r0,=gfxChipType
+	ldrb r0,[r0]
+	bl k005849SetType
+	bl bgInit
+	mov r0,#1
+	strb r0,[koptr,#isIronHorse]
+
+	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
 paletteInitIronHorse:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------

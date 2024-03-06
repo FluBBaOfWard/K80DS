@@ -80,8 +80,9 @@ runStart:
 	b runStart
 
 ;@----------------------------------------------------------------------------
-frameLoopPtr:			.long ihRunFrame
+//frameLoopPtr:			.long ddRunFrame
 //frameLoopPtr:			.long gbRunFrame
+frameLoopPtr:			.long ihRunFrame
 m6809CyclesPerScanline:	.long 0
 z80CyclesPerScanline:	.long 0
 frameTotal:			.long 0		;@ Let Gui.c see frame count for savestates
@@ -89,6 +90,37 @@ waitCountIn:		.byte 0
 waitMaskIn:			.byte 0
 waitCountOut:		.byte 0
 waitMaskOut:		.byte 0
+
+;@----------------------------------------------------------------------------
+ddRunFrame:					;@ Double Dribble
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+ddFrameLoop:
+	ldr m6809ptr,=m6809CPU2
+	mov r0,#CYCLE_PSL
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+	bl ym2203_0_Run
+;@--------------------------------------
+	ldr m6809ptr,=m6809CPU1
+	mov r0,#CYCLE_PSL
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr m6809ptr,=m6809CPU0
+	mov r0,#CYCLE_PSL
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr koptr,=k005885_1
+	bl doScanline
+	ldr koptr,=k005885_0
+	bl doScanline
+	cmp r0,#0
+	bne ddFrameLoop
 
 ;@----------------------------------------------------------------------------
 ihRunFrame:					;@ IronHorse/ScooterShooter
@@ -150,12 +182,43 @@ stepFrame:					;@ Return after 1 frame
 	ldmfd sp!,{r4-r11,lr}
 	bx lr
 ;@----------------------------------------------------------------------------
-cpu1SetIRQ:
+cpu01SetFIRQ:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{z80ptr,lr}
-	ldr z80ptr,=Z80OpTable
-	bl Z80SetIRQPin
-	ldmfd sp!,{z80ptr,pc}
+	stmfd sp!,{r0,m6809ptr,lr}
+	ldr m6809ptr,=m6809CPU0
+	bl m6809SetFIRQPin
+	ldmfd sp!,{r0}
+	ldr m6809ptr,=m6809CPU1
+	bl m6809SetFIRQPin
+	ldmfd sp!,{m6809ptr,pc}
+;@----------------------------------------------------------------------------
+cpu012SetIRQ:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r0,m6809ptr,lr}
+	ldr m6809ptr,=m6809CPU0
+	bl m6809SetIRQPin
+	ldmfd sp,{r0}
+	ldr m6809ptr,=m6809CPU1
+	bl m6809SetIRQPin
+	ldmfd sp!,{r0}
+	ldr m6809ptr,=m6809CPU2
+	bl m6809SetIRQPin
+	ldmfd sp!,{m6809ptr,pc}
+;@----------------------------------------------------------------------------
+cpu01SetNMI:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r0,m6809ptr,lr}
+	ldr m6809ptr,=m6809CPU0
+	bl m6809SetNMIPin
+	ldmfd sp!,{r0}
+	ldr m6809ptr,=m6809CPU1
+	bl m6809SetNMIPin
+	ldmfd sp!,{m6809ptr,pc}
+;@----------------------------------------------------------------------------
+cpu1SetIRQ:				;@ r0=pin state
+;@----------------------------------------------------------------------------
+	ldr r1,=Z80OpTable
+	b Z80SetIRQPin
 ;@----------------------------------------------------------------------------
 cpuInit:			;@ Called by machineInit
 ;@----------------------------------------------------------------------------
@@ -173,7 +236,8 @@ cpuReset:		;@ Called by loadCart/resetGame
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
-;@---Speed - 1.536MHz / 61Hz / 262 lines	;Iron Horse M6809.
+;@ Iron Horse/Scooter Shooter/Double Dribble M6809.
+;@---Speed - 1.536MHz / 61Hz / 262 lines
 	ldr r1,=CYCLE_PSL/2
 	str r1,m6809CyclesPerScanline
 ;@--------------------------------------
@@ -186,8 +250,8 @@ cpuReset:		;@ Called by loadCart/resetGame
 	ldr r0,=m6809CPU2
 	bl m6809Reset
 
-
-;@---Speed - 3.072MHz / 61Hz / 262 lines	;Iron Horse/Scooter Shooter Z80.
+;@ Iron Horse/Scooter Shooter/Green Beret Z80.
+;@---Speed - 3.072MHz / 61Hz / 262 lines
 	ldr r0,=CYCLE_PSL
 	str r0,z80CyclesPerScanline
 ;@--------------------------------------

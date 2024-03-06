@@ -28,6 +28,7 @@
 
 	.global gfxInit
 	.global gfxReset
+	.global bgInit
 	.global paletteInit
 	.global paletteTxAll
 	.global paletteTx0
@@ -36,6 +37,8 @@
 	.global gammaConvert
 	.global vblIrqHandler
 
+	.global k005885Reset0
+	.global k005885Reset1
 	.global k005849Ram_0R
 	.global k005885Ram_0R
 	.global k005885Ram_1R
@@ -92,19 +95,9 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	mov r0,#0x0000
 	strh r0,[r1,#REG_WINOUT]
 
-	ldr r0,=m6809SetNMIPin
-	ldr r1,=m6809SetIRQPin
-	ldr r2,=m6809SetFIRQPin
-//ldr r0,=Z80SetNMIPin		;@ Scanline counter
-//ldr r1,=Z80SetIRQPin		;@ VBlank (Mr. Goemon)
-//ldr r2,=Z80SetIRQPin		;@ 1/2 VBlank (Green Beret)
-	ldr r3,=GFX_RAM0
-	bl k005885Reset0
-	ldrb r0,gfxChipType
-	bl k005849SetType
-	bl bgInit
-	mov r0,#1
-	strb r0,[koptr,#isIronHorse]
+//	bl gfxResetDDribble
+//	bl gfxResetGreenBeret
+	bl gfxResetIronHorse
 
 	ldr r0,=gGammaValue
 	ldrb r0,[r0]
@@ -343,6 +336,11 @@ GFX_BG3CNT:			.short 0
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
 	ldr koptr,=k005885_0
+	b k005849Reset
+;@----------------------------------------------------------------------------
+k005885Reset1:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
+;@----------------------------------------------------------------------------
+	adr koptr,k005885_1
 	b k005849Reset
 ;@----------------------------------------------------------------------------
 k005849Ram_0R:				;@ Ram read (0x0000-0x1FFF)

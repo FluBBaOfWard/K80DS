@@ -4,9 +4,10 @@
 #include "../ARM6809/ARM6809.i"
 
 	.global doCpuMappingDDribble
+	.global updateBankReg
+	.global gfxResetDDribble
 	.global paletteInitDDribble
 	.global paletteTxAllDDribble
-	.global updateBankReg
 
 	.syntax unified
 	.arm
@@ -93,6 +94,66 @@ ddribbleCpu2Mapping:					;@ Double Dribble CPU2
 	.long 0xE, mem6809R6, rom_W									;@ ROM
 	.long 0xF, mem6809R7, rom_W									;@ ROM
 
+;@----------------------------------------------------------------------------
+gfxResetDDribble:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+
+	ldr r0,=cpu01SetNMI
+	ldr r1,=cpu01SetFIRQ
+	ldr r2,=cpu012SetIRQ
+	ldr r3,=GFX_RAM0
+	bl k005885Reset0
+	mov r0,#CHIP_K005885
+	bl k005849SetType
+	ldr r0,=BG_GFX+0x8000		;@ Tile ram 2
+	str r0,[koptr,#bgrGfxDest]
+	ldr r0,=Gfx1Bg
+	str r0,[koptr,#bgrRomBase]
+	ldr r0,=Gfx1Obj				;@ r0=SRC SPR tileset
+	str r0,[koptr,#spriteRomBase]
+	mov r0,#0xF
+	strb r0,[koptr,#spritePaletteOffset]
+
+	ldr r0,[koptr,#bgrRomBase]	;@ Dest
+	ldr r1,=vromBase0			;@ r1 = even bytes
+	ldr r1,[r1]
+	add r2,r1,#0x20000			;@ r2 = odd bytes
+	mov r3,#0x40000				;@ Length
+	bl convertTiles5885
+
+	mov r0,#0
+	mov r1,#0
+	mov r2,#0
+	ldr r3,=GFX_RAM1
+	bl k005885Reset1
+	mov r0,#CHIP_K005885
+	bl k005849SetType
+	ldr r0,=BG_GFX+0x10000		;@ Tile ram 4
+	str r0,[koptr,#bgrGfxDest]
+	ldr r0,=Gfx2Bg
+	str r0,[koptr,#bgrRomBase]
+	ldr r0,=Gfx2Obj				;@ r0=SRC SPR tileset
+	str r0,[koptr,#spriteRomBase]
+	ldr r0,=0x1FF
+	str r0,[koptr,#spriteMask]
+
+	ldr r0,[koptr,#bgrRomBase]
+	ldr r1,=vromBase1			;@ r1 = even bytes
+	ldr r1,[r1]
+	add r2,r1,#0x20000			;@ r2 = odd bytes
+	mov r3,#0x40000				;@ Length
+	bl convertTiles5885
+
+	ldr r0,[koptr,#spriteRomBase]
+	ldr r1,=vromBase1			;@ r1 = source
+	ldr r1,[r1]
+	add r1,r1,#0x40000			;@ Offset to sprites
+	add r2,r1,#0x20000			;@ r2 = odd bytes
+	mov r3,#0x40000				;@ Length
+	bl convertTiles5885
+
+	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
 paletteInitDDribble:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------

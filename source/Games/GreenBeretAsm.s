@@ -1,11 +1,13 @@
 #ifdef __arm__
 
+#include "../K005849/K005849.i"
 #include "../ARMZ80/ARMZ80.i"
 
 	.global doCpuMappingGreenBeret
+	.global gberetMapRom
+	.global gfxResetGreenBeret
 	.global paletteInitGreenBeret
 	.global paletteTxAllGreenBeret
-	.global gberetMapRom
 
 	.syntax unified
 	.arm
@@ -30,6 +32,21 @@ greenBeretMapping:						;@ Green Beret
 	.long GFX_RAM0, memZ80R6, k005849Ram_0W						;@ Graphic
 	.long emptySpace, GreenBeretIO_R, GreenBeretIO_W			;@ IO
 
+;@----------------------------------------------------------------------------
+gfxResetGreenBeret:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+
+	ldr r0,=Z80SetNMIPinCurrentCpu		;@ Scanline counter
+	ldr r1,=Z80SetIRQPinCurrentCpu		;@ VBlank (Mr. Goemon)
+	ldr r2,=Z80SetIRQPinCurrentCpu		;@ 1/2 VBlank (Green Beret)
+	ldr r3,=GFX_RAM0
+	bl k005885Reset0
+	mov r0,#CHIP_K005849
+	bl k005849SetType
+	bl bgInit
+
+	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
 paletteInitGreenBeret:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
