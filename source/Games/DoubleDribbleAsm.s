@@ -1,5 +1,6 @@
 #ifdef __arm__
 
+#include "../Shared/nds_asm.h"
 #include "../K005849/K005849.i"
 #include "../ARM6809/ARM6809.i"
 
@@ -41,7 +42,7 @@ mapBankReg:
 ;@----------------------------------------------------------------------------
 doCpuMappingDDribble:
 ;@----------------------------------------------------------------------------
-stmfd sp!,{lr}
+	stmfd sp!,{lr}
 	adr r2,ddribbleMapping
 	bl do6809MainCpuMapping
 ;@----------------------------------------------------------------------------
@@ -102,7 +103,6 @@ gfxResetDDribble:
 	ldr r0,=cpu01SetNMI
 	ldr r1,=cpu01SetFIRQ
 	ldr r2,=cpu012SetIRQ
-	ldr r3,=GFX_RAM0
 	bl k005885Reset0
 	mov r0,#CHIP_K005885
 	bl k005849SetType
@@ -125,7 +125,6 @@ gfxResetDDribble:
 	mov r0,#0
 	mov r1,#0
 	mov r2,#0
-	ldr r3,=GFX_RAM1
 	bl k005885Reset1
 	mov r0,#CHIP_K005885
 	bl k005849SetType
@@ -230,7 +229,7 @@ palTxLoop2:
 	bx lr
 
 ;@----------------------------------------------------------------------------
-k005885_0_1R:				;@ I/O read, 0x0000-0x005F / 0x0800-0x085F
+k005885_0_1R:				;@ I/O read (0x0000-0x005F / 0x0800-0x085F)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x0860
 	bpl paletteRead
@@ -242,7 +241,7 @@ k005885_0_1R:				;@ I/O read, 0x0000-0x005F / 0x0800-0x085F
 	bl k005885_R
 	ldmfd sp!,{addy,pc}
 ;@----------------------------------------------------------------------------
-k005885_0_1W:				;@ I/O write  (0x0000-0x005F) / (0x0800-0x085F)
+k005885_0_1W:				;@ I/O write  (0x0000-0x005F / 0x0800-0x085F)
 ;@----------------------------------------------------------------------------
 	cmp addy,#0x0860
 	bpl paletteWrite

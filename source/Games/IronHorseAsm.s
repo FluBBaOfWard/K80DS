@@ -75,7 +75,6 @@ gfxResetIronHorse:
 	ldr r0,=m6809SetNMIPin
 	ldr r1,=m6809SetIRQPin
 	ldr r2,=m6809SetFIRQPin
-	ldr r3,=GFX_RAM0
 	bl k005885Reset0
 	ldr r0,=gfxChipType
 	ldrb r0,[r0]

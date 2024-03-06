@@ -18,6 +18,9 @@
 	.global frameTotal
 	.global waitMaskIn
 	.global waitMaskOut
+	.global cpu01SetFIRQ
+	.global cpu012SetIRQ
+	.global cpu01SetNMI
 	.global cpu1SetIRQ
 
 	.syntax unified
@@ -121,6 +124,7 @@ ddFrameLoop:
 	bl doScanline
 	cmp r0,#0
 	bne ddFrameLoop
+	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
 ihRunFrame:					;@ IronHorse/ScooterShooter

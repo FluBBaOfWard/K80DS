@@ -40,7 +40,6 @@ gfxResetGreenBeret:
 	ldr r0,=Z80SetNMIPinCurrentCpu		;@ Scanline counter
 	ldr r1,=Z80SetIRQPinCurrentCpu		;@ VBlank (Mr. Goemon)
 	ldr r2,=Z80SetIRQPinCurrentCpu		;@ 1/2 VBlank (Green Beret)
-	ldr r3,=GFX_RAM0
 	bl k005885Reset0
 	mov r0,#CHIP_K005849
 	bl k005849SetType

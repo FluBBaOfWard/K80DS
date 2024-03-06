@@ -18,6 +18,10 @@
 	.global GFX_RAM0
 	.global GFX_RAM1
 	.global k005885Palette
+	.global Gfx1Bg
+	.global Gfx1Obj
+	.global Gfx2Bg
+	.global Gfx2Obj
 
 	.global GFX_DISPCNT
 	.global GFX_BG0CNT
@@ -335,11 +339,13 @@ GFX_BG3CNT:			.short 0
 ;@----------------------------------------------------------------------------
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
+	ldr r3,=GFX_RAM0
 	ldr koptr,=k005885_0
 	b k005849Reset
 ;@----------------------------------------------------------------------------
 k005885Reset1:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
+	ldr r3,=GFX_RAM1
 	adr koptr,k005885_1
 	b k005849Reset
 ;@----------------------------------------------------------------------------
