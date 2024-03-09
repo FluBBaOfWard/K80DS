@@ -17,7 +17,7 @@ extern const ArcadeRom mrgoemonRoms[11];
 extern const ArcadeGame gberetGames[GB_GAME_COUNT];
 
 /// This runs all save state functions for each chip.
-int bgPackState(void *statePtr);
+int gbPackState(void *statePtr);
 
 /// This runs all load state functions for each chip.
 void gbUnpackState(const void *statePtr);

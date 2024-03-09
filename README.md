@@ -75,7 +75,7 @@ Huge thanks to Loopy for the incredible PocketNES, without it this emu would
 probably never have been made.
 Thanks to:
 Dwedit for help and inspiration with a lot of things.
-Mirko Buffoni and MAME team for MAME driver.
+The MAME team for MAME drivers.
 ```
 
 Fredrik Ahlström

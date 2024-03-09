@@ -59,18 +59,17 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 
 //	bl doCpuMappingDDribble
 //	bl doCpuMappingGreenBeret
-	bl doCpuMappingIronHorse
+//	bl doCpuMappingIronHorse
 //	bl doCpuMappingScooterShooter
-//	bl setupMachine
-//	ldr r1,cpuMappingPointer
-//	blx r1
+	bl setupMachine
+	ldr r1,cpuMappingPointer
+	blx r1
 
 	adr r1,romNum2ChipType
 	ldrb r0,[r1,r11]
 	bl gfxReset
 	bl ioReset
 	bl soundReset
-	mov r0,r11
 	bl cpuReset
 
 	ldmfd sp!,{r4-r11,lr}
@@ -86,7 +85,7 @@ setupMachine:					;@ r0=num number
 	adr r1,romNum2Machine
 	ldrb r0,[r1,r0]
 	adr r1,machineFunctions
-	add r1,r1,r0,lsl#4
+	add r1,r1,r0,lsl#5
 	ldr r2,[r1],#4
 	str r2,cpuMappingPointer
 	ldr r2,[r1],#4
@@ -98,23 +97,30 @@ setupMachine:					;@ r0=num number
 	ldr r2,[r1],#4
 	ldr r0,=paletteInitPtr
 	str r2,[r0]
+	ldr r2,[r1],#4
+	ldr r0,=paletteTxAllPtr
+	str r2,[r0]
 	bx lr
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
-	.byte 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3
+	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3
 ;@----------------------------------------------------------------------------
 romNum2ChipType:
-	.byte CHIP_K005885, CHIP_K005885, CHIP_K005849, CHIP_K005849, CHIP_K005849,
-	.byte CHIP_K005849, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885,
-	.byte CHIP_K005849
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849,
+	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885,
+	.byte CHIP_K005885
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
-	.long doCpuMappingDDribble, ddRunFrame, gfxResetDDribble, paletteInitDDribble
-	.long doCpuMappingGreenBeret, gbRunFrame, gfxResetGreenBeret, paletteInitGreenBeret
 	.long doCpuMappingIronHorse, ihRunFrame, gfxResetIronHorse, paletteInitIronHorse
+	.long paletteTxAllIronHorse, 0, 0, 0
 	.long doCpuMappingScooterShooter, ihRunFrame, gfxResetIronHorse, paletteInitScooterShooter
+	.long paletteTxAllIronHorse, 0, 0, 0
+	.long doCpuMappingGreenBeret, gbRunFrame, gfxResetGreenBeret, paletteInitGreenBeret
+	.long paletteTxAllGreenBeret, 0, 0, 0
+	.long doCpuMappingDDribble, ddRunFrame, gfxResetDDribble, paletteInitDDribble
+	.long paletteTxAllDDribble, 0, 0, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:

@@ -42,12 +42,12 @@ int getStateSize() {
 }
 
 const ArcadeRom ironhorsRoms[16] = {
-	{ROM_REGION,   0x10000, (int)&mainCpu},
+	{ROM_REGION,    0x10000, (int)&mainCpu},
 	{"560_k03.13c",  0x8000, 0x395351b4},
 	{"560_k02.12c",  0x4000, 0x1cff3d59},
-	{ROM_REGION,   0x10000, (int)&soundCpu}, // 64k for sound code
+	{ROM_REGION,    0x10000, (int)&soundCpu}, // 64k for sound code
 	{"560_h01.10c",  0x4000, 0x2b17930f},
-	{ROM_REGION,   0x20000, (int)&vromBase0},
+	{ROM_REGION,    0x20000, (int)&vromBase0},
 	{"560_h06.08f",  0x8000, 0xf21d8c93},
 	{"560_h07.09f",  0x8000, 0xc761ec73},
 	{"560_h05.07f",  0x8000, 0x60107859},
@@ -61,12 +61,12 @@ const ArcadeRom ironhorsRoms[16] = {
 };
 
 const ArcadeRom ironhorshRoms[16] = {
-	{ROM_REGION,   0x10000, (int)&mainCpu},
+	{ROM_REGION,    0x10000, (int)&mainCpu},
 	{"13c_h03.bin",  0x8000, 0x24539af1},
 	{"12c_h02.bin",  0x4000, 0xfab07f86},
-	{ROM_REGION,   0x10000, (int)&soundCpu}, // 64k for sound code
+	{ROM_REGION,    0x10000, (int)&soundCpu}, // 64k for sound code
 	{"10c_h01.bin",  0x4000, 0x2b17930f},
-	{ROM_REGION,   0x20000, (int)&vromBase0},
+	{ROM_REGION,    0x20000, (int)&vromBase0},
 	{"08f_h06.bin",  0x8000, 0xf21d8c93},
 	{"09f_h07.bin",  0x8000, 0xc761ec73},
 	{"07f_h05.bin",  0x8000, 0x60107859},
@@ -80,12 +80,12 @@ const ArcadeRom ironhorshRoms[16] = {
 };
 
 const ArcadeRom dairesyaRoms[16] = {
-	{ROM_REGION,   0x10000, (int)&mainCpu},
+	{ROM_REGION,    0x10000, (int)&mainCpu},
 	{"560-k03.13c",  0x8000, 0x2ac6103b},
 	{"560-k02.12c",  0x4000, 0x07bc13a9},
-	{ROM_REGION,   0x10000, (int)&soundCpu}, // 64k for sound code
+	{ROM_REGION,    0x10000, (int)&soundCpu}, // 64k for sound code
 	{"560-j01.10c",  0x4000, 0xa203b223},
-	{ROM_REGION,   0x20000, (int)&vromBase0},
+	{ROM_REGION,    0x20000, (int)&vromBase0},
 	{"560-j06.8f",   0x8000, 0xa6e8248d},
 	{"560-k07.9f",   0x8000, 0xc8a1b840},
 	{"560-j05.7f",   0x8000, 0xf75893d4},
@@ -99,16 +99,15 @@ const ArcadeRom dairesyaRoms[16] = {
 };
 
 const ArcadeRom farwestRoms[19] = {
-	{ROM_REGION,   0x12000, (int)&mainCpu},  // 64k for code + 8k for extra ROM
+	{ROM_REGION,    0x12000, (int)&mainCpu},  // 64k for code + 8k for extra ROM
 	{"ironhors.008", 0x4000, 0xb1c8246c},
 	{"ironhors.009", 0x8000, 0xea34ecfc},
 	{"ironhors.007", 0x2000, 0x471182b7},
-	{ROM_REGION,   0x10000, (int)&soundCpu}, // 64k for sound code
+	{ROM_REGION,    0x10000, (int)&soundCpu}, // 64k for sound code
 	{"ironhors.010", 0x4000, 0xa28231a6},
-	{ROM_REGION,   0x10000, (int)&vromBase0},
+	{ROM_REGION,    0x10000, (int)&vromBase0},
 	{"ironhors.005", 0x8000, 0xf77e5b83},
 	{"ironhors.006", 0x8000, 0x7bbc0b51},
-	// ROM_REGION( 0x10000, "gfx2", 0 )
 	{"ironhors.001", 0x4000, 0xa8fc21d3},
 	{"ironhors.002", 0x4000, 0x9c1e5593},
 	{"ironhors.003", 0x4000, 0x3a0bf799},

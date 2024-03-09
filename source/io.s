@@ -167,6 +167,8 @@ GreenBeretIO_R:				;@ I/O read  (0xE045-0xFFFF)
 	beq Input4_R
 	cmp addy,#0xF400
 	beq Input5_R
+	cmp addy,#0xF800
+	bpl memZ80R7
 	bic r2,addy,#3
 	cmp r2,#0xF600
 	and r2,addy,#3

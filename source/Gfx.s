@@ -32,6 +32,9 @@
 	.global GFX_BG2CNT
 	.global MAPPED_RGB
 	.global EMUPALBUFF
+	.global scrollTemp
+	.global scrollTemp2
+	.global tmpOamBuffer
 
 	.global gfxInit
 	.global gfxReset
@@ -44,6 +47,7 @@
 	.global gammaConvert
 	.global vblIrqHandler
 
+	.global k005849Reset0
 	.global k005885Reset0
 	.global k005885Reset1
 	.global k005849Ram_0R
@@ -104,9 +108,9 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 
 //	bl gfxResetDDribble
 //	bl gfxResetGreenBeret
-	bl gfxResetIronHorse
-//	ldr r0,gfxResetPtr
-//	blx r0
+//	bl gfxResetIronHorse
+	ldr r0,gfxResetPtr
+	blx r0
 
 	ldr r0,=gGammaValue
 	ldrb r0,[r0]
@@ -149,9 +153,9 @@ paletteInit:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
 //	b paletteInitDDribble
 //	b paletteInitGreenBeret
-	b paletteInitIronHorse
+//	b paletteInitIronHorse
 //	b paletteInitScooterShooter
-//	ldr pc,paletteInitPtr
+	ldr pc,paletteInitPtr
 ;@----------------------------------------------------------------------------
 gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value in r0=0x1F
 ;@----------------------------------------------------------------------------
@@ -172,15 +176,15 @@ paletteTxAll:				;@ Called from ui.c
 	stmfd sp!,{r3,r12,lr}
 //	bl paletteTxAllDDribble
 //	bl paletteTxAllGreenBeret
-	bl paletteTxAllIronHorse
-//	ldr r0,paletteTxAllPtr
-//	blx r0
+//	bl paletteTxAllIronHorse
+	ldr r0,paletteTxAllPtr
+	blx r0
 	ldmfd sp!,{r3,r12,lr}
 	bx lr
 ;@----------------------------------------------------------------------------
 paletteTx0:					;@ r0=dst, r1=source, r2=Palette
 ;@----------------------------------------------------------------------------
-	mov r3,#256
+	mov r3,#0x100
 palTx0Loop:
 	ldrb r12,[r1],#1
 	and r12,r12,#0xF
@@ -313,6 +317,8 @@ endFrame:					;@ Called just before screen end (~line 240)	(r0-r2 safe to use)
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,lr}
 
+//	bl endFrameDDribble
+
 	ldr r0,=scrollTemp
 	bl copyScrollValues
 
@@ -350,6 +356,7 @@ GFX_BG2CNT:			.short 0
 GFX_BG3CNT:			.short 0
 
 ;@----------------------------------------------------------------------------
+k005849Reset0:
 k005885Reset0:			;@ r0=periodicIrqFunc, r1=frameIrqFunc, r2=frame2IrqFunc
 ;@----------------------------------------------------------------------------
 	ldr r3,=GFX_RAM0
@@ -451,6 +458,8 @@ gfxChipType:
 	.section .bss
 	.align 2
 scrollTemp:
+	.space 0x100*4
+scrollTemp2:
 	.space 0x100*4
 OAM_BUFFER1:
 	.space 0x400

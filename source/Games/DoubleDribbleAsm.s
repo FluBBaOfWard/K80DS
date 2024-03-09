@@ -9,6 +9,7 @@
 	.global gfxResetDDribble
 	.global paletteInitDDribble
 	.global paletteTxAllDDribble
+	.global endFrameDDribble
 
 	.syntax unified
 	.arm
@@ -202,7 +203,7 @@ paletteTxAllDDribble:
 	sub r0,r0,#0x20
 	add r2,r2,#0x20
 	mov r3,#0x10
-	noMap4:
+noMap4:
 	rsb r12,r3,#0x10
 	mov r12,r12,lsl#1
 	ldrh r12,[r2,r12]
@@ -226,6 +227,49 @@ palTxLoop2:
 	strh r12,[r0],#2
 	subs r3,r3,#1
 	bne palTxLoop2
+	bx lr
+
+;@----------------------------------------------------------------------------
+endFrameDDribble:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r3,koptr,lr}
+
+	ldr r0,=k005885_1
+	cmp koptr,r0
+	ldmfdeq sp!,{r3,koptr,pc}
+
+	ldr koptr,=k005885_1
+	ldr r0,=scrollTemp2
+	bl copyScrollValues
+	ldr r0,=BG_GFX+0x2000
+	bl convertTileMapDD
+	ldr r0,=tmpOamBuffer		;@ Destination
+	ldr r0,[r0]
+	bl convertSprites5885
+;@--------------------------
+	ldr r0,[koptr,#sprMemAlloc]
+	ldrb r1,[koptr,#sprMemReload]
+	ldr koptr,=k005885_0
+	str r0,[koptr,#sprMemAlloc]
+	cmp r1,#0
+	strbne r1,[koptr,#sprMemReload]
+
+	ldr r0,=scrollTemp
+	bl copyScrollValues
+	ldr r0,=BG_GFX
+	bl convertTileMapDDFG
+	ldr r0,=tmpOamBuffer		;@ Destination
+	ldr r0,[r0]
+	add r0,r0,#64*8
+	bl convertSprites5885
+;@--------------------------
+	ldr r0,[koptr,#sprMemAlloc]
+	ldrb r1,[koptr,#sprMemReload]
+	ldr koptr,=k005885_1
+	str r0,[koptr,#sprMemAlloc]
+	cmp r1,#0
+	strbne r1,[koptr,#sprMemReload]
+	ldmfd sp!,{r3,koptr,lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------

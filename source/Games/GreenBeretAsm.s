@@ -17,6 +17,17 @@
 
 
 ;@----------------------------------------------------------------------------
+gberetMapRom:
+;@----------------------------------------------------------------------------
+	and r0,r0,#0xE0
+	ldr r1,=mainCpu
+	ldr r1,[r1]
+	sub r1,r1,#0x3800
+	add r1,r1,r0,lsl#6
+	str r1,[z80ptr,#z80MemTbl+28]
+	bx lr
+
+;@----------------------------------------------------------------------------
 doCpuMappingGreenBeret:
 ;@----------------------------------------------------------------------------
 	adr r2,greenBeretMapping
@@ -40,7 +51,7 @@ gfxResetGreenBeret:
 	ldr r0,=Z80SetNMIPinCurrentCpu		;@ Scanline counter
 	ldr r1,=Z80SetIRQPinCurrentCpu		;@ VBlank (Mr. Goemon)
 	ldr r2,=Z80SetIRQPinCurrentCpu		;@ 1/2 VBlank (Green Beret)
-	bl k005885Reset0
+	bl k005849Reset0
 	mov r0,#CHIP_K005849
 	bl k005849SetType
 	bl bgInit
@@ -97,17 +108,6 @@ paletteTxAllGreenBeret:
 	ldr r0,=EMUPALBUFF
 	bl paletteTx0
 	ldmfd sp!,{lr}
-	bx lr
-
-;@----------------------------------------------------------------------------
-gberetMapRom:
-;@----------------------------------------------------------------------------
-	and r0,r0,#0xE0
-	ldr r1,=mainCpu
-	ldr r1,[r1]
-	sub r1,r1,#0x3800
-	add r1,r1,r0,lsl#6
-	str r1,[z80ptr,#z80MemTbl+28]
 	bx lr
 
 ;@----------------------------------------------------------------------------

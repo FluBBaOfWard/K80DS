@@ -103,8 +103,6 @@ stepFrame:					;@ Return after 1 frame
 	bx lr
 
 ;@----------------------------------------------------------------------------
-//frameLoopPtr:			.long ddRunFrame
-//frameLoopPtr:			.long gbRunFrame
 frameLoopPtr:			.long ihRunFrame
 m6809CyclesPerScanline:	.long 0
 z80CyclesPerScanline:	.long 0
@@ -144,6 +142,12 @@ ddFrameLoop:
 	bl doScanline
 	cmp r0,#0
 	bne ddFrameLoop
+
+	ldr r0,=gGammaValue
+	ldrb r0,[r0]
+	bl paletteInit
+	bl paletteTxAll
+
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
