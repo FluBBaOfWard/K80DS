@@ -22,6 +22,9 @@
 	.global Gfx1Obj
 	.global Gfx2Bg
 	.global Gfx2Obj
+	.global gfxResetPtr
+	.global paletteInitPtr
+	.global paletteTxAllPtr
 
 	.global GFX_DISPCNT
 	.global GFX_BG0CNT
@@ -102,13 +105,17 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 //	bl gfxResetDDribble
 //	bl gfxResetGreenBeret
 	bl gfxResetIronHorse
+//	ldr r0,gfxResetPtr
+//	blx r0
 
 	ldr r0,=gGammaValue
 	ldrb r0,[r0]
 	bl paletteInit				;@ Do palette mapping
 	bl paletteTxAll				;@ Transfer it
 
-	ldmfd sp!,{pc}
+	ldmfd sp!,{lr}
+endGfx:
+	bx lr
 ;@----------------------------------------------------------------------------
 bgInit:					;@ BG tiles, r0=chip type
 ;@----------------------------------------------------------------------------
@@ -144,6 +151,7 @@ paletteInit:		;@ r0-r3 modified.
 //	b paletteInitGreenBeret
 	b paletteInitIronHorse
 //	b paletteInitScooterShooter
+//	ldr pc,paletteInitPtr
 ;@----------------------------------------------------------------------------
 gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value in r0=0x1F
 ;@----------------------------------------------------------------------------
@@ -165,6 +173,8 @@ paletteTxAll:				;@ Called from ui.c
 //	bl paletteTxAllDDribble
 //	bl paletteTxAllGreenBeret
 	bl paletteTxAllIronHorse
+//	ldr r0,paletteTxAllPtr
+//	blx r0
 	ldmfd sp!,{r3,r12,lr}
 	bx lr
 ;@----------------------------------------------------------------------------
@@ -282,14 +292,17 @@ scrolLoop2:
 
 
 ;@----------------------------------------------------------------------------
-gFlicker:		.byte 1
-				.space 2
-gTwitch:		.byte 0
+gFlicker:			.byte 1
+					.space 2
+gTwitch:			.byte 0
 
-gScaling:		.byte SCALED
-gGfxMask:		.byte 0
-yStart:			.byte 0
-				.byte 0
+gScaling:			.byte SCALED
+gGfxMask:			.byte 0
+yStart:				.byte 0
+					.byte 0
+gfxResetPtr:		.long endGfx
+paletteInitPtr:		.long endGfx
+paletteTxAllPtr:	.long endGfx
 ;@----------------------------------------------------------------------------
 refreshGfx:					;@ Called from C when changing scaling.
 	.type refreshGfx STT_FUNC

@@ -306,11 +306,11 @@ ddCoinW:
 ;@----------------------------------------------------------------------------
 gbCoinW:
 ;@----------------------------------------------------------------------------
-	tst r0,#1
+	tst r0,#0x01
 	ldrne r1,coinCounter0
 	addne r1,r1,#1
 	strne r1,coinCounter0
-	tst r0,#2
+	tst r0,#0x02
 	ldrne r1,coinCounter1
 	addne r1,r1,#1
 	strne r1,coinCounter1

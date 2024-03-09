@@ -7,6 +7,10 @@
 
 #define CYCLE_PSL (H_PIXEL_COUNT/2)
 
+	.global frameTotal
+	.global waitMaskIn
+	.global waitMaskOut
+	.global frameLoopPtr
 	.global m6809CPU0
 	.global m6809CPU1
 	.global m6809CPU2
@@ -15,9 +19,9 @@
 	.global stepFrame
 	.global cpuInit
 	.global cpuReset
-	.global frameTotal
-	.global waitMaskIn
-	.global waitMaskOut
+	.global ddRunFrame
+	.global gbRunFrame
+	.global ihRunFrame
 	.global cpu01SetFIRQ
 	.global cpu012SetIRQ
 	.global cpu01SetNMI
@@ -83,6 +87,22 @@ runStart:
 	b runStart
 
 ;@----------------------------------------------------------------------------
+stepFrame:					;@ Return after 1 frame
+	.type   stepFrame STT_FUNC
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r4-r11,lr}
+
+	ldr r0,frameLoopPtr
+	blx r0
+
+	ldr r1,frameTotal
+	add r1,r1,#1
+	str r1,frameTotal
+
+	ldmfd sp!,{r4-r11,lr}
+	bx lr
+
+;@----------------------------------------------------------------------------
 //frameLoopPtr:			.long ddRunFrame
 //frameLoopPtr:			.long gbRunFrame
 frameLoopPtr:			.long ihRunFrame
@@ -100,20 +120,20 @@ ddRunFrame:					;@ Double Dribble
 	stmfd sp!,{lr}
 ddFrameLoop:
 	ldr m6809ptr,=m6809CPU2
-	mov r0,#CYCLE_PSL
+	ldr r0,m6809CyclesPerScanline
 	bl m6809RestoreAndRunXCycles
 	add r0,m6809ptr,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 	bl ym2203_0_Run
 ;@--------------------------------------
 	ldr m6809ptr,=m6809CPU1
-	mov r0,#CYCLE_PSL
+	ldr r0,m6809CyclesPerScanline
 	bl m6809RestoreAndRunXCycles
 	add r0,m6809ptr,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 ;@--------------------------------------
 	ldr m6809ptr,=m6809CPU0
-	mov r0,#CYCLE_PSL
+	ldr r0,m6809CyclesPerScanline
 	bl m6809RestoreAndRunXCycles
 	add r0,m6809ptr,#m6809Regs
 	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
@@ -171,21 +191,6 @@ gbFrameLoop:
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
-stepFrame:					;@ Return after 1 frame
-	.type   stepFrame STT_FUNC
-;@----------------------------------------------------------------------------
-	stmfd sp!,{r4-r11,lr}
-
-	ldr r0,frameLoopPtr
-	blx r0
-
-	ldr r1,frameTotal
-	add r1,r1,#1
-	str r1,frameTotal
-
-	ldmfd sp!,{r4-r11,lr}
-	bx lr
-;@----------------------------------------------------------------------------
 cpu01SetFIRQ:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,m6809ptr,lr}
@@ -231,10 +236,9 @@ cpuInit:			;@ Called by machineInit
 	bl m6809Init
 	ldr r0,=m6809CPU1
 	bl m6809Init
-	ldr r0,=m6809CPU2
-	bl m6809Init
 	ldmfd sp!,{lr}
-	bx lr
+	ldr r0,=m6809CPU2
+	b m6809Init
 ;@----------------------------------------------------------------------------
 cpuReset:		;@ Called by loadCart/resetGame
 ;@----------------------------------------------------------------------------

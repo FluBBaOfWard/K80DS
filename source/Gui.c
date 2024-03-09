@@ -74,6 +74,7 @@ void exitGUI() {
 
 void autoLoadGame(void) {
 	ui9();
+	selected = 0;
 	quickSelectGame();
 }
 
@@ -206,7 +207,7 @@ void nullUIDebug(int key) {
 }
 
 void resetGame() {
-	loadCart(0,0);
+	loadCart(romNum,0);
 }
 
 

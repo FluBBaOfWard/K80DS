@@ -61,10 +61,12 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 //	bl doCpuMappingGreenBeret
 	bl doCpuMappingIronHorse
 //	bl doCpuMappingScooterShooter
+//	bl setupMachine
+//	ldr r1,cpuMappingPointer
+//	blx r1
 
-	cmp r11,#4
-	movne r0,#CHIP_K005885
-	movpl r0,#CHIP_K005849
+	adr r1,romNum2ChipType
+	ldrb r0,[r1,r11]
 	bl gfxReset
 	bl ioReset
 	bl soundReset
@@ -72,7 +74,47 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	bl cpuReset
 
 	ldmfd sp!,{r4-r11,lr}
+endCmd:
 	bx lr
+
+;@----------------------------------------------------------------------------
+setupMachine:					;@ r0=num number
+;@----------------------------------------------------------------------------
+	cmp r0,#11
+	bxpl lr
+
+	adr r1,romNum2Machine
+	ldrb r0,[r1,r0]
+	adr r1,machineFunctions
+	add r1,r1,r0,lsl#4
+	ldr r2,[r1],#4
+	str r2,cpuMappingPointer
+	ldr r2,[r1],#4
+	ldr r0,=frameLoopPtr
+	str r2,[r0]
+	ldr r2,[r1],#4
+	ldr r0,=gfxResetPtr
+	str r2,[r0]
+	ldr r2,[r1],#4
+	ldr r0,=paletteInitPtr
+	str r2,[r0]
+	bx lr
+
+;@----------------------------------------------------------------------------
+romNum2Machine:
+	.byte 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3
+;@----------------------------------------------------------------------------
+romNum2ChipType:
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005849, CHIP_K005849, CHIP_K005849,
+	.byte CHIP_K005849, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885,
+	.byte CHIP_K005849
+	.align 2
+;@----------------------------------------------------------------------------
+machineFunctions:
+	.long doCpuMappingDDribble, ddRunFrame, gfxResetDDribble, paletteInitDDribble
+	.long doCpuMappingGreenBeret, gbRunFrame, gfxResetGreenBeret, paletteInitGreenBeret
+	.long doCpuMappingIronHorse, ihRunFrame, gfxResetIronHorse, paletteInitIronHorse
+	.long doCpuMappingScooterShooter, ihRunFrame, gfxResetIronHorse, paletteInitScooterShooter
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:
@@ -155,7 +197,8 @@ emuFlags:
 cartFlags:
 	.byte 0 					;@ cartflags
 	.space 3
-
+cpuMappingPointer:
+	.long endCmd
 romStart:
 mainCpu:
 	.long 0

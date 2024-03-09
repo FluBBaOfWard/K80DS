@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+extern u32 romNum;
 extern u8 bankReg;
 
 extern u8 SHARED_RAM[0x2000];
