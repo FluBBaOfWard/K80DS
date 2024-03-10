@@ -51,6 +51,13 @@
 		9C8F340F248BAD9C00996E5A /* AY38910.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c.preprocessed; path = AY38910.i; sourceTree = "<group>"; };
 		9C99548B262B325500CE2B94 /* scotrshtVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scotrshtVideo.cpp; sourceTree = "<group>"; };
 		9C99548C262B325500CE2B94 /* scotrsht.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scotrsht.cpp; sourceTree = "<group>"; };
+		9CB419E52B9DBEAD00CBF5F4 /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		9CB419E62B9DBEAD00CBF5F4 /* VLM5030_todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = VLM5030_todo.txt; sourceTree = "<group>"; };
+		9CB419E72B9DBEAD00CBF5F4 /* vlm5030.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vlm5030.c; sourceTree = "<group>"; };
+		9CB419E82B9DBEAD00CBF5F4 /* VLM503Asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = VLM503Asm.s; sourceTree = "<group>"; };
+		9CB419E92B9DBEAD00CBF5F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9CB419EA2B9DBEAD00CBF5F4 /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
+		9CB419EB2B9DBEAD00CBF5F4 /* vlm5030.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vlm5030.h; sourceTree = "<group>"; };
 		9CBEE0EF26F0F1180095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F026F0F1540095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F126F0F15F0095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -153,6 +160,20 @@
 				9C7BB94B25FCD73C00EA9C9C /* EmuFont.png */,
 			);
 			path = graphics;
+			sourceTree = "<group>";
+		};
+		9CB419E42B9DBEAD00CBF5F4 /* VLM5030 */ = {
+			isa = PBXGroup;
+			children = (
+				9CB419E62B9DBEAD00CBF5F4 /* VLM5030_todo.txt */,
+				9CB419E92B9DBEAD00CBF5F4 /* README.md */,
+				9CB419EA2B9DBEAD00CBF5F4 /* History.txt */,
+				9CB419E52B9DBEAD00CBF5F4 /* Version.h */,
+				9CB419EB2B9DBEAD00CBF5F4 /* vlm5030.h */,
+				9CB419E72B9DBEAD00CBF5F4 /* vlm5030.c */,
+				9CB419E82B9DBEAD00CBF5F4 /* VLM503Asm.s */,
+			);
+			path = VLM5030;
 			sourceTree = "<group>";
 		};
 		9CE2E0732B85EE4900B19B2B /* SN76496 */ = {
@@ -286,6 +307,7 @@
 				A473057D1D575449004F6525 /* K005849 */,
 				A40F3DBB1D8078130025AAD3 /* YM2203 */,
 				9CE2E0732B85EE4900B19B2B /* SN76496 */,
+				9CB419E42B9DBEAD00CBF5F4 /* VLM5030 */,
 				A47F092A20863AF5004E1DA6 /* Shared */,
 				9CE2E07B2B8F17FA00B19B2B /* Games */,
 				9C50820725D45A9A00A8E1BA /* Main.h */,

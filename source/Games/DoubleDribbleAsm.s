@@ -62,6 +62,14 @@ doCpuMappingDDribbleCpu2:
 	ldr r1,=mainCpu
 	ldr r1,[r1]
 	bl m6809Mapper
+
+	ldr r0,=vlm5030Chip
+	ldr r0,[r0]
+	ldr r1,=vlmBase
+	ldr r1,[r1]
+	mov r2,#0x10000				;@ ROM size
+	blx VLM5030_set_rom
+
 	ldmfd sp!,{lr}
 	bx lr
 
@@ -348,15 +356,6 @@ DDribbleIO_W:				;@ I/O write (CPU 1 0x2000-0x3FFF)
 	beq watchDogW
 	b empty_IO_W
 
-;@----------------------------------------------------------------------------
-VLMData_W:
-;@----------------------------------------------------------------------------
-	mov r1,r0
-//	ldr r0,=vlm5030Chip
-	ldr r0,[r0]
-	stmfd sp!,{r3,lr}
-//	blx VLM5030_WRITE8
-	ldmfd sp!,{r3,pc}
 ;@----------------------------------------------------------------------------
 YM0_R:
 ;@----------------------------------------------------------------------------

@@ -13,6 +13,7 @@
 #include "Gfx.h"
 #include "io.h"
 #include "Sound.h"
+#include "VLM5030/vlm5030.h"
 
 static void checkTimeOut(void);
 static void setupGraphics(void);
@@ -23,6 +24,7 @@ static bool vBlankOverflow = FALSE;
 
 static mm_ds_system sys;
 static mm_stream myStream;
+struct vlm5030_info *vlm5030Chip;
 
 uint16 *map0sub;
 uint16 *map1sub;
@@ -51,6 +53,7 @@ void myVblank(void) {
 //---------------------------------------------------------------------------------
 int main(int argc, char **argv) {
 //---------------------------------------------------------------------------------
+	vlm5030Chip = vlm5030_start(0);
 	if (argc > 1) {
 		enableExit = true;
 	}

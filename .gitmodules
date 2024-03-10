@@ -16,3 +16,6 @@
 [submodule "source/SN76496"]
 	path = source/SN76496
 	url = https://github.com/FluBBaOfWard/SN76496.git
+[submodule "source/VLM5030"]
+	path = source/VLM5030
+	url = https://github.com/FluBBaOfWard/VLM5030.git

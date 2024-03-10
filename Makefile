@@ -33,6 +33,7 @@ SOURCES		:=	source	\
 				source/YM2203 \
 				source/YM2203/AY38910 \
 				source/SN76496 \
+				source/VLM5030 \
 				source/Games
 DATA		:=	data
 INCLUDES	:=	include
@@ -43,7 +44,7 @@ GRAPHICS	:=	graphics \
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv5te -mtune=arm946e-s -mthumb -mthumb-interwork
-FLAGS	:=	-DARM9 -DNDS -DAY_UPSHIFT=2
+FLAGS	:=	-DARM9 -DNDS -DAY_UPSHIFT=2 -DSN_UPSHIFT=1
 
 ifeq ($(DEBUG),1)
 	CFLAGS	:=	-gdwarf-2 -Wall -ffast-math $(ARCH)
