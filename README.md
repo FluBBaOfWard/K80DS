@@ -19,6 +19,8 @@ to select an option, B or the top of the screen to go back a step.
 
 To select between the tabs use R & L or the touchscreen.
 
+You can set -DKONAMI6809 when compiling to allow Finalizer & Jailbreak.
+
 ## Menu
 
 ### File

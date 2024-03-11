@@ -5,13 +5,14 @@
 extern "C" {
 #endif
 
-#include "Games/IronHorse.h"
-#include "Games/GreenBeret.h"
 #include "Games/DoubleDribble.h"
+#include "Games/GreenBeret.h"
+#include "Games/Finalizer.h"
+#include "Games/IronHorse.h"
 
 #define FILEEXTENSIONS ".zip"
 
-#define GAME_COUNT (11)
+#define GAME_COUNT (14)
 
 extern const ArcadeGame allGames[GAME_COUNT];
 

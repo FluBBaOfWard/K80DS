@@ -58,6 +58,9 @@
 		9CB419E92B9DBEAD00CBF5F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CB419EA2B9DBEAD00CBF5F4 /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
 		9CB419EB2B9DBEAD00CBF5F4 /* vlm5030.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vlm5030.h; sourceTree = "<group>"; };
+		9CB419EC2B9F789100CBF5F4 /* Finalizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Finalizer.c; sourceTree = "<group>"; };
+		9CB419ED2B9F789100CBF5F4 /* Finalizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Finalizer.h; sourceTree = "<group>"; };
+		9CB419EE2B9F79C900CBF5F4 /* FinalizerAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = FinalizerAsm.s; sourceTree = "<group>"; };
 		9CBEE0EF26F0F1180095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F026F0F1540095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F126F0F15F0095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -196,6 +199,9 @@
 				9CE2E0852B978C2B00B19B2B /* DoubleDribble.h */,
 				9CE2E0842B978C2B00B19B2B /* DoubleDribble.c */,
 				9CE2E0862B978C2B00B19B2B /* DoubleDribbleAsm.s */,
+				9CB419ED2B9F789100CBF5F4 /* Finalizer.h */,
+				9CB419EC2B9F789100CBF5F4 /* Finalizer.c */,
+				9CB419EE2B9F79C900CBF5F4 /* FinalizerAsm.s */,
 				9CE2E0712B85194C00B19B2B /* GreenBeret.h */,
 				9CE2E0722B85194C00B19B2B /* GreenBeret.c */,
 				9CE2E07C2B8F34A400B19B2B /* GreenBeretAsm.s */,

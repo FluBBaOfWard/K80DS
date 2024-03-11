@@ -21,6 +21,7 @@
 	.global cpuReset
 	.global ddRunFrame
 	.global gbRunFrame
+	.global fiRunFrame
 	.global ihRunFrame
 	.global cpu01SetFIRQ
 	.global cpu012SetIRQ
@@ -172,6 +173,26 @@ ihFrameLoop:
 	bl doScanline
 	cmp r0,#0
 	bne ihFrameLoop
+	ldmfd sp!,{pc}
+
+;@----------------------------------------------------------------------------
+fiRunFrame:					;@ Finalizer
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr m6809ptr,=m6809CPU0
+	add r0,m6809ptr,#m6809Regs
+	ldmia r0,{m6809f-m6809pc,m6809sp}	;@ Restore M6809 state
+;@----------------------------------------------------------------------------
+fiFrameLoop:
+	mov r0,#CYCLE_PSL
+	bl m6809RunXCycles
+	ldr koptr,=k005849_0
+	bl doScanline
+	cmp r0,#0
+	bne fiFrameLoop
+;@----------------------------------------------------------------------------
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------

@@ -30,6 +30,9 @@ const ArcadeGame allGames[GAME_COUNT] = {
 	AC_GAME("mrgoemon", "Mr. Goemon (Japan)", mrgoemonRoms)
 	AC_GAME("ddribble", "Double Dribble", ddribbleRoms)
 	AC_GAME("ddribblep", "Double Dribble (prototype?)", ddribblepRoms)
+	AC_GAME("finalizr", "Finalizer - Super Transformation (set 1)", finalizrRoms)
+	AC_GAME("finalizra", "Finalizer - Super Transformation (set 2)", finalizraRoms)
+	AC_GAME("finalizrb", "Finalizer - Super Transformation (bootleg)", finalizrbRoms)
 };
 
 //---------------------------------------------------------------------------------

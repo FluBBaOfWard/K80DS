@@ -57,10 +57,6 @@ loadCart: 		;@ Called from C:  r0=rom number, r1=emuflags
 	str r1,emuFlags
 	mov r11,r0
 
-//	bl doCpuMappingDDribble
-//	bl doCpuMappingGreenBeret
-//	bl doCpuMappingIronHorse
-//	bl doCpuMappingScooterShooter
 	bl setupMachine
 	ldr r1,cpuMappingPointer
 	blx r1
@@ -79,7 +75,7 @@ endCmd:
 ;@----------------------------------------------------------------------------
 setupMachine:					;@ r0=num number
 ;@----------------------------------------------------------------------------
-	cmp r0,#11
+	cmp r0,#14
 	bxpl lr
 
 	adr r1,romNum2Machine
@@ -100,27 +96,32 @@ setupMachine:					;@ r0=num number
 	ldr r2,[r1],#4
 	ldr r0,=paletteTxAllPtr
 	str r2,[r0]
+	ldr r2,[r1],#4
+	ldr r0,=mixerPtr
+	str r2,[r0]
 	bx lr
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
-	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3
+	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4
 ;@----------------------------------------------------------------------------
 romNum2ChipType:
-	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849,
-	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885,
-	.byte CHIP_K005885
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
+	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
 	.long doCpuMappingIronHorse, ihRunFrame, gfxResetIronHorse, paletteInitIronHorse
-	.long paletteTxAllIronHorse, 0, 0, 0
+	.long paletteTxAllIronHorse, ironHorseMixer, 0, 0
 	.long doCpuMappingScooterShooter, ihRunFrame, gfxResetIronHorse, paletteInitScooterShooter
-	.long paletteTxAllIronHorse, 0, 0, 0
+	.long paletteTxAllIronHorse, ironHorseMixer, 0, 0
 	.long doCpuMappingGreenBeret, gbRunFrame, gfxResetGreenBeret, paletteInitGreenBeret
-	.long paletteTxAllGreenBeret, 0, 0, 0
+	.long paletteTxAllGreenBeret, gbMixer, 0, 0
 	.long doCpuMappingDDribble, ddRunFrame, gfxResetDDribble, paletteInitDDribble
-	.long paletteTxAllDDribble, 0, 0, 0
+	.long paletteTxAllDDribble, dDribbleMix, 0, 0
+	.long doCpuMappingFinalizer, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
+	.long paletteTxAllFinalizer, gbMixer, 0, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:
@@ -203,6 +204,7 @@ emuFlags:
 cartFlags:
 	.byte 0 					;@ cartflags
 	.space 3
+
 cpuMappingPointer:
 	.long endCmd
 romStart:

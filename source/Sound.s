@@ -15,7 +15,11 @@
 	.global ym2203_0_W
 	.global SN_0_W
 	.global VLMData_W
+	.global ironHorseMixer
+	.global gbMixer
+	.global dDribbleMix
 
+	.global mixerPtr
 	.global SN76496_0
 	.global ym2203_0
 	.extern pauseEmulation
@@ -71,10 +75,21 @@ VblSound2:					;@ r0=length, r1=pointer, r2=format?
 ;@----------------------------------------------------------------------------
 	ldr r3,muteSound
 	cmp r3,#0
-	bne silenceMix
+	ldreq r3,mixerPtr
+	bxeq r3
 
-//	b dDribbleMix
-//	b gbMixer
+silenceMix:
+	mov r12,r0
+	mov r2,#0
+silenceLoop:
+	subs r12,r12,#1
+	strhpl r2,[r1],#2
+	bhi silenceLoop
+	bx lr
+
+;@----------------------------------------------------------------------------
+ironHorseMixer:
+;@----------------------------------------------------------------------------
 ;@	mov r11,r11
 	stmfd sp!,{r0,r1,r4,lr}
 
@@ -100,15 +115,6 @@ mixLoop:
 	bhi mixLoop
 
 	ldmfd sp!,{r0,r1,r4,lr}
-	bx lr
-
-silenceMix:
-	mov r12,r0
-	mov r2,#0
-silenceLoop:
-	subs r12,r12,#1
-	strhpl r2,[r1],#2
-	bhi silenceLoop
 	bx lr
 
 ;@----------------------------------------------------------------------------
@@ -178,10 +184,8 @@ ddWavLoop:
 gbMixer:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,lr}
-
 	ldr r2,=SN76496_0
 	bl sn76496Mixer
-
 	ldmfd sp!,{r0,lr}
 	bx lr
 
@@ -296,6 +300,8 @@ ymWriteRet:
 pcmPtr0:	.long wavBuffer
 pcmPtr1:	.long wavBuffer+0x0800
 pcmPtr2:	.long wavBuffer+0x1000
+
+mixerPtr:	.long silenceMix
 
 muteSound:
 muteSoundGUI:

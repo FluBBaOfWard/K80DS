@@ -106,9 +106,6 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	mov r0,#0x0000
 	strh r0,[r1,#REG_WINOUT]
 
-//	bl gfxResetDDribble
-//	bl gfxResetGreenBeret
-//	bl gfxResetIronHorse
 	ldr r0,gfxResetPtr
 	blx r0
 
@@ -151,10 +148,6 @@ paletteInit:		;@ r0-r3 modified.
 	.type paletteInit STT_FUNC
 ;@ Called by ui.c:  void paletteInit(gammaVal);
 ;@----------------------------------------------------------------------------
-//	b paletteInitDDribble
-//	b paletteInitGreenBeret
-//	b paletteInitIronHorse
-//	b paletteInitScooterShooter
 	ldr pc,paletteInitPtr
 ;@----------------------------------------------------------------------------
 gammaConvert:	;@ Takes value in r0(0-0xFF), gamma in r1(0-4),returns new value in r0=0x1F
@@ -174,9 +167,6 @@ paletteTxAll:				;@ Called from ui.c
 	.type paletteTxAll STT_FUNC
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,r12,lr}
-//	bl paletteTxAllDDribble
-//	bl paletteTxAllGreenBeret
-//	bl paletteTxAllIronHorse
 	ldr r0,paletteTxAllPtr
 	blx r0
 	ldmfd sp!,{r3,r12,lr}
@@ -466,7 +456,7 @@ OAM_BUFFER1:
 OAM_BUFFER2:
 	.space 0x400
 SCROLLBUFF:
-	.space 0x400*2				;@ Scrollbuffer.
+	.space 0x400*3				;@ Scrollbuffer.
 MAPPED_RGB:
 	.space 0x400				;@ 0x400
 EMUPALBUFF:
