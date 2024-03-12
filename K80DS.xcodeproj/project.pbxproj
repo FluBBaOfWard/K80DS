@@ -61,6 +61,9 @@
 		9CB419EC2B9F789100CBF5F4 /* Finalizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Finalizer.c; sourceTree = "<group>"; };
 		9CB419ED2B9F789100CBF5F4 /* Finalizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Finalizer.h; sourceTree = "<group>"; };
 		9CB419EE2B9F79C900CBF5F4 /* FinalizerAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = FinalizerAsm.s; sourceTree = "<group>"; };
+		9CB419EF2B9F8B4A00CBF5F4 /* JailBreak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JailBreak.h; sourceTree = "<group>"; };
+		9CB419F02B9F8B4A00CBF5F4 /* JailBreak.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = JailBreak.c; sourceTree = "<group>"; };
+		9CB419F12BA0B8A100CBF5F4 /* JailBreakAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = JailBreakAsm.s; sourceTree = "<group>"; };
 		9CBEE0EF26F0F1180095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F026F0F1540095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F126F0F15F0095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -208,6 +211,9 @@
 				9C7BB95D25FFF08400EA9C9C /* IronHorse.h */,
 				9C7BB95C25FFF08400EA9C9C /* IronHorse.c */,
 				9CE2E07D2B8F372C00B19B2B /* IronHorseAsm.s */,
+				9CB419EF2B9F8B4A00CBF5F4 /* JailBreak.h */,
+				9CB419F02B9F8B4A00CBF5F4 /* JailBreak.c */,
+				9CB419F12BA0B8A100CBF5F4 /* JailBreakAsm.s */,
 			);
 			path = Games;
 			sourceTree = "<group>";

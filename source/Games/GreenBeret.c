@@ -11,7 +11,7 @@
 
 int gbPackState(void *statePtr) {
 	int size = 0;
-//	size += sn76496SaveState(statePtr+size, &SN76496_0);
+//	size += sn76496SaveState(statePtr+size, &sn76496_0);
 	size += k005849SaveState(statePtr+size, &k005849_0);
 	size += Z80SaveState(statePtr+size, &Z80OpTable);
 	return size;
@@ -19,7 +19,7 @@ int gbPackState(void *statePtr) {
 
 void gbUnpackState(const void *statePtr) {
 	int size = 0;
-//	size += sn76496LoadState(&SN76496_0, statePtr+size);
+//	size += sn76496LoadState(&sn76496_0, statePtr+size);
 	size += k005849LoadState(&k005849_0, statePtr+size);
 	Z80LoadState(&Z80OpTable, statePtr+size);
 }

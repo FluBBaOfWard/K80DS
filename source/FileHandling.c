@@ -33,6 +33,9 @@ const ArcadeGame allGames[GAME_COUNT] = {
 	AC_GAME("finalizr", "Finalizer - Super Transformation (set 1)", finalizrRoms)
 	AC_GAME("finalizra", "Finalizer - Super Transformation (set 2)", finalizraRoms)
 	AC_GAME("finalizrb", "Finalizer - Super Transformation (bootleg)", finalizrbRoms)
+	AC_GAME("jailbrek",  "Jail Break", jailbrekRoms)
+	AC_GAME("jailbrekb", "Jail Break (bootleg)", jailbrekbRoms)
+	AC_GAME("manhatan",  "Manhattan 24 Bunsyo (Japan)", manhatanRoms)
 };
 
 //---------------------------------------------------------------------------------

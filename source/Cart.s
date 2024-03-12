@@ -75,7 +75,7 @@ endCmd:
 ;@----------------------------------------------------------------------------
 setupMachine:					;@ r0=num number
 ;@----------------------------------------------------------------------------
-	cmp r0,#14
+	cmp r0,#17
 	bxpl lr
 
 	adr r1,romNum2Machine
@@ -103,12 +103,13 @@ setupMachine:					;@ r0=num number
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
-	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4
+	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5
 ;@----------------------------------------------------------------------------
 romNum2ChipType:
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885
-	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
+	.byte CHIP_K005849, CHIP_K005849
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
@@ -122,6 +123,8 @@ machineFunctions:
 	.long paletteTxAllDDribble, dDribbleMix, 0, 0
 	.long doCpuMappingFinalizer, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
 	.long paletteTxAllFinalizer, gbMixer, 0, 0
+	.long doCpuMappingJailBreak, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
+	.long paletteTxAllFinalizer, jBreakMix, 0, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:

@@ -12,6 +12,8 @@
 	.global IronHorseIO_W
 	.global ScooterShooterIO_R
 	.global ScooterShooterIO_W
+	.global JailBreakIO_R
+	.global JailBreakIO_W
 	.global Z80In
 	.global Z80Out
 	.global convertInput
@@ -271,10 +273,42 @@ IronHorseIO_W:				;@ I/O write 0x0000-0x1FFF
 	cmp addy,#0x0900
 	beq setSoundCpuIrq
 	cmp addy,#0x0A00
-	beq coinW
+	beq ihCoinW
 	cmp addy,#0x0B00
 	beq watchDogW
 	b k005885_0W
+
+;@----------------------------------------------------------------------------
+JailBreakIO_R:			;@ I/O read
+;@----------------------------------------------------------------------------
+	cmp addy,#0x3100
+	beq Input4_R
+	cmp addy,#0x3200
+	beq Input5_R
+	bic r2,addy,#3
+	cmp r2,#0x3300
+	and r2,addy,#3
+	ldreq pc,[pc,r2,lsl#2]
+;@---------------------------
+	b k005849_0R
+;@io_read_tbl
+	.long Input2_R				;@ 0x3300
+	.long Input0_R				;@ 0x3301
+	.long Input1_R				;@ 0x3302
+	.long Input3_R				;@ 0x3303
+
+;@----------------------------------------------------------------------------
+JailBreakIO_W:		;@I/O write
+;@----------------------------------------------------------------------------
+	cmp addy,#0x3100
+//	cmpne addy,#0x3200			;@ Make sound chip read value.
+	beq SN_0_W
+	cmp addy,#0x3000
+	beq ddCoinW
+	cmp addy,#0x3300
+	cmpne addy,#0x3200			;@ Don't trap this.
+	beq watchDogW
+	b k005849_0W
 
 ;@----------------------------------------------------------------------------
 ScooterShooterIO_R:			;@ I/O read 0x2000-0x3FFF
@@ -323,7 +357,7 @@ ssCoinW:
 	mov r0,r0,ror#4				;@ Nibbles are swapped compared to Iron Horse.
 	orr r0,r0,r0,lsr#24
 ;@----------------------------------------------------------------------------
-coinW:
+ihCoinW:
 ;@----------------------------------------------------------------------------
 	and r2,r0,#0x07
 	ldr r1,=paletteBank

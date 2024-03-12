@@ -18,9 +18,10 @@
 	.global ironHorseMixer
 	.global gbMixer
 	.global dDribbleMix
+	.global jBreakMix
 
 	.global mixerPtr
-	.global SN76496_0
+	.global sn76496_0
 	.global ym2203_0
 	.extern pauseEmulation
 
@@ -51,7 +52,7 @@ soundReset:
 	ldr r1,=VLM_W
 	str r1,[r0,#ayPortAOutFptr]
 
-	ldr r1,=SN76496_0
+	ldr r1,=sn76496_0
 	mov r0,#1
 	bl sn76496Reset				;@ Sound
 	ldmfd sp!,{lr}
@@ -184,9 +185,59 @@ ddWavLoop:
 gbMixer:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,lr}
-	ldr r2,=SN76496_0
+	ldr r2,=sn76496_0
 	bl sn76496Mixer
 	ldmfd sp!,{r0,lr}
+	bx lr
+
+;@----------------------------------------------------------------------------
+jBreakMix:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r0,r1,r4,lr}
+
+	ldr r1,pcmPtr0
+	ldr r2,=sn76496_0
+	bl sn76496Mixer
+
+	ldmfd sp,{r0}
+	ldr r1,pcmPtr1
+	mov r2,r0,lsr#3
+	ldr r0,=vlm5030Chip
+	ldr r0,[r0]
+	blx vlm5030_update_callback
+
+	ldmfd sp,{r0,r1}
+	ldr r12,pcmPtr0
+	ldr r3,pcmPtr1
+jbWavLoop:
+	ldrsh r4,[r3]
+	tst r0,#4
+	addne r3,r3,#2
+
+	ldrsh r2,[r12],#2
+	add r2,r4,r2,asr#2
+	mov r2,r2,asr#1
+	strh r2,[r1],#2
+
+	ldrsh r2,[r12],#2
+	add r2,r4,r2,asr#2
+	mov r2,r2,asr#1
+	strh r2,[r1],#2
+
+	ldrsh r2,[r12],#2
+	add r2,r4,r2,asr#2
+	mov r2,r2,asr#1
+	strh r2,[r1],#2
+
+	ldrsh r2,[r12],#2
+	add r2,r4,r2,asr#2
+	mov r2,r2,asr#1
+	strh r2,[r1],#2
+
+	subs r0,r0,#4
+	bhi jbWavLoop
+
+	ldmfd sp!,{r0,r1,r4,lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------
@@ -261,7 +312,7 @@ VLMData_W:
 SN_0_W:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,lr}
-	ldr r1,=SN76496_0
+	ldr r1,=sn76496_0
 	bl sn76496W
 	ldmfd sp!,{r3,lr}
 	bx lr
@@ -318,7 +369,7 @@ soundLatch:
 	.align 2
 ym2203_0:
 	.space ymSize
-SN76496_0:
+sn76496_0:
 	.space snSize
 wavBuffer:
 	.space 0x1800
