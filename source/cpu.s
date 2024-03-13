@@ -20,13 +20,15 @@
 	.global cpuInit
 	.global cpuReset
 	.global ddRunFrame
-	.global gbRunFrame
 	.global fiRunFrame
+	.global gbRunFrame
 	.global ihRunFrame
+	.global jkRunFrame
 	.global cpu01SetFIRQ
 	.global cpu012SetIRQ
 	.global cpu01SetNMI
 	.global cpu1SetIRQ
+	.global cpu0SetIRQ_1SetNMI
 
 	.syntax unified
 	.arm
@@ -152,30 +154,6 @@ ddFrameLoop:
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
-ihRunFrame:					;@ IronHorse/ScooterShooter
-;@----------------------------------------------------------------------------
-	stmfd sp!,{lr}
-ihFrameLoop:
-	ldr z80ptr,=Z80OpTable
-	ldr r0,z80CyclesPerScanline
-	bl Z80RestoreAndRunXCycles
-	add r0,z80ptr,#z80Regs
-	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
-	bl ym2203_0_Run
-;@--------------------------------------
-	ldr m6809ptr,=m6809CPU0
-	ldr r0,m6809CyclesPerScanline
-	bl m6809RestoreAndRunXCycles
-	add r0,m6809ptr,#m6809Regs
-	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
-;@--------------------------------------
-	ldr koptr,=k005885_0
-	bl doScanline
-	cmp r0,#0
-	bne ihFrameLoop
-	ldmfd sp!,{pc}
-
-;@----------------------------------------------------------------------------
 fiRunFrame:					;@ Finalizer
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
@@ -216,6 +194,61 @@ gbFrameLoop:
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
+ihRunFrame:					;@ IronHorse/ScooterShooter
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+ihFrameLoop:
+	ldr z80ptr,=Z80OpTable
+	ldr r0,z80CyclesPerScanline
+	bl Z80RestoreAndRunXCycles
+	add r0,z80ptr,#z80Regs
+	stmia r0,{z80f-z80pc,z80sp}			;@ Save Z80 state
+	bl ym2203_0_Run
+;@--------------------------------------
+	ldr m6809ptr,=m6809CPU0
+	ldr r0,m6809CyclesPerScanline
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr koptr,=k005885_0
+	bl doScanline
+	cmp r0,#0
+	bne ihFrameLoop
+	ldmfd sp!,{pc}
+
+;@----------------------------------------------------------------------------
+jkRunFrame:					;@ Jackal
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+jkFrameLoop:
+	ldr m6809ptr,=m6809CPU1
+	ldr r0,m6809CyclesPerScanline
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr m6809ptr,=m6809CPU0
+	ldr r0,m6809CyclesPerScanline
+	bl m6809RestoreAndRunXCycles
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
+;@--------------------------------------
+	ldr koptr,=k005885_1
+	bl doScanline
+	ldr koptr,=k005885_0
+	bl doScanline
+	cmp r0,#0
+	bne jkFrameLoop
+
+	ldr r0,=gGammaValue
+	ldrb r0,[r0]
+	bl paletteInit
+	bl paletteTxAll
+
+	ldmfd sp!,{pc}
+
+;@----------------------------------------------------------------------------
 cpu01SetFIRQ:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,m6809ptr,lr}
@@ -244,6 +277,16 @@ cpu01SetNMI:
 	stmfd sp!,{r0,m6809ptr,lr}
 	ldr m6809ptr,=m6809CPU0
 	bl m6809SetNMIPin
+	ldmfd sp!,{r0}
+	ldr m6809ptr,=m6809CPU1
+	bl m6809SetNMIPin
+	ldmfd sp!,{m6809ptr,pc}
+;@----------------------------------------------------------------------------
+cpu0SetIRQ_1SetNMI:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r0,m6809ptr,lr}
+	ldr m6809ptr,=m6809CPU0
+	bl m6809SetIRQPin
 	ldmfd sp!,{r0}
 	ldr m6809ptr,=m6809CPU1
 	bl m6809SetNMIPin

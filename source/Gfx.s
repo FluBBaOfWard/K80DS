@@ -42,6 +42,7 @@
 	.global paletteInit
 	.global paletteTxAll
 	.global paletteTx0
+	.global paletteTxNoLUT
 	.global refreshGfx
 	.global endFrame
 	.global gammaConvert
@@ -55,6 +56,7 @@
 	.global k005885Ram_1R
 	.global k005849_0R
 	.global k005885_0R
+	.global k005885_1R
 	.global k005849Ram_0W
 	.global k005885Ram_0W
 	.global k005885Ram_1W
@@ -389,6 +391,14 @@ k005885_0R:					;@ I/O read, 0x0000-0x005F
 	stmfd sp!,{addy,lr}
 	mov r1,addy
 	adr koptr,k005885_0
+	bl k005885_R
+	ldmfd sp!,{addy,pc}
+;@----------------------------------------------------------------------------
+k005885_1R:					;@ I/O read, 0x0000-0x005F
+;@----------------------------------------------------------------------------
+	stmfd sp!,{addy,lr}
+	mov r1,addy
+	adr koptr,k005885_1
 	bl k005885_R
 	ldmfd sp!,{addy,pc}
 

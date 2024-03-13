@@ -10,6 +10,7 @@
 	.global cartFlags
 	.global romStart
 	.global mainCpu
+	.global subCpu
 	.global soundCpu
 	.global vromBase0
 	.global vromBase1
@@ -75,7 +76,7 @@ endCmd:
 ;@----------------------------------------------------------------------------
 setupMachine:					;@ r0=num number
 ;@----------------------------------------------------------------------------
-	cmp r0,#17
+	cmp r0,#23
 	bxpl lr
 
 	adr r1,romNum2Machine
@@ -103,13 +104,14 @@ setupMachine:					;@ r0=num number
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
-	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5
+	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 6, 6
 ;@----------------------------------------------------------------------------
 romNum2ChipType:
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
-	.byte CHIP_K005849, CHIP_K005849
+	.byte CHIP_K005849, CHIP_K005849, CHIP_K005885, CHIP_K005885, CHIP_K005885
+	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
@@ -125,6 +127,8 @@ machineFunctions:
 	.long paletteTxAllFinalizer, gbMixer, 0, 0
 	.long doCpuMappingJailBreak, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
 	.long paletteTxAllFinalizer, jBreakMix, 0, 0
+	.long doCpuMappingJackal, jkRunFrame, gfxResetJackal, paletteInitJackal
+	.long paletteTxAllJackal, gbMixer, 0, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:
@@ -213,6 +217,7 @@ cpuMappingPointer:
 romStart:
 mainCpu:
 	.long 0
+subCpu:
 soundCpu:
 cpu2Base:
 	.long 0

@@ -26,6 +26,7 @@
 	.global Input5_R
 	.global Input5_R
 	.global ddCoinW
+	.global jkCoinW
 	.global watchDogW
 
 	.global joyCfg
@@ -375,6 +376,17 @@ ihCoinW:
 //	tst r0,#0x08				;@ SA?
 	b paletteTxAll
 	bx lr
+;@----------------------------------------------------------------------------
+jkCoinW:
+;@----------------------------------------------------------------------------
+setBank:
+	ldr r1,=chipBank
+	strb r0,[r1]
+	stmfd sp!,{r0,lr}
+	bl jackalMapper
+	ldmfd sp!,{r0,lr}
+//	b ddCoinW
+
 ;@----------------------------------------------------------------------------
 ddCoinW:
 ;@----------------------------------------------------------------------------
