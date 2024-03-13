@@ -25,6 +25,7 @@
 	.global gfxResetPtr
 	.global paletteInitPtr
 	.global paletteTxAllPtr
+	.global endFramePtr
 
 	.global GFX_DISPCNT
 	.global GFX_BG0CNT
@@ -45,6 +46,7 @@
 	.global paletteTxNoLUT
 	.global refreshGfx
 	.global endFrame
+	.global endFrameDefault
 	.global gammaConvert
 	.global vblIrqHandler
 
@@ -108,8 +110,9 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	mov r0,#0x0000
 	strh r0,[r1,#REG_WINOUT]
 
-	ldr r0,gfxResetPtr
-	blx r0
+	ldrb r0,gfxChipType
+	ldr r1,gfxResetPtr
+	blx r1
 
 	ldr r0,=gGammaValue
 	ldrb r0,[r0]
@@ -299,6 +302,7 @@ yStart:				.byte 0
 gfxResetPtr:		.long endGfx
 paletteInitPtr:		.long endGfx
 paletteTxAllPtr:	.long endGfx
+endFramePtr:		.long endGfx
 ;@----------------------------------------------------------------------------
 refreshGfx:					;@ Called from C when changing scaling.
 	.type refreshGfx STT_FUNC
@@ -309,16 +313,8 @@ endFrame:					;@ Called just before screen end (~line 240)	(r0-r2 safe to use)
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r3,lr}
 
-//	bl endFrameDDribble
-
-	ldr r0,=scrollTemp
-	bl copyScrollValues
-
-	mov r0,#BG_GFX
-	bl convertTileMap
-	ldr r0,tmpOamBuffer			;@ Destination
-	bl convertSprites
-;@--------------------------
+	ldr r0,endFramePtr
+	blx r0
 
 	ldr r0,dmaOamBuffer
 	ldr r1,tmpOamBuffer
@@ -333,6 +329,22 @@ endFrame:					;@ Called just before screen end (~line 240)	(r0-r2 safe to use)
 	stmib r0,{r1-r3}			;@ Store with increment before
 
 	ldmfd sp!,{r3,lr}
+	bx lr
+
+;@----------------------------------------------------------------------------
+endFrameDefault:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+
+	ldr r0,=scrollTemp
+	bl copyScrollValues
+
+	mov r0,#BG_GFX
+	bl convertTileMap
+	ldr r0,tmpOamBuffer			;@ Destination
+	bl convertSprites
+
+	ldmfd sp!,{lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------

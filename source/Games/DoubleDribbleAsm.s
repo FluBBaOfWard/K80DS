@@ -240,11 +240,11 @@ palTxLoop2:
 ;@----------------------------------------------------------------------------
 endFrameDDribble:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r3,koptr,lr}
+	stmfd sp!,{koptr,lr}
 
 	ldr r0,=k005885_1
 	cmp koptr,r0
-	ldmfdeq sp!,{r3,koptr,pc}
+	ldmfdeq sp!,{koptr,pc}
 
 	ldr koptr,=k005885_1
 	ldr r0,=scrollTemp2
@@ -277,7 +277,7 @@ endFrameDDribble:
 	str r0,[koptr,#sprMemAlloc]
 	cmp r1,#0
 	strbne r1,[koptr,#sprMemReload]
-	ldmfd sp!,{r3,koptr,lr}
+	ldmfd sp!,{koptr,lr}
 	bx lr
 
 ;@----------------------------------------------------------------------------

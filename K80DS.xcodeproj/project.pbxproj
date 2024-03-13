@@ -67,6 +67,14 @@
 		9CB419F22BA17FF800CBF5F4 /* Jackal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Jackal.c; sourceTree = "<group>"; };
 		9CB419F32BA17FF800CBF5F4 /* Jackal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jackal.h; sourceTree = "<group>"; };
 		9CB419F42BA1803700CBF5F4 /* JackalAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = JackalAsm.s; sourceTree = "<group>"; };
+		9CB419F52BA1AF8200CBF5F4 /* ddribbleVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ddribbleVideo.cpp; sourceTree = "<group>"; };
+		9CB419F62BA1AF8200CBF5F4 /* ddribble.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ddribble.cpp; sourceTree = "<group>"; };
+		9CB419F72BA1AFCC00CBF5F4 /* jackal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = jackal.cpp; sourceTree = "<group>"; };
+		9CB419F82BA1AFCC00CBF5F4 /* jackalVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = jackalVideo.cpp; sourceTree = "<group>"; };
+		9CB419F92BA1AFCC00CBF5F4 /* jailbrek.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = jailbrek.cpp; sourceTree = "<group>"; };
+		9CB419FA2BA1AFCC00CBF5F4 /* jailbrekVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = jailbrekVideo.cpp; sourceTree = "<group>"; };
+		9CB419FB2BA1AFCC00CBF5F4 /* finalizrVideo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = finalizrVideo.cpp; sourceTree = "<group>"; };
+		9CB419FC2BA1AFCC00CBF5F4 /* finalizr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = finalizr.cpp; sourceTree = "<group>"; };
 		9CBEE0EF26F0F1180095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F026F0F1540095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9CBEE0F126F0F15F0095347A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -255,10 +263,18 @@
 		A42D0269205FEC6E00515C72 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				9CB419F62BA1AF8200CBF5F4 /* ddribble.cpp */,
+				9CB419F52BA1AF8200CBF5F4 /* ddribbleVideo.cpp */,
+				9CB419FC2BA1AFCC00CBF5F4 /* finalizr.cpp */,
+				9CB419FB2BA1AFCC00CBF5F4 /* finalizrVideo.cpp */,
 				9CE2E0822B93D9CC00B19B2B /* gberet.cpp */,
 				9CE2E0832B93D9CC00B19B2B /* gberetVideo.cpp */,
 				A42D026B205FEC6E00515C72 /* ironhors.cpp */,
 				A42D026A205FEC6E00515C72 /* ironhorsVideo.cpp */,
+				9CB419F72BA1AFCC00CBF5F4 /* jackal.cpp */,
+				9CB419F82BA1AFCC00CBF5F4 /* jackalVideo.cpp */,
+				9CB419F92BA1AFCC00CBF5F4 /* jailbrek.cpp */,
+				9CB419FA2BA1AFCC00CBF5F4 /* jailbrekVideo.cpp */,
 				9C99548C262B325500CE2B94 /* scotrsht.cpp */,
 				9C99548B262B325500CE2B94 /* scotrshtVideo.cpp */,
 			);

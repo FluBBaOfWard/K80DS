@@ -100,6 +100,9 @@ setupMachine:					;@ r0=num number
 	ldr r2,[r1],#4
 	ldr r0,=mixerPtr
 	str r2,[r0]
+	ldr r2,[r1],#4
+	ldr r0,=endFramePtr
+	str r2,[r0]
 	bx lr
 
 ;@----------------------------------------------------------------------------
@@ -111,24 +114,24 @@ romNum2ChipType:
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005885, CHIP_K005885, CHIP_K005885
-	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885
+	.byte CHIP_K005885, CHIP_K005885B, CHIP_K005885B
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
 	.long doCpuMappingIronHorse, ihRunFrame, gfxResetIronHorse, paletteInitIronHorse
-	.long paletteTxAllIronHorse, ironHorseMixer, 0, 0
+	.long paletteTxAllIronHorse, ironHorseMixer, endFrameDefault, 0
 	.long doCpuMappingScooterShooter, ihRunFrame, gfxResetIronHorse, paletteInitScooterShooter
-	.long paletteTxAllIronHorse, ironHorseMixer, 0, 0
+	.long paletteTxAllIronHorse, ironHorseMixer, endFrameDefault, 0
 	.long doCpuMappingGreenBeret, gbRunFrame, gfxResetGreenBeret, paletteInitGreenBeret
-	.long paletteTxAllGreenBeret, gbMixer, 0, 0
+	.long paletteTxAllGreenBeret, gbMixer, endFrameDefault, 0
 	.long doCpuMappingDDribble, ddRunFrame, gfxResetDDribble, paletteInitDDribble
-	.long paletteTxAllDDribble, dDribbleMix, 0, 0
+	.long paletteTxAllDDribble, dDribbleMix, endFrameDDribble, 0
 	.long doCpuMappingFinalizer, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
-	.long paletteTxAllFinalizer, gbMixer, 0, 0
+	.long paletteTxAllFinalizer, gbMixer, endFrameDefault, 0
 	.long doCpuMappingJailBreak, fiRunFrame, gfxResetFinalizer, paletteInitFinalizer
-	.long paletteTxAllFinalizer, jBreakMix, 0, 0
+	.long paletteTxAllFinalizer, jBreakMix, endFrameDefault, 0
 	.long doCpuMappingJackal, jkRunFrame, gfxResetJackal, paletteInitJackal
-	.long paletteTxAllJackal, gbMixer, 0, 0
+	.long paletteTxAllJackal, gbMixer, endFrameJackal, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:

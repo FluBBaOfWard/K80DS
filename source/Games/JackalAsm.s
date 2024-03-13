@@ -11,6 +11,7 @@
 	.global jackalMapper
 	.global paletteInitJackal
 	.global paletteTxAllJackal
+	.global endFrameJackal
 
 	.syntax unified
 	.arm
@@ -71,7 +72,7 @@ JackalSubMapping:					;@ Jackal sub cpu
 	.long 3, mem6809R7, rom_W									;@ ROM
 
 ;@----------------------------------------------------------------------------
-gfxResetJackal:					;@ In r0=gameNr
+gfxResetJackal:					;@ In r0=ChipType
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,lr}
 
@@ -96,15 +97,15 @@ gfxResetJackal:					;@ In r0=gameNr
 	str r0,[koptr,#spriteRomBase]
 
 	ldmfd sp!,{r0}
-	cmp r0,#4
-	bpl selBg2
+	cmp r0,#CHIP_K005885B
+	beq selBg2
+
 	bl sprInit
 	bl bgInit1
-	b bgSelected
+	ldmfd sp!,{pc}
 selBg2:
 	bl sprInit2
 	bl bgInit2
-bgSelected:
 	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
 bgInit1:					;@ BG tiles
@@ -295,6 +296,46 @@ paletteTxAllJackal:
 	bx lr
 
 ;@----------------------------------------------------------------------------
+endFrameJackal:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{koptr,lr}
+
+	ldr r0,=k005885_1
+	cmp koptr,r0
+	ldmfdeq sp!,{koptr,pc}
+
+	ldr koptr,=k005885_0
+	ldr r0,=scrollTemp
+	bl copyScrollValues
+	mov r0,#BG_GFX
+	bl convertTileMapJackal
+	ldr r0,=tmpOamBuffer		;@ Destination
+	ldr r0,[r0]
+	bl convertSprites5885
+;@--------------------------
+	ldr r0,[koptr,#sprMemAlloc]
+	ldrb r1,[koptr,#sprMemReload]
+	ldr koptr,=k005885_1
+	str r0,[koptr,#sprMemAlloc]
+	cmp r1,#0
+	strbne r1,[koptr,#sprMemReload]
+
+	ldr r0,=tmpOamBuffer		;@ Destination
+	ldr r0,[r0]
+	add r0,r0,#64*8
+	bl convertSprites5885
+;@--------------------------
+	ldr r0,[koptr,#sprMemAlloc]
+	ldrb r1,[koptr,#sprMemReload]
+	ldr koptr,=k005885_0
+	str r0,[koptr,#sprMemAlloc]
+	cmp r1,#0
+	strbne r1,[koptr,#sprMemReload]
+
+	ldmfd sp!,{koptr,lr}
+	bx lr
+
+;@----------------------------------------------------------------------------
 k005885Ram_0_1R:			;@ Ram read (0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
 	ldrb r1,chipBank
@@ -369,6 +410,9 @@ YM0_R:
 //	ldr ymptr,=YM2151_0
 	mov r0,#0
 //	bne YM2151DataR
+	ldr r0,status
+	add r0,r0,#1
+	str r0,status
 	bx lr
 ;@----------------------------------------------------------------------------
 YM0_W:
@@ -413,6 +457,8 @@ JackalIO_W:					;@I/O write (0x0019,0x001C)
 
 ;@----------------------------------------------------------------------------
 chipBank:
+	.long 0
+status:
 	.long 0
 
 ;@----------------------------------------------------------------------------
