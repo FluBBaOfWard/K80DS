@@ -15,7 +15,7 @@
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.3.8 2024-03-13"
+#define EMUVERSION "V0.3.8 2024-03-16"
 
 static void uiDebug(void);
 
@@ -190,7 +190,11 @@ void uiLoadGame() {
 	int i;
 	for (i=0; i<ARRSIZE(allGames); i++) {
 		drawSubItem(allGames[i].fullName, NULL);
+		if (i > menuYOffset + 10) {
+			break;
+		}
 	}
+	drawSubItem("", NULL);
 }
 
 

@@ -2,7 +2,7 @@ K80DS revision history
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 
-V0.3.8 - 2024-03-13 (FluBBa)
+V0.3.8 - 2024-03-16 (FluBBa)
 	Renamed emulator from IronHorseDS to K80DS.
 	Added Green Beret.
 	Added Double Dribble.

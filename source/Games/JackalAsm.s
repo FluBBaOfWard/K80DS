@@ -89,12 +89,16 @@ gfxResetJackal:					;@ In r0=ChipType
 	ldr r1,=cpu0SetIRQ_1SetNMI
 	mov r2,#0
 	bl k005885Reset0
-	ldr r0,=BG_GFX+0x4000		;@ Tile ram 0.5
+	ldr r0,=BG_GFX+0x8000		;@ Tile ram 0.5
 	str r0,[koptr,#bgrGfxDest]
 	ldr r0,=Gfx2Bg				;@ Src bg tileset
 	str r0,[koptr,#bgrRomBase]
 	ldr r0,=Gfx2Obj				;@ r0=SRC SPR tileset
 	str r0,[koptr,#spriteRomBase]
+
+	ldr r1,=GFX_BG0CNT
+	ldr r0,=BG_32x32 | BG_MAP_BASE(0) | BG_COLOR_256 | BG_TILE_BASE(2) | BG_PRIORITY(2)
+	strh r0,[r1]
 
 	ldmfd sp!,{r0}
 	cmp r0,#CHIP_K005885B

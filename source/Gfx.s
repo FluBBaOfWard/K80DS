@@ -77,6 +77,12 @@ gfxInit:					;@ Called from machineInit
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
+	cmp r0,#CHIP_K005849
+	ldr r1,=GFX_BG0CNT
+	ldr r0,=BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(2) | BG_PRIORITY(2)
+	orreq r0,r0,#BG_64x32
+	strh r0,[r1]
+
 	ldr r0,=OAM_BUFFER1			;@ No stray sprites please
 	mov r1,#0x200+SCREEN_HEIGHT
 	mov r2,#0x100
@@ -270,9 +276,9 @@ scrolLoop2:
 
 	ldr koptr,=k005885_0
 	ldrb r2,[koptr,#sprBank]
-	cmp r7,#CHIP_K005849
-	ldrheq r0,GFX_BG0CNT
-	ldrne r0,=0x000A
+//	cmp r7,#CHIP_K005849
+	ldrh r0,GFX_BG0CNT
+//	ldrne r0,=0x000A
 	strh r0,[r6,#REG_BG0CNT]
 
 	mov r0,#0x0017
