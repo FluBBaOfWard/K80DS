@@ -24,6 +24,9 @@ doCpuMappingJailBreak:
 	addeq r1,r1,#0x2000			;@ Manhattan 24 has speech in top of rom
 	mov r2,#0x2000				;@ ROM size
 	blx VLM5030_set_rom
+	ldr r0,=m6809CPU0
+	mov r1,#1
+	bl m6809SetEncryptedMode
 	ldmfd sp!,{lr}
 
 	adr r2,jailBreakMapping

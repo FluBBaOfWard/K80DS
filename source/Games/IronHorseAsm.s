@@ -72,9 +72,9 @@ gfxResetIronHorse:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
-	ldr r0,=m6809SetNMIPin
-	ldr r1,=m6809SetIRQPin
-	ldr r2,=m6809SetFIRQPin
+	ldr r0,=m6809SetNMIPinCurrentCpu
+	ldr r1,=m6809SetIRQPinCurrentCpu
+	ldr r2,=m6809SetFIRQPinCurrentCpu
 	bl k005885Reset0
 	ldr r0,=gfxChipType
 	ldrb r0,[r0]

@@ -18,6 +18,12 @@
 ;@----------------------------------------------------------------------------
 doCpuMappingFinalizer:
 ;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr r0,=m6809CPU0
+	mov r1,#1
+	bl m6809SetEncryptedMode
+	ldmfd sp!,{lr}
+
 	adr r2,finalizerMapping
 	b do6809MainCpuMapping
 ;@----------------------------------------------------------------------------
@@ -36,9 +42,9 @@ gfxResetFinalizer:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
-	ldr r0,=m6809SetNMIPin		;@ Scanline counter
-	ldr r1,=m6809SetIRQPin		;@ VBlank
-	ldr r2,=m6809SetFIRQPin		;@ 1/2 VBlank
+	ldr r0,=m6809SetNMIPinCurrentCpu	;@ Scanline counter
+	ldr r1,=m6809SetIRQPinCurrentCpu	;@ VBlank
+	ldr r2,=m6809SetFIRQPinCurrentCpu	;@ 1/2 VBlank
 	bl k005849Reset0
 	ldr r0,=gfxChipType
 	ldrb r0,[r0]

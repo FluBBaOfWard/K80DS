@@ -251,46 +251,42 @@ jkFrameLoop:
 ;@----------------------------------------------------------------------------
 cpu01SetFIRQ:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r0,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
+	stmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU0
 	bl m6809SetFIRQPin
-	ldmfd sp!,{r0}
-	ldr m6809ptr,=m6809CPU1
-	bl m6809SetFIRQPin
-	ldmfd sp!,{m6809ptr,pc}
+	ldmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU1
+	b m6809SetFIRQPin
 ;@----------------------------------------------------------------------------
 cpu012SetIRQ:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r0,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
+	stmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU0
 	bl m6809SetIRQPin
 	ldmfd sp,{r0}
-	ldr m6809ptr,=m6809CPU1
+	ldr r1,=m6809CPU1
 	bl m6809SetIRQPin
-	ldmfd sp!,{r0}
-	ldr m6809ptr,=m6809CPU2
-	bl m6809SetIRQPin
-	ldmfd sp!,{m6809ptr,pc}
+	ldmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU2
+	b m6809SetIRQPin
 ;@----------------------------------------------------------------------------
 cpu01SetNMI:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r0,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
+	stmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU0
 	bl m6809SetNMIPin
-	ldmfd sp!,{r0}
-	ldr m6809ptr,=m6809CPU1
-	bl m6809SetNMIPin
-	ldmfd sp!,{m6809ptr,pc}
+	ldmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU1
+	b m6809SetNMIPin
 ;@----------------------------------------------------------------------------
 cpu0SetIRQ_1SetNMI:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r0,m6809ptr,lr}
-	ldr m6809ptr,=m6809CPU0
+	stmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU0
 	bl m6809SetIRQPin
-	ldmfd sp!,{r0}
-	ldr m6809ptr,=m6809CPU1
-	bl m6809SetNMIPin
-	ldmfd sp!,{m6809ptr,pc}
+	ldmfd sp!,{r0,lr}
+	ldr r1,=m6809CPU1
+	b m6809SetNMIPin
 ;@----------------------------------------------------------------------------
 cpu1SetIRQ:				;@ r0=pin state
 ;@----------------------------------------------------------------------------

@@ -44,6 +44,13 @@ machineInit: 	;@ Called from C
 //	bl soundInit
 	bl cpuInit
 
+	ldr r0,=m6809CPU1
+	mov r1,#0
+	bl m6809SetEncryptedMode
+	ldr r0,=m6809CPU2
+	mov r1,#0
+	bl m6809SetEncryptedMode
+
 	ldmfd sp!,{lr}
 	bx lr
 
@@ -103,7 +110,10 @@ setupMachine:					;@ r0=num number
 	ldr r2,[r1],#4
 	ldr r0,=endFramePtr
 	str r2,[r0]
-	bx lr
+
+	ldr r0,=m6809CPU0
+	mov r1,#0
+	b m6809SetEncryptedMode
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
