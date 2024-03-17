@@ -85,7 +85,7 @@ gfxInit:					;@ Called from machineInit
 
 	ldr r0,=OAM_BUFFER1			;@ No stray sprites please
 	mov r1,#0x200+SCREEN_HEIGHT
-	mov r2,#0x100
+	mov r2,#0x200
 	bl memset_
 	adr r0,scaleParms
 	bl setupSpriteScaling
@@ -113,7 +113,7 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	strh r0,[r1,#REG_WIN0H]
 	mov r0,#SCREEN_HEIGHT		;@ start-end
 	strh r0,[r1,#REG_WIN0V]
-	mov r0,#0x0000
+	mov r0,#0x0004
 	strh r0,[r1,#REG_WINOUT]
 
 	ldrb r0,gfxChipType
@@ -211,7 +211,7 @@ palTxNoLutLoop:
 vblIrqHandler:
 	.type vblIrqHandler STT_FUNC
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{r4-r8,lr}
+	stmfd sp!,{r4-r9,lr}
 	bl calculateFPS
 
 	ldrb r0,gScaling
@@ -223,6 +223,10 @@ vblIrqHandler:
 	add r8,r8,#0x10
 	mov r7,r8,lsl#16
 	orr r7,r7,#(GAME_WIDTH-SCREEN_WIDTH)/2
+	ldr r0,=k005885_0
+	ldrb r9,[r0,#sprBank]
+	tst r9,#0x04				;@ Is left/right overlay on?
+	addne r7,r7,#0xF0
 
 	ldr r0,gFlicker
 	eors r0,r0,r0,lsl#31
@@ -232,13 +236,14 @@ vblIrqHandler:
 	ldr r5,=SCROLLBUFF
 	mov r4,r5
 
-	ldr r2,=scrollTemp
+	ldr r3,=scrollTemp
 	mov r12,#SCREEN_HEIGHT
 scrolLoop2:
-	ldr r0,[r2,r8,lsl#2]
+	ldr r0,[r3,r8,lsl#2]
 	add r0,r0,r7
 	mov r1,r0
-	stmia r4!,{r0-r1}
+	add r2,r7,#0x18				;@ Second bg layer
+	stmia r4!,{r0-r2}
 	adds r6,r6,r6,lsl#16
 	addcs r7,r7,#0x10000
 	adc r8,r8,#1
@@ -249,13 +254,13 @@ scrolLoop2:
 	mov r6,#REG_BASE
 	strh r6,[r6,#REG_DMA0CNT_H]	;@ DMA0 stop
 
-	add r1,r6,#REG_DMA0SAD
-	mov r2,r5					;@ Setup DMA buffer for scrolling:
-	ldmia r2!,{r4-r5}			;@ Read
-	add r3,r6,#REG_BG0HOFS		;@ DMA0 always goes here
-	stmia r3,{r4-r5}			;@ Set 1st value manually, HBL is AFTER 1st line
-	ldr r4,=0x96600002			;@ noIRQ hblank 32bit repeat incsrc inc_reloaddst, 2 word
-	stmia r1,{r2-r4}			;@ DMA0 go
+	add r0,r6,#REG_DMA0SAD
+	mov r1,r5					;@ Setup DMA buffer for scrolling:
+	ldmia r1!,{r3-r5}			;@ Read
+	add r2,r6,#REG_BG0HOFS		;@ DMA0 always goes here
+	stmia r2,{r3-r5}			;@ Set 1st value manually, HBL is AFTER 1st line
+	ldr r3,=0x96600003			;@ noIRQ hblank 32bit repeat incsrc inc_reloaddst, 2 word
+	stmia r0,{r1-r3}			;@ DMA0 go
 
 	add r1,r6,#REG_DMA3SAD
 
@@ -274,26 +279,27 @@ scrolLoop2:
 	orr r4,r4,#0x100			;@ 256 words (1024 bytes)
 	stmia r1,{r2-r4}			;@ DMA3 go
 
-	ldr koptr,=k005885_0
-	ldrb r2,[koptr,#sprBank]
 //	cmp r7,#CHIP_K005849
 	ldrh r0,GFX_BG0CNT
 //	ldrne r0,=0x000A
 	strh r0,[r6,#REG_BG0CNT]
 
 	mov r0,#0x0017
-	tst r2,#0x04				;@ Is left/right overlay on?
+	tst r9,#0x04				;@ Is left/right overlay on?
 	biceq r0,#0x0004
+	orrne r0,#0x00040000
 	ldrb r1,gGfxMask
 	bic r0,r0,r1
-	strh r0,[r6,#REG_WININ]
-	tst r2,#0x80				;@ 240/256 screen width.
-	ldreq r0,=0x00FF			;@ start-end
+	str r0,[r6,#REG_WININ]
+	ldr r0,=0x00FF				;@ start-end
+	tst r9,#0x80				;@ 240/256 screen width.
 	ldrne r0,=0x08F8			;@ start-end
+	tst r9,#0x04				;@ Is left/right overlay on?
+	ldrne r0,=0x10FF			;@ start-end
 	strh r0,[r6,#REG_WIN0H]
 
 	blx scanKeys
-	ldmfd sp!,{r4-r8,pc}
+	ldmfd sp!,{r4-r9,pc}
 
 
 ;@----------------------------------------------------------------------------

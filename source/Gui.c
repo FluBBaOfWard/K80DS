@@ -15,7 +15,7 @@
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.3.8 2024-03-16"
+#define EMUVERSION "V0.3.8 2024-03-17"
 
 static void uiDebug(void);
 
@@ -115,6 +115,9 @@ void uiOptions() {
 }
 
 void uiAbout() {
+	char str[32];
+	char *s = str+22;
+
 	cls(1);
 	drawTabs();
 	drawMenuText("Select: Insert coin", 4, 0);
@@ -124,6 +127,13 @@ void uiAbout() {
 	drawMenuText("Y:      Squat", 8, 0);
 	drawMenuText("B:      Attack", 9, 0);
 	drawMenuText("A:      Power", 10, 0);
+
+	strcpy(str,"Coin Counter 0:       ");
+	int2Str(coinCounter0, s);
+	drawMenuText(str, 14, 0);
+	strcpy(str,"Coin Counter 1:       ");
+	int2Str(coinCounter1, s);
+	drawMenuText(str, 15, 0);
 
 	drawMenuText("K80DS        " EMUVERSION, 19, 0);
 	drawMenuText("ARM6809      " ARM6809VERSION, 20, 0);
@@ -179,10 +189,6 @@ void uiDipswitches() {
 	drawSubItem("Upright Controls:", singleTxt[(gDipSwitch2>>1)&1]);
 	drawSubItem("Service Mode:", autoTxt[(gDipSwitch2>>2)&1]);
 	drawSubItem("", NULL);
-//	drawSubItem("CoinCounter1:","        ");
-//	int2str(g_coin0,s);
-//	drawSubItem("CoinCounter2:","        ");
-//	int2str(g_coin1,s);
 }
 
 void uiLoadGame() {

@@ -158,6 +158,7 @@ static void setupGraphics() {
 	videoSetMode(MODE_0_2D
 				 | DISPLAY_BG0_ACTIVE
 				 | DISPLAY_BG1_ACTIVE
+				 | DISPLAY_BG2_ACTIVE
 				 | DISPLAY_SPR_ACTIVE
 				 | DISPLAY_WIN0_ON
 				 );

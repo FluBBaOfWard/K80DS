@@ -1,15 +1,23 @@
 # K80DS V0.3.8
 
 This is a Konami 80's Arcade emulator for the NDS.
-Iron Horse (& Scooter Shooter)
-It has no tile priority support.
-You should still be able to enjoy the game though. =)
+It has bugs in the sprite rendering and no tile priority support.
+If supports the following games:
+
+* Double Dribble
+* Finalizer
+* Green Beret / Rush'n Attack
+* Iron Horse
+* Jackal
+* Jail Break
+* Mr. Goemon
+* Scooter Shooter
 
 ## How to use
 
 1. Create a "acds" directory either in the root of your card or in the data
  directory (eg h:\data\acds). This is where settings and save files end up.
-2. Now put ironhors.zip into a folder where you have (arcade) roms.
+2. Now put you (zipped) games into a folder where you have (arcade) roms.
 3. Depending on your flashcart you might have to DLDI patch the emulator.
 
 When the emulator starts, you can either press L+R or tap on the screen to open
