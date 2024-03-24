@@ -161,17 +161,25 @@ gfxResetDDribble:
 	mov r3,#0x40000				;@ Length
 	bl convertTiles5885
 
+	ldr r0,=BG_64x32 | BG_MAP_BASE(4) | BG_TILE_BASE(4) | BG_PRIORITY(2)
+	mov r1,#REG_BASE
+	strh r0,[r1,#REG_BG1CNT]
+
+	mov r0,#128
+	ldr r1,=spriteCount
+	strb r0,[r1]
+
 	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------
 paletteInitDDribble:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r4-r9,lr}
 	mov r1,r0					;@ Gamma value = 0 -> 4
-	ldr r8,=k005885Palette
+	ldr r8,=k007327Palette
 	mov r7,#0xF8
 	ldr r6,=MAPPED_RGB
-	mov r4,#64					;@ Double Dribble rgb, r1=R, r2=G, r3=B
-noMap:							;@ Map 0rrrrrgggggbbbbb  ->  0bbbbbgggggrrrrr
+	mov r4,#64					;@ K007327 rgb
+noMap:							;@ Map 0bbbbbgggggrrrrr  ->  0bbbbbgggggrrrrr
 	ldrb r9,[r8],#1
 	ldrb r0,[r8],#1
 	orr r9,r0,r9,lsl#8
@@ -240,11 +248,10 @@ palTxLoop2:
 ;@----------------------------------------------------------------------------
 endFrameDDribble:
 ;@----------------------------------------------------------------------------
-	stmfd sp!,{koptr,lr}
-
 	ldr r0,=k005885_1
 	cmp koptr,r0
-	ldmfdeq sp!,{koptr,pc}
+	bxeq lr
+	stmfd sp!,{koptr,lr}
 
 	ldr koptr,=k005885_1
 	ldr r0,=scrollTemp2
@@ -277,14 +284,13 @@ endFrameDDribble:
 	str r0,[koptr,#sprMemAlloc]
 	cmp r1,#0
 	strbne r1,[koptr,#sprMemReload]
-	ldmfd sp!,{koptr,lr}
-	bx lr
+	ldmfd sp!,{koptr,pc}
 
 ;@----------------------------------------------------------------------------
 k005885_0_1R:				;@ I/O read (0x0000-0x005F / 0x0800-0x085F)
 ;@----------------------------------------------------------------------------
-	cmp addy,#0x0860
-	bpl paletteRead
+	cmp addy,#0x1800
+	bpl k007327Read
 	stmfd sp!,{addy,lr}
 	bic r1,addy,#0x0800
 	tst addy,#0x0800
@@ -295,8 +301,8 @@ k005885_0_1R:				;@ I/O read (0x0000-0x005F / 0x0800-0x085F)
 ;@----------------------------------------------------------------------------
 k005885_0_1W:				;@ I/O write  (0x0000-0x005F / 0x0800-0x085F)
 ;@----------------------------------------------------------------------------
-	cmp addy,#0x0860
-	bpl paletteWrite
+	cmp addy,#0x1800
+	bpl k007327Write
 	stmfd sp!,{addy,lr}
 	bic r1,addy,#0x0800
 	tst addy,#0x0800
@@ -304,27 +310,26 @@ k005885_0_1W:				;@ I/O write  (0x0000-0x005F / 0x0800-0x085F)
 	ldrne koptr,=k005885_1
 	bl k005885_W
 	ldmfd sp!,{addy,pc}
-;@----------------------------------------------------------------------------
-paletteRead:
-;@----------------------------------------------------------------------------
-	subs r1,addy,#0x1800
-	bmi empty_IO_R
-	cmp r1,#0x80
-	bpl empty_IO_R
-	ldr r2,=k005885Palette
-	ldrb r0,[r2,r1]
-	bx lr
 
 ;@----------------------------------------------------------------------------
-paletteWrite:
+k007327Read:				;@ 0x1800-0x187F
 ;@----------------------------------------------------------------------------
-	subs r1,addy,#0x1800
-	bmi empty_IO_W
+	bic r1,addy,#0xF800
+	cmp r1,#0x80
+	bpl empty_IO_R
+	ldr r2,=k007327Palette
+	ldrb r0,[r2,r1]
+	bx lr
+;@----------------------------------------------------------------------------
+k007327Write:				;@ 0x1800-0x187F
+;@----------------------------------------------------------------------------
+	bic r1,addy,#0xF800
 	cmp r1,#0x80
 	bpl empty_IO_W
-	ldr r2,=k005885Palette
+	ldr r2,=k007327Palette
 	strb r0,[r2,r1]
 	bx lr
+
 ;@----------------------------------------------------------------------------
 DDribbleIO_R:				;@ I/O read (CPU 1 0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
@@ -344,7 +349,6 @@ DDribbleIO_R:				;@ I/O read (CPU 1 0x2000-0x3FFF)
 	.long Input0_R				;@ 0x2801
 	.long Input1_R				;@ 0x2802
 	.long Input2_R				;@ 0x2803
-
 ;@----------------------------------------------------------------------------
 DDribbleIO_W:				;@ I/O write (CPU 1 0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
@@ -376,6 +380,7 @@ YM0_W:
 	ldr r1,=ym2203_0
 	bne ym2203DataW
 	b ym2203IndexW
+
 ;@----------------------------------------------------------------------------
 soundRamR:					;@ Ram read (0x0000-0x07FF / 0x2000-0x27FF)
 ;@----------------------------------------------------------------------------

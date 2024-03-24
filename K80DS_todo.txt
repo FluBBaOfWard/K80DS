@@ -1,12 +1,13 @@
 K80DS To do
 -----------------
 
-Add more games to this emulator
+Add more games to this emulator, Yie Ar Kung-Fu
 
 Misc:
 	Pad left and right to switch Tabs in GUI?
 
 Graphic:
+	Fix background for ddribble.
 	Fix tile decoding for Far West.
 
 CPU:
@@ -20,3 +21,36 @@ Sound:
 
 Games:
 
+
+module k007343
+(
+	input  A4,
+	input  A5,
+	input  A6,
+	input  A7,
+	input  A8_9,
+	input  A10,
+	input  A11,
+	input  A12,
+	input  A13,
+	input  WR,
+	input  OBJB,
+	input  GATEB,
+	input  GATECS,
+	output MGCS,
+	output SGCS,
+	output IOCS,
+	output CRCS
+);
+
+wire o18 = ~((A13 & A12) & ~A10 | ~A8_9);
+
+assign CRCS = ~(~A13 & A12 |
+               (~A13 & ~A12) & (A11 | A10 | A8_9 | A7 | (A6 & A5));
+assign IOCS = ~(~A13 & ~A12 & ~A11 & ~A10 & ~A8_9 & ~A7 & ~A6 & ~A5 & A4);
+assign MGCS = ~(IOCS & CRCS & ~GATEB & ~OBJB |
+              IOCS & CRCS & ~GATEB & o18);
+assign SGCS = ~(IOCS & CRCS & GATEB |
+              IOCS & CRCS & OBJB & ~WR |
+              IOCS & CRCS & OBJB & ~o18 |
+              IOCS & CRCS & ~WR & o18);

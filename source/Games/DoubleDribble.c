@@ -54,8 +54,8 @@ static int saveRam(void *state) {
 	size += sizeof(SHARED_RAM);
 	memcpy(state+size, SOUND_RAM, sizeof(SOUND_RAM));
 	size += sizeof(SOUND_RAM);
-	memcpy(state+size, k005885Palette, sizeof(k005885Palette));
-	size += sizeof(k005885Palette);
+	memcpy(state+size, k007327Palette, sizeof(k007327Palette));
+	size += sizeof(k007327Palette);
 	memcpy(state+size, &bankReg, 4);
 	size += 4;
 	return size;
@@ -67,8 +67,8 @@ static int loadRam(const void *state) {
 	size += sizeof(SHARED_RAM);
 	memcpy(SOUND_RAM, state+size, sizeof(SOUND_RAM));
 	size += sizeof(SOUND_RAM);
-	memcpy(k005885Palette, state+size, sizeof(k005885Palette));
-	size += sizeof(k005885Palette);
+	memcpy(k007327Palette, state+size, sizeof(k007327Palette));
+	size += sizeof(k007327Palette);
 	memcpy(&bankReg, state+size, 4);
 	size += 4;
 	updateBankReg();
@@ -76,7 +76,7 @@ static int loadRam(const void *state) {
 }
 
 int getRamSize() {
-	return sizeof(SHARED_RAM) + sizeof(SOUND_RAM) + sizeof(k005885Palette) + 4;
+	return sizeof(SHARED_RAM) + sizeof(SOUND_RAM) + sizeof(k007327Palette) + 4;
 }
 
 const ArcadeRom ddribbleRoms[17] = {

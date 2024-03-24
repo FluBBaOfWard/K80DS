@@ -11,13 +11,14 @@
 	.global gGfxMask
 	.global yStart
 	.global gfxChipType
+	.global spriteCount
 	.global paletteBank
 	.global k005849_0
 	.global k005885_0
 	.global k005885_1
 	.global GFX_RAM0
 	.global GFX_RAM1
-	.global k005885Palette
+	.global k007327Palette
 	.global Gfx1Bg
 	.global Gfx1Obj
 	.global Gfx2Bg
@@ -73,15 +74,12 @@
 	.section .text
 	.align 2
 ;@----------------------------------------------------------------------------
+scaleParms:					;@  NH     FH     NV     FV
+	.long OAM_BUFFER1,0x0000,0x0100,0xff01,0x0120,0xfee1
+;@----------------------------------------------------------------------------
 gfxInit:					;@ Called from machineInit
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-
-	cmp r0,#CHIP_K005849
-	ldr r1,=GFX_BG0CNT
-	ldr r0,=BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(2) | BG_PRIORITY(2)
-	orreq r0,r0,#BG_64x32
-	strh r0,[r1]
 
 	ldr r0,=OAM_BUFFER1			;@ No stray sprites please
 	mov r1,#0x200+SCREEN_HEIGHT
@@ -89,20 +87,19 @@ gfxInit:					;@ Called from machineInit
 	bl memset_
 	adr r0,scaleParms
 	bl setupSpriteScaling
+	mov r0,#OAM
+	ldr r1,=OAM_BUFFER1
+	mov r2,#0x400
+	bl memcpy
 
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------
-scaleParms:					;@  NH     FH     NV     FV
-	.long OAM_BUFFER1,0x0000,0x0100,0xff01,0x0120,0xfee1
-;@----------------------------------------------------------------------------
 gfxReset:					;@ Called with CPU reset, r0 = chip type
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
-	ldrb r1,gfxChipType
 	strb r0,gfxChipType
-	cmp r0,r1
-	blne gfxInit
+	bl gfxInit
 
 	ldr r0,=gfxState
 	mov r1,#6					;@ 6*4
@@ -117,6 +114,19 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	strh r0,[r1,#REG_WINOUT]
 
 	ldrb r0,gfxChipType
+	cmp r0,#CHIP_K005849
+	ldr r0,=BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(2) | BG_TILE_BASE(1) | BG_PRIORITY(2)
+	orreq r0,r0,#BG_64x32
+	strh r0,[r1,#REG_BG1CNT]
+
+	ldr r1,=GFX_BG0CNT
+	ldr r0,=BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(2) | BG_PRIORITY(2)
+	orreq r0,r0,#BG_64x32
+	strh r0,[r1]
+
+	moveq r1,#48
+	movne r1,#64
+	strb r1,spriteCount
 	ldr r1,gfxResetPtr
 	blx r1
 
@@ -124,10 +134,36 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	ldrb r0,[r0]
 	bl paletteInit				;@ Do palette mapping
 	bl paletteTxAll				;@ Transfer it
+	ldr r0,=GFX_RAM0
+	mov r1,#0x2000
+	bl memRnd
+	ldr r0,=GFX_RAM1
+	mov r1,#0x2000
+	bl memRnd
 
 	ldmfd sp!,{lr}
 endGfx:
 	bx lr
+
+rndSeed:
+	.long 0x800000
+;@----------------------------------------------------------------------------
+memRnd:						;@ r0 = dst, r1 = len
+;@----------------------------------------------------------------------------
+	ldr r3,rndSeed
+rndLoop0:
+	mov r2,#8
+rndLoop1:
+	movs r3,r3,lsr#1
+	eorcs r3,r3,#0xE10000
+	subs r2,r2,#1
+	bne rndLoop1
+	strb r3,[r0],#1
+	subs r1,r1,#1
+	bne rndLoop0
+	str r3,rndSeed
+	bx lr
+
 ;@----------------------------------------------------------------------------
 bgInit:					;@ BG tiles, r0=chip type
 ;@----------------------------------------------------------------------------
@@ -267,10 +303,8 @@ scrolLoop2:
 	ldr r2,dmaOamBuffer			;@ DMA3 src, OAM transfer:
 	mov r3,#OAM					;@ DMA3 dst
 	mov r4,#0x84000000			;@ noIRQ 32bit incsrc incdst
-	ldrb r7,gfxChipType
-	cmp r7,#CHIP_K005849
-	orreq r4,r4,#48*2			;@ 48 sprites * 2 longwords
-	orrne r4,r4,#64*2			;@ 64 sprites * 2 longwords
+	ldrb r0,spriteCount
+	orr r4,r4,r0,lsl#1			;@ 48, 64 or 128 sprites * 2 longwords
 	stmia r1,{r2-r4}			;@ DMA3 go
 
 	ldr r2,=EMUPALBUFF			;@ DMA3 src, Palette transfer:
@@ -279,6 +313,7 @@ scrolLoop2:
 	orr r4,r4,#0x100			;@ 256 words (1024 bytes)
 	stmia r1,{r2-r4}			;@ DMA3 go
 
+//	ldrb r7,gfxChipType
 //	cmp r7,#CHIP_K005849
 	ldrh r0,GFX_BG0CNT
 //	ldrne r0,=0x000A
@@ -477,7 +512,9 @@ paletteBank:
 	.long 0
 gfxChipType:
 	.byte CHIP_K005885			;@ K005849 or K005885
-	.space 3
+spriteCount:
+	.byte 64
+	.space 2
 
 	.section .bss
 	.align 2
@@ -495,8 +532,8 @@ MAPPED_RGB:
 	.space 0x400				;@ 0x400
 EMUPALBUFF:
 	.space 0x400
-k005885Palette:
-	.space 0x400
+k007327Palette:
+	.space 0x1000
 GFX_RAM0:
 	.space 0x2000
 	.space SPRBLOCKCOUNT*4

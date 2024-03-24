@@ -50,8 +50,8 @@ int saveRam(void *state) {
 	int size = 0;
 	memcpy(state+size, SHARED_RAM, sizeof(SHARED_RAM));
 	size += sizeof(SHARED_RAM);
-	memcpy(state+size, k005885Palette, sizeof(k005885Palette));
-	size += sizeof(k005885Palette);
+	memcpy(state+size, k007327Palette, sizeof(k007327Palette));
+	size += sizeof(k007327Palette);
 	memcpy(state+size, &chipBank, 4);
 	size += 4;
 	return size;
@@ -61,8 +61,8 @@ int loadRam(const void *state) {
 	int size = 0;
 	memcpy(SHARED_RAM, state+size, sizeof(SHARED_RAM));
 	size += sizeof(SHARED_RAM);
-	memcpy(k005885Palette, state+size, sizeof(k005885Palette));
-	size += sizeof(k005885Palette);
+	memcpy(k007327Palette, state+size, sizeof(k007327Palette));
+	size += sizeof(k007327Palette);
 	memcpy(&chipBank, state+size, 4);
 	size += 4;
 	jackalMapper(chipBank);
@@ -70,7 +70,7 @@ int loadRam(const void *state) {
 }
 
 int getRamSize() {
-	return sizeof(SHARED_RAM) + sizeof(k005885Palette) + 4;
+	return sizeof(SHARED_RAM) + sizeof(k007327Palette) + 4;
 }
 
 const ArcadeRom jackalRoms[13] = {

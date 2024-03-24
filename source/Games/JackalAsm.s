@@ -64,7 +64,7 @@ JackalMapping:						;@ Jackal
 JackalSubMapping:					;@ Jackal sub cpu
 	.long emptySpace, empty_R, empty_W							;@ Empty
 	.long emptySpace, YM0_R, YM0_W								;@ Sound
-	.long k005885Palette, paletteRead, paletteWrite				;@ Palette
+	.long k007327Palette, k007327Read, k007327Write				;@ Palette
 	.long SHARED_RAM, mem6809R3, sharedRAM_W					;@ RAM
 	.long 0, mem6809R4, rom_W									;@ ROM
 	.long 1, mem6809R5, rom_W									;@ ROM
@@ -80,6 +80,8 @@ gfxResetJackal:					;@ In r0=ChipType
 	mov r1,#0
 	mov r2,#0
 	bl k005885Reset1
+	ldr r0,=BG_GFX+0x8000		;@ Tile ram 0.5
+	str r0,[koptr,#bgrGfxDest]
 	ldr r0,=Gfx2Bg				;@ Src bg tileset
 	str r0,[koptr,#bgrRomBase]
 	ldr r0,=Gfx2Obj+0x20000		;@ Src spr tileset
@@ -99,6 +101,10 @@ gfxResetJackal:					;@ In r0=ChipType
 	ldr r1,=GFX_BG0CNT
 	ldr r0,=BG_32x32 | BG_MAP_BASE(0) | BG_COLOR_256 | BG_TILE_BASE(2) | BG_PRIORITY(2)
 	strh r0,[r1]
+
+	mov r0,#128
+	ldr r1,=spriteCount
+	strb r0,[r1]
 
 	ldmfd sp!,{r0}
 	cmp r0,#CHIP_K005885B
@@ -251,11 +257,11 @@ paletteInitJackal:		;@ r0-r3 modified.
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r4-r9,lr}
 	mov r1,r0					;@ Gamma value = 0 -> 4
-	ldr r8,=k005885Palette
+	ldr r8,=k007327Palette
 	mov r7,#0xF8
 	ldr r6,=MAPPED_RGB
-	mov r4,#0x200				;@ Jackal rgb, r1=R, r2=G, r3=B
-noMap:							;@ Map 0rrrrrgggggbbbbb  ->  0bbbbbgggggrrrrr
+	mov r4,#0x200				;@ K007327 rgb
+noMap:							;@ Map 0bbbbbgggggrrrrr  ->  0bbbbbgggggrrrrr
 	ldrb r9,[r8],#1
 	ldrb r0,[r8],#1
 	orr r9,r9,r0,lsl#8
@@ -336,8 +342,7 @@ endFrameJackal:
 	cmp r1,#0
 	strbne r1,[koptr,#sprMemReload]
 
-	ldmfd sp!,{koptr,lr}
-	bx lr
+	ldmfd sp!,{koptr,pc}
 
 ;@----------------------------------------------------------------------------
 k005885Ram_0_1R:			;@ Ram read (0x2000-0x3FFF)
@@ -345,7 +350,6 @@ k005885Ram_0_1R:			;@ Ram read (0x2000-0x3FFF)
 	ldrb r1,chipBank
 	tst addy,#0x1000
 	biceq r1,r1,#0x08
-	bicne r1,r1,#0x10
 	tst r1,#0x18
 	beq k005885Ram_0R
 	b k005885Ram_1R
@@ -365,10 +369,16 @@ k005885Ram_0_1W:			;@ Ram write (0x2000-0x3FFF)
 	ldrb r1,chipBank
 	tst addy,#0x1000
 	biceq r1,r1,#0x08
-	bicne r1,r1,#0x10
 	tst r1,#0x18
-	beq k005885Ram_0W
-	b k005885Ram_1W
+	stmfd sp!,{r0,addy,lr}
+	bleq k005885Ram_0W
+	ldmfd sp!,{r0,addy,lr}
+	ldrb r1,chipBank
+	tst addy,#0x1000
+	orreq r1,r1,#0x10
+	tst r1,#0x18
+	bne k005885Ram_1W
+	bx lr
 ;@----------------------------------------------------------------------------
 k005885_0_1W:				;@ I/O write  (0x0000-0x005F)
 ;@----------------------------------------------------------------------------
@@ -383,33 +393,24 @@ k005885_0_1W:				;@ I/O write  (0x0000-0x005F)
 	bl k005885_W
 	ldmfd sp!,{r0,addy,pc}
 ;@----------------------------------------------------------------------------
-paletteRead:
+k007327Read:				;@ (0x4000-0x5FFF)
 ;@----------------------------------------------------------------------------
-	subs r1,addy,#0x4000
-	bmi empty_IO_R
-	cmp r1,#0x400
-	bpl empty_IO_R
-	ldr r2,=k005885Palette
+	bic r1,addy,#0xFF000
+	ldr r2,=k007327Palette
 	ldrb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
-paletteWrite:
+k007327Write:				;@ (0x4000-0x5FFF)
 ;@----------------------------------------------------------------------------
-	subs r1,addy,#0x4000
-	bmi empty_W
-	cmp r1,#0x400
-	bpl empty_W
-	ldr r2,=k005885Palette
+	bic r1,addy,#0xFF000
+	ldr r2,=k007327Palette
 	strb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
-YM0_R:
+YM0_R:						;@ (0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
-	bic r1,r12,#0x0001
-	cmp r1,#0x2000
-	bne empty_IO_R
 	tst r12,#1
 //	ldr ymptr,=YM2151_0
 	mov r0,#0
@@ -419,11 +420,8 @@ YM0_R:
 	str r0,status
 	bx lr
 ;@----------------------------------------------------------------------------
-YM0_W:
+YM0_W:						;@ (0x2000-0x3FFF)
 ;@----------------------------------------------------------------------------
-	bic r1,r12,#0x0001
-	cmp r1,#0x2000
-	bne empty_IO_W
 	tst r12,#1
 //	ldr ymptr,=YM2151_0
 //	bne YM2151DataW
