@@ -115,7 +115,7 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 
 	ldrb r0,gfxChipType
 	cmp r0,#CHIP_K005849
-	ldr r0,=BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(2) | BG_TILE_BASE(1) | BG_PRIORITY(2)
+	ldr r0,=BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(2) | BG_TILE_BASE(1) | BG_PRIORITY(3)
 	orreq r0,r0,#BG_64x32
 	strh r0,[r1,#REG_BG1CNT]
 
@@ -140,6 +140,10 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	ldr r0,=GFX_RAM1
 	mov r1,#0x2000
 	bl memRnd
+	ldr r0,=scrollTemp2
+	mov r1,#0x18
+	mov r2,#0x100
+	bl memset_
 
 	ldmfd sp!,{lr}
 endGfx:
@@ -269,16 +273,17 @@ vblIrqHandler:
 	str r0,gFlicker
 	addpl r6,r6,r6,lsl#16
 
-	ldr r5,=SCROLLBUFF
-	mov r4,r5
+	ldr r4,=SCROLLBUFF
 
 	ldr r3,=scrollTemp
+	ldr r5,=scrollTemp2
 	mov r12,#SCREEN_HEIGHT
 scrolLoop2:
 	ldr r0,[r3,r8,lsl#2]
+	ldr r2,[r5,r8,lsl#2]
 	add r0,r0,r7
-	mov r1,r0
-	add r2,r7,#0x18				;@ Second bg layer
+	mov r1,r0					;@ Backdrop color
+	add r2,r2,r7				;@ Second bg layer
 	stmia r4!,{r0-r2}
 	adds r6,r6,r6,lsl#16
 	addcs r7,r7,#0x10000
@@ -291,7 +296,7 @@ scrolLoop2:
 	strh r6,[r6,#REG_DMA0CNT_H]	;@ DMA0 stop
 
 	add r0,r6,#REG_DMA0SAD
-	mov r1,r5					;@ Setup DMA buffer for scrolling:
+	ldr r1,=SCROLLBUFF			;@ Setup DMA buffer for scrolling:
 	ldmia r1!,{r3-r5}			;@ Read
 	add r2,r6,#REG_BG0HOFS		;@ DMA0 always goes here
 	stmia r2,{r3-r5}			;@ Set 1st value manually, HBL is AFTER 1st line
@@ -319,9 +324,9 @@ scrolLoop2:
 //	ldrne r0,=0x000A
 	strh r0,[r6,#REG_BG0CNT]
 
-	mov r0,#0x0017
+	mov r0,#0x0013
 	tst r9,#0x04				;@ Is left/right overlay on?
-	biceq r0,#0x0004
+	orrne r0,#0x00000004
 	orrne r0,#0x00040000
 	ldrb r1,gGfxMask
 	bic r0,r0,r1

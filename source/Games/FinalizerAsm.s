@@ -1,5 +1,6 @@
 #ifdef __arm__
 
+#include "../Shared/nds_asm.h"
 #include "../K005849/K005849.i"
 #include "../ARM6809/ARM6809.i"
 
@@ -50,6 +51,10 @@ gfxResetFinalizer:
 	ldrb r0,[r0]
 	bl k005849SetType
 	bl bgInit
+
+	ldr r0,=BG_32x32 | BG_MAP_BASE(1) | BG_TILE_BASE(2) | BG_PRIORITY(0)
+	mov r1,#REG_BASE
+	strh r0,[r1,#REG_BG2CNT]
 
 	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------

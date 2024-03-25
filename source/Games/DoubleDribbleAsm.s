@@ -161,9 +161,13 @@ gfxResetDDribble:
 	mov r3,#0x40000				;@ Length
 	bl convertTiles5885
 
+	ldr r1,=GFX_BG0CNT
+	ldr r0,=BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(2) | BG_PRIORITY(0)
+	strh r0,[r1]
+
 	ldr r0,=BG_64x32 | BG_MAP_BASE(4) | BG_TILE_BASE(4) | BG_PRIORITY(2)
 	mov r1,#REG_BASE
-	strh r0,[r1,#REG_BG1CNT]
+	strh r0,[r1,#REG_BG2CNT]
 
 	mov r0,#128
 	ldr r1,=spriteCount
