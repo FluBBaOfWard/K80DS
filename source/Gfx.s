@@ -12,6 +12,7 @@
 	.global yStart
 	.global gfxChipType
 	.global spriteCount
+	.global enabledVideo
 	.global paletteBank
 	.global k005849_0
 	.global k005885_0
@@ -127,6 +128,8 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	moveq r1,#48
 	movne r1,#64
 	strb r1,spriteCount
+	mov r1,#0x13
+	strb r1,enabledVideo
 	ldr r1,gfxResetPtr
 	blx r1
 
@@ -324,7 +327,7 @@ scrolLoop2:
 //	ldrne r0,=0x000A
 	strh r0,[r6,#REG_BG0CNT]
 
-	mov r0,#0x0013
+	ldrb r0,enabledVideo
 	tst r9,#0x04				;@ Is left/right overlay on?
 	orrne r0,#0x00000004
 	orrne r0,#0x00040000
@@ -519,7 +522,9 @@ gfxChipType:
 	.byte CHIP_K005885			;@ K005849 or K005885
 spriteCount:
 	.byte 64
-	.space 2
+enabledVideo:
+	.byte 0x13
+	.space 1
 
 	.section .bss
 	.align 2

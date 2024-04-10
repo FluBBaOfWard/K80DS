@@ -1,13 +1,12 @@
 K80DS To do
 -----------------
 
-Add more games to this emulator, Yie Ar Kung-Fu
+Add more games to this emulator, Yie Ar Kung-Fu?
 
 Misc:
 	Pad left and right to switch Tabs in GUI?
 
 Graphic:
-	Fix background for ddribble.
 	Fix tile decoding for Far West.
 
 CPU:

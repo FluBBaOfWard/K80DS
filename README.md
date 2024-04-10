@@ -88,6 +88,6 @@ The MAME team for MAME drivers.
 
 Fredrik Ahlström
 
-Twitter @TheRealFluBBa
+X/Twitter @TheRealFluBBa
 
-<http://www.github.com/FluBBaOfWard>
+<https://www.github.com/FluBBaOfWard>

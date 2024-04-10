@@ -172,6 +172,9 @@ gfxResetDDribble:
 	mov r0,#128
 	ldr r1,=spriteCount
 	strb r0,[r1]
+	mov r0,#0x17
+	ldr r1,=enabledVideo
+	strb r0,[r1]
 
 	ldmfd sp!,{pc}
 ;@----------------------------------------------------------------------------

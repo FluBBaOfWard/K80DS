@@ -105,6 +105,9 @@ gfxResetJackal:					;@ In r0=ChipType
 	mov r0,#128
 	ldr r1,=spriteCount
 	strb r0,[r1]
+	mov r0,#0x11
+	ldr r1,=enabledVideo
+	strb r0,[r1]
 
 	ldmfd sp!,{r0}
 	cmp r0,#CHIP_K005885B
