@@ -42,6 +42,8 @@ const ArcadeGame allGames[GAME_COUNT] = {
 	AC_GAME("jackalj",   "Tokushu Butai Jackal (Japan, 8-way Joystick)", jackaljRoms)
 	AC_GAME("jackalbl",  "Jackal (bootleg, Rotary Joystick)", jackalblRoms)
 	AC_GAME("topgunbl",  "Top Gunner (bootleg, Rotary Joystick)", topgunblRoms)
+	AC_GAME("yiear",     "Yie Ar Kung-Fu (program code I)", yiearRoms)
+	AC_GAME("yiear2",    "Yie Ar Kung-Fu (program code G)", yiear2Roms)
 };
 
 //---------------------------------------------------------------------------------

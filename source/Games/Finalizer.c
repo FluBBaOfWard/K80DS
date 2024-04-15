@@ -3,32 +3,33 @@
 #include "Finalizer.h"
 #include "../Cart.h"
 #include "../Gfx.h"
-//#include "../SN76496/SN76496.h"
 #include "../cpu.h"
+#include "../Sound.h"
+#include "../SN76496/SN76496.h"
 #include "../K005849/K005849.h"
 #include "../ARM6809/ARM6809.h"
 
 
 int fiPackState(void *statePtr) {
 	int size = 0;
-//	size += sn76496SaveState(statePtr+size, &sn76496_0);
 	size += k005849SaveState(statePtr+size, &k005885_0);
 	size += m6809SaveState(statePtr+size, &m6809CPU0);
+	size += sn76496SaveState(statePtr+size, &sn76496_0);
 	return size;
 }
 
 void fiUnpackState(const void *statePtr) {
 	int size = 0;
-//	size += sn76496LoadState(&sn76496_0, statePtr+size);
 	size += k005849LoadState(&k005885_0, statePtr+size);
-	m6809LoadState(&m6809CPU0, statePtr+size);
+	size += m6809LoadState(&m6809CPU0, statePtr+size);
+	sn76496LoadState(&sn76496_0, statePtr+size);
 }
 
 int fiGetStateSize() {
 	int size = 0;
-//	size += sn76496GetStateSize();
 	size += k005849GetStateSize();
 	size += m6809GetStateSize();
+	size += sn76496GetStateSize();
 	return size;
 }
 

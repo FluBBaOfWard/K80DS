@@ -40,6 +40,16 @@
 		9C50820F25D45A9B00A8E1BA /* Cart.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Cart.s; sourceTree = "<group>"; };
 		9C50821025D45A9B00A8E1BA /* Gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gui.h; sourceTree = "<group>"; };
 		9C50821125D45A9B00A8E1BA /* Gfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gfx.h; sourceTree = "<group>"; };
+		9C5443A32BC84585003BB3BF /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		9C5443A42BC84585003BB3BF /* YieArVideo_todo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = YieArVideo_todo.txt; sourceTree = "<group>"; };
+		9C5443A52BC84585003BB3BF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9C5443A62BC84585003BB3BF /* YieArVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YieArVideo.h; sourceTree = "<group>"; };
+		9C5443A72BC84585003BB3BF /* YieArVideo.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = YieArVideo.s; sourceTree = "<group>"; };
+		9C5443A82BC84585003BB3BF /* YieArVideo.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = YieArVideo.i; sourceTree = "<group>"; };
+		9C5443A92BC84585003BB3BF /* History.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = History.txt; sourceTree = "<group>"; };
+		9C5443AA2BC845E4003BB3BF /* YieAr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = YieAr.c; sourceTree = "<group>"; };
+		9C5443AB2BC845E4003BB3BF /* YieAr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YieAr.h; sourceTree = "<group>"; };
+		9C5443AC2BC846E3003BB3BF /* YieArAsm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = YieArAsm.s; sourceTree = "<group>"; };
 		9C7BB94A25FCD73C00EA9C9C /* EmuFont.grit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EmuFont.grit; sourceTree = "<group>"; };
 		9C7BB94B25FCD73C00EA9C9C /* EmuFont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EmuFont.png; sourceTree = "<group>"; };
 		9C7BB95C25FFF08400EA9C9C /* IronHorse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IronHorse.c; sourceTree = "<group>"; };
@@ -176,6 +186,20 @@
 			path = ARMZ80;
 			sourceTree = "<group>";
 		};
+		9C5443A22BC84585003BB3BF /* YieArVideo */ = {
+			isa = PBXGroup;
+			children = (
+				9C5443A42BC84585003BB3BF /* YieArVideo_todo.txt */,
+				9C5443A52BC84585003BB3BF /* README.md */,
+				9C5443A92BC84585003BB3BF /* History.txt */,
+				9C5443A32BC84585003BB3BF /* Version.h */,
+				9C5443A62BC84585003BB3BF /* YieArVideo.h */,
+				9C5443A82BC84585003BB3BF /* YieArVideo.i */,
+				9C5443A72BC84585003BB3BF /* YieArVideo.s */,
+			);
+			path = YieArVideo;
+			sourceTree = "<group>";
+		};
 		9C7BB94925FCD73C00EA9C9C /* graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +271,9 @@
 				9CB419EF2B9F8B4A00CBF5F4 /* JailBreak.h */,
 				9CB419F02B9F8B4A00CBF5F4 /* JailBreak.c */,
 				9CB419F12BA0B8A100CBF5F4 /* JailBreakAsm.s */,
+				9C5443AB2BC845E4003BB3BF /* YieAr.h */,
+				9C5443AA2BC845E4003BB3BF /* YieAr.c */,
+				9C5443AC2BC846E3003BB3BF /* YieArAsm.s */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -358,6 +385,7 @@
 				A47305831D577EF2004F6525 /* ARM6809 */,
 				9C5081E425D314C900A8E1BA /* ARMZ80 */,
 				A473057D1D575449004F6525 /* K005849 */,
+				9C5443A22BC84585003BB3BF /* YieArVideo */,
 				9CB419FD2BACA87200CBF5F4 /* YM2151 */,
 				A40F3DBB1D8078130025AAD3 /* YM2203 */,
 				9CE2E0732B85EE4900B19B2B /* SN76496 */,

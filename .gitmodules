@@ -22,3 +22,6 @@
 [submodule "source/YM2151"]
 	path = source/YM2151
 	url = https://github.com/FluBBaOfWard/YM2151.git
+[submodule "source/YieArVideo"]
+	path = source/YieArVideo
+	url = https://github.com/FluBBaOfWard/YieArVideo.git

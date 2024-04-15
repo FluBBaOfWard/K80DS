@@ -24,6 +24,7 @@
 	.global gbRunFrame
 	.global ihRunFrame
 	.global jkRunFrame
+	.global yaRunFrame
 	.global cpu01SetFIRQ
 	.global cpu012SetIRQ
 	.global cpu01SetNMI
@@ -246,6 +247,27 @@ jkFrameLoop:
 	bl paletteInit
 	bl paletteTxAll
 
+	ldmfd sp!,{pc}
+
+;@----------------------------------------------------------------------------
+yaRunFrame:					;@ Yie Ar Kung-Fu
+;@----------------------------------------------------------------------------
+	stmfd sp!,{lr}
+	ldr m6809ptr,=m6809CPU0
+	add r0,m6809ptr,#m6809Regs
+	ldmia r0,{m6809f-m6809pc,m6809sp}	;@ Restore M6809 state
+;@----------------------------------------------------------------------------
+yaFrameLoop:
+;@----------------------------------------------------------------------------
+	mov r0,#CYCLE_PSL/2
+	bl m6809RunXCycles
+	ldr koptr,=yieAr_0
+	bl yiearDoScanline
+	cmp r0,#0
+	bne yaFrameLoop
+;@----------------------------------------------------------------------------
+	add r0,m6809ptr,#m6809Regs
+	stmia r0,{m6809f-m6809pc,m6809sp}	;@ Save M6809 state
 	ldmfd sp!,{pc}
 
 ;@----------------------------------------------------------------------------

@@ -11,10 +11,11 @@ extern "C" {
 #include "Games/IronHorse.h"
 #include "Games/Jackal.h"
 #include "Games/JailBreak.h"
+#include "Games/YieAr.h"
 
 #define FILEEXTENSIONS ".zip"
 
-#define GAME_COUNT (23)
+#define GAME_COUNT (25)
 
 extern const ArcadeGame allGames[GAME_COUNT];
 

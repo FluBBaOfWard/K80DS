@@ -4,19 +4,21 @@
 #include "../Cart.h"
 #include "../Gfx.h"
 #include "../cpu.h"
+#include "../Sound.h"
 #include "../K005849/K005849.h"
 #include "../ARMZ80/ARMZ80.h"
 #include "../ARM6809/ARM6809.h"
+#include "../YM2203/YM2203.h"
 
 
 int packState(void *statePtr) {
 	int size = 0;
 	memcpy(statePtr+size, &paletteBank, 4);
 	size += 4;
-//	size += ym2203SaveState(statePtr+size, &ym2203_0);
 	size += k005849SaveState(statePtr+size, &k005885_0);
 	size += Z80SaveState(statePtr+size, &Z80OpTable);
 	size += m6809SaveState(statePtr+size, &m6809CPU0);
+//	size += ym2203SaveState(statePtr+size, &ym2203_0);
 	return size;
 }
 
@@ -24,20 +26,20 @@ void unpackState(const void *statePtr) {
 	int size = 0;
 	memcpy(&paletteBank, statePtr+size, 4);
 	size += 4;
-//	size += ym2203LoadState(&ym2203_0, statePtr+size);
 	size += k005849LoadState(&k005885_0, statePtr+size);
 	size += Z80LoadState(&Z80OpTable, statePtr+size);
-	m6809LoadState(&m6809CPU0, statePtr+size);
+	size += m6809LoadState(&m6809CPU0, statePtr+size);
+//	ym2203LoadState(&ym2203_0, statePtr+size);
 	paletteTxAll();
 }
 
 int getStateSize() {
 	int size = 0;
 	size += 4;
-//	size += ym2203GetStateSize();
 	size += k005849GetStateSize();
 	size += Z80GetStateSize();
 	size += m6809GetStateSize();
+//	size += ym2203GetStateSize();
 	return size;
 }
 

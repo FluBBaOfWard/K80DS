@@ -120,6 +120,9 @@ gfxReset:					;@ Called with CPU reset, r0 = chip type
 	orreq r0,r0,#BG_64x32
 	strh r0,[r1,#REG_BG1CNT]
 
+	ldr r0,=DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_SPR_ACTIVE | DISPLAY_WIN0_ON
+	strh r0,[r1,#REG_DISPCNT]
+
 	ldr r1,=GFX_BG0CNT
 	ldr r0,=BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(0) | BG_TILE_BASE(2) | BG_PRIORITY(2)
 	orreq r0,r0,#BG_64x32

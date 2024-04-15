@@ -14,6 +14,8 @@
 	.global ScooterShooterIO_W
 	.global JailBreakIO_R
 	.global JailBreakIO_W
+	.global YieArIO_R
+	.global YieArIO_W
 	.global Z80In
 	.global Z80Out
 	.global convertInput
@@ -342,6 +344,46 @@ ScooterShooterIO_W:			;@ I/O write 0x2000-0x3FFF
 	cmp addy,#0x3300
 	beq watchDogW
 	b k005849_0W
+
+;@----------------------------------------------------------------------------
+YieArIO_R:					;@ I/O read		0x4000-0x4FFF
+;@----------------------------------------------------------------------------
+	tst addy,#0x1000
+	bne mem6809R2
+	cmp addy,#0x4C00
+	beq Input4_R
+	cmp addy,#0x4D00
+	beq Input5_R
+	bic r2,addy,#3
+	cmp r2,#0x4E00
+	and r2,addy,#3
+	ldreq pc,[pc,r2,lsl#2]
+;@---------------------------
+	b empty_IO_R
+;@io_read_tbl
+	.long Input2_R				;@ 0x4E00
+	.long Input0_R				;@ 0x4E01
+	.long Input1_R				;@ 0x4E02
+	.long Input3_R				;@ 0x4E03
+
+;@----------------------------------------------------------------------------
+YieArIO_W:					;@I/O write		0x4000-0x4FFF
+;@----------------------------------------------------------------------------
+	tst addy,#0x1000
+	bne sharedRAM_W
+	cmp addy,#0x4800			;@ Sound latch
+	beq SN_0_W
+	cmp addy,#0x4900			;@ Make sound chip read value.
+	bxeq lr
+	cmp addy,#0x4A00			;@ VLM ctrl
+	beq VLM_W
+	cmp addy,#0x4B00			;@ VLM data
+	beq VLMData_W
+	cmp addy,#0x4000
+	beq yieAr_0W
+	cmp addy,#0x4F00
+	beq watchDogW
+	b empty_IO_W
 
 ;@----------------------------------------------------------------------------
 setSoundCpuIrq:

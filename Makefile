@@ -30,6 +30,7 @@ SOURCES		:=	source	\
 				source/ARM6809 \
 				source/ARMZ80 \
 				source/K005849 \
+				source/YieArVideo \
 				source/YM2151 \
 				source/YM2203 \
 				source/YM2203/AY38910 \

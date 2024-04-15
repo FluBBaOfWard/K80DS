@@ -83,7 +83,7 @@ endCmd:
 ;@----------------------------------------------------------------------------
 setupMachine:					;@ r0=num number
 ;@----------------------------------------------------------------------------
-	cmp r0,#23
+	cmp r0,#25
 	bxpl lr
 
 	adr r1,romNum2Machine
@@ -117,14 +117,14 @@ setupMachine:					;@ r0=num number
 
 ;@----------------------------------------------------------------------------
 romNum2Machine:
-	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 6, 6
+	.byte 0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7
 ;@----------------------------------------------------------------------------
 romNum2ChipType:
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005849, CHIP_K005885
 	.byte CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005885, CHIP_K005849
 	.byte CHIP_K005849, CHIP_K005849, CHIP_K005885, CHIP_K005885, CHIP_K005885
-	.byte CHIP_K005885, CHIP_K005885B, CHIP_K005885B
+	.byte CHIP_K005885, CHIP_K005885B, CHIP_K005885B, 3, 3
 	.align 2
 ;@----------------------------------------------------------------------------
 machineFunctions:
@@ -142,6 +142,8 @@ machineFunctions:
 	.long paletteTxAllFinalizer, jBreakMix, endFrameDefault, 0
 	.long doCpuMappingJackal, jkRunFrame, gfxResetJackal, paletteInitJackal
 	.long paletteTxAllJackal, gbMixer, endFrameJackal, 0
+	.long doCpuMappingYieAr, yaRunFrame, gfxResetYieAr, paletteInitYieAr
+	.long paletteTxAllYieAr, jBreakMix, endFrameYieAr, 0
 
 ;@----------------------------------------------------------------------------
 doZ80MainCpuMapping:
