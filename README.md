@@ -12,6 +12,7 @@ vertical games. It supports the following games:
 * Jail Break
 * Mr. Goemon
 * Scooter Shooter
+* Yie Ar Kung-Fu
 
 ## How to use
 
