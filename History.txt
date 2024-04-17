@@ -2,6 +2,9 @@ K80DS revision history
 -=-=-=-=-=-=-=-=-=-=-=-
 
 
+V0.3.9 - 2024-04-17 (FluBBa)
+	Fixed bug in reset cpu.
+
 V0.3.8 - 2024-04-16 (FluBBa)
 	Renamed emulator from IronHorseDS to K80DS.
 	Added Green Beret / Mr. Goemon.
