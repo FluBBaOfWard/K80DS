@@ -13,6 +13,7 @@
 		9C23CA9C29E5EF2E007DD39E /* ArcadeRoms.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ArcadeRoms.c; sourceTree = "<group>"; };
 		9C294956260F55FC00EDA7C9 /* ArcadeRoms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArcadeRoms.h; sourceTree = "<group>"; };
 		9C294957260F55FC00EDA7C9 /* EmubaseAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmubaseAC.h; sourceTree = "<group>"; };
+		9C2DB3B12C91F31400467503 /* EmuMenu.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = EmuMenu.i; sourceTree = "<group>"; };
 		9C3D5ADD25E3F2ED00E8CD56 /* ARMZ80.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMZ80.h; sourceTree = "<group>"; };
 		9C3D5ADE25E3F2ED00E8CD56 /* ARMZ80mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMZ80mac.h; sourceTree = "<group>"; };
 		9C3D5ADF25E3F2ED00E8CD56 /* ARMZ80.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c.preprocessed; path = ARMZ80.i; sourceTree = "<group>"; };
@@ -364,6 +365,7 @@
 				9CBEE0F626F0F1B50095347A /* README.md */,
 				9C8F33EE248ACA2E00996E5A /* nds_asm.h */,
 				9CBEE0F726F0F1B50095347A /* EmuSettings.h */,
+				9C2DB3B12C91F31400467503 /* EmuMenu.i */,
 				A47F092B20863AF5004E1DA6 /* EmuMenu.h */,
 				A47F092C20863AF5004E1DA6 /* EmuMenu.c */,
 				A4D0E10B208930D100401463 /* FileHelper.h */,
