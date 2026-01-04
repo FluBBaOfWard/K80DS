@@ -529,7 +529,11 @@ enabledVideo:
 	.byte 0x13
 	.space 1
 
+#ifdef GBA
+	.section .sbss				;@ This is EWRAM on GBA with devkitARM
+#else
 	.section .bss
+#endif
 	.align 2
 scrollTemp:
 	.space 0x100*4

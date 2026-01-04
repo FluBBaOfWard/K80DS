@@ -1,7 +1,6 @@
 K80DS To do
 -----------------
 
-Fix loading of roms, see jailbrek.zip
 Add more games to this emulator?
 
 Misc:
@@ -14,7 +13,7 @@ CPU:
 	Timing?
 
 GUI:
-	Show Coin counter.
+	Show...
 
 Sound:
 	Fix YM2203 emulation.

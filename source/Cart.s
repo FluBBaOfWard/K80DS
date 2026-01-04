@@ -249,7 +249,11 @@ promBase:
 vlmBase:
 	.long 0
 
+#ifdef GBA
+	.section .sbss				;@ This is EWRAM on GBA with devkitARM
+#else
 	.section .bss
+#endif
 	.align 2
 SHARED_RAM:
 	.space 0x2000

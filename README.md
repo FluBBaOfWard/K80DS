@@ -1,4 +1,4 @@
-# K80DS V0.3.9
+# K80DS V0.4.0
 
 This is a Konami 80's Arcade emulator for the NDS.
 It has bugs in the sprite rendering, no tile priority support & can't rotate
@@ -89,6 +89,8 @@ The MAME team for MAME drivers.
 
 Fredrik Ahlström
 
-X/Twitter @TheRealFluBBa
+<https://bsky.app/profile/therealflubba.bsky.social>
 
 <https://www.github.com/FluBBaOfWard>
+
+X/Twitter @TheRealFluBBa
