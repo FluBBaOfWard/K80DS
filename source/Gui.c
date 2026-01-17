@@ -15,7 +15,7 @@
 #include "K005849/Version.h"
 #include "YM2203/Version.h"
 
-#define EMUVERSION "V0.4.0 2026-01-12"
+#define EMUVERSION "V0.4.0 2026-01-17"
 
 static void scalingSet(void);
 static const char *getScalingText(void);
@@ -146,7 +146,6 @@ char *const singleTxt[] = {"Single", "Dual"};
 
 
 void setupGUI() {
-	emuSettings = AUTOPAUSE_EMULATION;
 	keysSetRepeat(25, 4);	// delay, repeat.
 	menu1.itemCount = ARRSIZE(fileItems) - (enableExit?0:1);
 	openMenu();

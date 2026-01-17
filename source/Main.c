@@ -45,7 +45,7 @@ static const u8 guiPalette[] = {
 //---------------------------------------------------------------------------------
 void myVblank(void) {
 //---------------------------------------------------------------------------------
-	vBlankOverflow = TRUE;
+	vBlankOverflow = true;
 //	DC_FlushRange(EMUPALBUFF, 0x400);
 	vblIrqHandler();
 }
@@ -57,15 +57,17 @@ int main(int argc, char **argv) {
 	if (argc > 1) {
 		enableExit = true;
 	}
-	setupGraphics();
-	machineInit();
 
+	setupGraphics();
 	setupStream();
 	irqSet(IRQ_VBLANK, myVblank);
 	setupGUI();
 	getInput();
-	if (initFileHelper()) {
-		loadSettings();
+	initSettings();
+	bool fsOk = initFileHelper();
+	loadSettings();
+	machineInit();
+	if (fsOk) {
 		autoLoadGame();
 	}
 	else {
@@ -75,13 +77,12 @@ int main(int argc, char **argv) {
 
 	while (1) {
 		waitVBlank();
-		checkTimeOut();
 		guiRunLoop();
 		if (!pauseEmulation) {
 			run();
 		}
-//		mmStreamUpdate();
-	}    
+//		checkTimeOut();
+	}
 	return 0;
 }
 

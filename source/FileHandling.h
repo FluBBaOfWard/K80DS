@@ -19,8 +19,9 @@ extern "C" {
 
 extern const ArcadeGame allGames[GAME_COUNT];
 
+void initSettings(void);
 int loadSettings(void);
-void saveSettings(void);
+int saveSettings(void);
 int loadNVRAM(void);
 void saveNVRAM(void);
 void loadState(void);
